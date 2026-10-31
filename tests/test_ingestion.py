@@ -1,6 +1,6 @@
-from pathlib import Path
-
 import pytest
+
+from pypdf.errors import PdfReadError
 
 from src.ingestion.pdf_loader import PDFLoader
 
@@ -42,6 +42,7 @@ def test_load_pdf_text_and_metadata(tmp_path, monkeypatch):
     pages = loader.load(pdf_file)
 
     assert len(pages) == 2
+
     assert pages[0].source == "sample.pdf"
     assert pages[0].page_number == 1
     assert pages[0].text == "First page text"
@@ -63,7 +64,11 @@ def test_invalid_file_type(tmp_path):
     """Check whether a non-PDF file is rejected."""
 
     text_file = tmp_path / "notes.txt"
-    text_file.write_text("This is not a PDF.", encoding="utf-8")
+
+    text_file.write_text(
+        "This is not a PDF.",
+        encoding="utf-8",
+    )
 
     loader = PDFLoader()
 
@@ -78,9 +83,13 @@ def test_pdf_without_readable_text(tmp_path, monkeypatch):
     pdf_file.write_bytes(b"Fake PDF content")
 
     class EmptyPDFReader:
+
         def __init__(self, file_path: str):
             self.is_encrypted = False
-            self.pages = [FakePage("   "), FakePage(None)]
+            self.pages = [
+                FakePage("   "),
+                FakePage(None),
+            ]
 
     monkeypatch.setattr(
         "src.ingestion.pdf_loader.PdfReader",
@@ -89,5 +98,79 @@ def test_pdf_without_readable_text(tmp_path, monkeypatch):
 
     loader = PDFLoader()
 
-    with pytest.raises(ValueError, match="No extractable text"):
+    with pytest.raises(
+        ValueError,
+        match="No extractable text",
+    ):
+        loader.load(pdf_file)
+
+
+def test_directory_path_is_rejected(tmp_path):
+    """Check whether a directory is rejected as a PDF file."""
+
+    directory = tmp_path / "folder.pdf"
+    directory.mkdir()
+
+    loader = PDFLoader()
+
+    with pytest.raises(
+        ValueError,
+        match="Not a file",
+    ):
+        loader.load(directory)
+
+
+def test_password_protected_pdf_is_rejected(
+    tmp_path,
+    monkeypatch,
+):
+    """Check whether password-protected PDFs are rejected."""
+
+    pdf_file = tmp_path / "protected.pdf"
+    pdf_file.write_bytes(b"Fake PDF content")
+
+    class EncryptedPDFReader:
+
+        def __init__(self, file_path: str):
+            self.is_encrypted = True
+
+        def decrypt(self, password: str):
+            return 0
+
+    monkeypatch.setattr(
+        "src.ingestion.pdf_loader.PdfReader",
+        EncryptedPDFReader,
+    )
+
+    loader = PDFLoader()
+
+    with pytest.raises(
+        ValueError,
+        match="Password-protected PDF",
+    ):
+        loader.load(pdf_file)
+
+
+def test_corrupted_pdf_is_handled(tmp_path, monkeypatch):
+    """Check whether corrupted PDFs are handled."""
+
+    pdf_file = tmp_path / "corrupted.pdf"
+    pdf_file.write_bytes(b"Invalid PDF content")
+
+    class BrokenPDFReader:
+
+        def __init__(self, file_path: str):
+            raise PdfReadError("Invalid PDF structure")
+
+    monkeypatch.setattr(
+        "src.ingestion.pdf_loader.PdfReader",
+        BrokenPDFReader,
+    )
+
+    loader = PDFLoader()
+
+    with pytest.raises(
+        ValueError,
+        match="Could not read PDF",
+    ):
         loader.load(pdf_file)
