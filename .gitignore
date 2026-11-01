@@ -31,3 +31,6 @@ Thumbs.db
 # Local PDF source documents
 data/documents/*.pdf
 data/documents/**/*.pdf
+
+# Local vector database files
+data/vector_store/

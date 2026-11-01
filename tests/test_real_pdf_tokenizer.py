@@ -11,7 +11,7 @@ from src.ingestion.chunking.tokenizer_adapter import (
 )
 
 
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "intfloat/multilingual-e5-small"
 
 SAMPLE_PDF_NAME = "01_disaster_management_act_2005.pdf"
 
