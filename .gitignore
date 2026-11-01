@@ -27,3 +27,7 @@ Thumbs.db
 
 # Generated logs
 *.log
+
+# Local PDF source documents
+data/documents/*.pdf
+data/documents/**/*.pdf
