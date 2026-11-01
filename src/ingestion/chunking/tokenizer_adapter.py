@@ -60,6 +60,7 @@ class HuggingFaceTokenizerAdapter:
         return self.tokenizer.encode(
             text,
             add_special_tokens=False,
+            verbose=False,
         )
 
     def decode(self, token_ids: list[int]) -> str:
@@ -88,6 +89,7 @@ class HuggingFaceTokenizerAdapter:
             add_special_tokens=False,
             return_offsets_mapping=True,
             truncation=False,
+            verbose=False,
         )
 
         token_ids = encoded["input_ids"]

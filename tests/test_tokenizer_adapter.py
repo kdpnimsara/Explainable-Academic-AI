@@ -7,7 +7,7 @@ from src.ingestion.chunking.tokenizer_adapter import (
 )
 
 
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "intfloat/multilingual-e5-small"
 
 
 class FakeFastTokenizer:
@@ -17,7 +17,12 @@ class FakeFastTokenizer:
     model_max_length = 512
     vocab_size = 30522
 
-    def encode(self, text, add_special_tokens=False):
+    def encode(
+        self,
+        text,
+        add_special_tokens=False,
+        verbose=True,
+    ):
 
         return [
             index
@@ -41,7 +46,9 @@ class FakeFastTokenizer:
         add_special_tokens=False,
         return_offsets_mapping=True,
         truncation=False,
+        verbose=True,
     ):
+
         matches = list(
             re.finditer(r"\S+", text)
         )
@@ -85,11 +92,20 @@ def real_huggingface_adapter():
         )
 
 
+# ======================================================
+# INITIALIZATION TESTS
+# ======================================================
+
 def test_initialize_fast_tokenizer(adapter):
 
     assert adapter.model_max_length == 512
+
     assert adapter.vocabulary_size == 30522
 
+
+# ======================================================
+# ENCODING TESTS
+# ======================================================
 
 def test_encode_text(adapter):
 
@@ -112,6 +128,7 @@ def test_decode_tokens(adapter):
     )
 
     assert isinstance(result, str)
+
     assert result == "decoded text"
 
 
@@ -153,9 +170,15 @@ def test_offsets_preserve_original_capitalization(adapter):
     ]
 
     assert original_parts[0] == "Academic"
+
     assert original_parts[1] == "PDF"
+
     assert original_parts[2] == "Document"
 
+
+# ======================================================
+# INPUT VALIDATION TESTS
+# ======================================================
 
 def test_reject_invalid_text(adapter):
 
@@ -195,11 +218,15 @@ def test_reject_invalid_tokenizer():
         )
 
 
+# ======================================================
+# REAL HUGGING FACE TOKENIZER TEST
+# ======================================================
+
 def test_real_huggingface_tokenizer(
     real_huggingface_adapter,
 ):
     """
-    Test the actual locally cached pretrained tokenizer.
+    Test the actual locally cached multilingual E5 tokenizer.
     """
 
     adapter = real_huggingface_adapter
@@ -211,6 +238,7 @@ def test_real_huggingface_tokenizer(
     )
 
     assert len(token_ids) > 0
+
     assert len(token_ids) == len(offsets)
 
     # Original characters must remain accessible.
@@ -219,8 +247,36 @@ def test_real_huggingface_tokenizer(
         == "A"
     )
 
-    assert adapter.vocabulary_size == 30522
+    assert adapter.vocabulary_size == 250002
 
     for start, end in offsets:
 
         assert 0 <= start <= end <= len(text)
+
+
+# ======================================================
+# LONG TEXT WARNING HANDLING TEST
+# ======================================================
+
+def test_long_text_does_not_truncate_with_offsets(adapter):
+
+    text = "Disaster preparedness information. " * 200
+
+    token_ids, offsets = adapter.encode_with_offsets(
+        text
+    )
+
+    assert len(token_ids) > 512
+
+    assert len(token_ids) == len(offsets)
+
+    assert offsets[-1][1] <= len(text)
+
+
+def test_long_text_encoding_does_not_truncate(adapter):
+
+    text = "Flood preparedness information. " * 200
+
+    token_ids = adapter.encode(text)
+
+    assert len(token_ids) > 512
