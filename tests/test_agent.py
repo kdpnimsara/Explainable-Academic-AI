@@ -179,3 +179,66 @@ def test_agent_rejects_empty_history_path():
             FakeGenerator(),
             history_path="   ",
         )
+
+def test_agent_identifies_factual_question():
+    retriever = FakeRetriever([make_chunk()])
+    agent = RAGAgent(retriever, FakeGenerator())
+
+    result = agent.ask(
+        "What is disaster preparedness?",
+        top_k=3,
+    )
+
+    assert result.reasoning_plan.intent == "factual"
+    assert result.reasoning_plan.retrieval_top_k == 3
+    assert retriever.calls == [
+        ("What is disaster preparedness?", 3)
+    ]
+
+
+def test_agent_uses_broader_retrieval_for_comparison():
+    retriever = FakeRetriever([make_chunk()])
+    agent = RAGAgent(retriever, FakeGenerator())
+
+    result = agent.ask(
+        "Compare flood and landslide preparedness",
+        top_k=3,
+    )
+
+    assert result.reasoning_plan.intent == "comparative"
+    assert result.reasoning_plan.retrieval_top_k == 6
+    assert retriever.calls == [
+        ("Compare flood and landslide preparedness", 6)
+    ]
+
+
+def test_agent_identifies_multi_aspect_question():
+    retriever = FakeRetriever([make_chunk()])
+    agent = RAGAgent(retriever, FakeGenerator())
+
+    result = agent.ask(
+        "List the causes and effects of floods",
+        top_k=3,
+    )
+
+    assert result.reasoning_plan.intent == "multi_aspect"
+    assert result.reasoning_plan.retrieval_top_k == 6
+
+
+def test_agent_retries_when_no_evidence_is_found():
+    retriever = FakeRetriever([])
+    agent = RAGAgent(retriever, FakeGenerator())
+
+    result = agent.ask(
+        "What is disaster preparedness?",
+        top_k=3,
+    )
+
+    assert retriever.calls == [
+        ("What is disaster preparedness?", 3),
+        ("What is disaster preparedness?", 6),
+    ]
+
+    assert result.retrieval_attempts == 2
+    assert result.retrieved_chunks == ()
+    assert "could not find sufficient" in result.answer.lower()

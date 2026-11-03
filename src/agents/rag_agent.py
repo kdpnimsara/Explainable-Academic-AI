@@ -1,5 +1,5 @@
-
 import json
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -36,6 +36,15 @@ class GeneratorProtocol(Protocol):
 
 
 @dataclass(frozen=True, slots=True)
+class ReasoningPlan:
+    """Explainable decision made by the agent before retrieval."""
+
+    intent: str
+    retrieval_top_k: int
+    rationale: str
+
+
+@dataclass(frozen=True, slots=True)
 class AgentResponse:
     """Complete response produced by the RAG agent."""
 
@@ -43,6 +52,8 @@ class AgentResponse:
     answer: str
     sources: tuple[SourceReference, ...]
     retrieved_chunks: tuple[RetrievedChunk, ...]
+    reasoning_plan: ReasoningPlan
+    retrieval_attempts: int
     created_at: str
 
 
@@ -53,6 +64,8 @@ class RAGAgent:
     Workflow:
         Observation -> Reasoning -> Action -> Persistence
     """
+
+    MAX_AUTOMATIC_TOP_K = 20
 
     def __init__(
         self,
@@ -86,13 +99,111 @@ class RAGAgent:
         self.retriever = retriever
         self.generator = generator
 
+    def _reason(
+        self,
+        question: str,
+        requested_top_k: int,
+    ) -> ReasoningPlan:
+        """
+        Analyze the question and create a retrieval plan.
+
+        Comparative and multi-aspect questions receive
+        a broader retrieval scope than simple factual questions.
+        """
+
+        normalized = " ".join(question.lower().split())
+
+        comparison_pattern = (
+            r"\b(compare|comparison|contrast|difference|"
+            r"differences|versus|vs)\b"
+        )
+
+        multi_aspect_pattern = (
+            r"\b(list|overview|summarize|summarise|"
+            r"steps|multiple|all)\b"
+            r"|causes and effects"
+            r"|risks and impacts"
+            r"|benefits and challenges"
+        )
+
+        if re.search(comparison_pattern, normalized):
+            intent = "comparative"
+
+            planned_top_k = min(
+                requested_top_k * 2,
+                max(requested_top_k, self.MAX_AUTOMATIC_TOP_K),
+            )
+
+            rationale = (
+                "The question requests a comparison. "
+                "A broader retrieval scope is selected "
+                "to collect evidence for the compared topics."
+            )
+
+        elif re.search(multi_aspect_pattern, normalized):
+            intent = "multi_aspect"
+
+            planned_top_k = min(
+                requested_top_k * 2,
+                max(requested_top_k, self.MAX_AUTOMATIC_TOP_K),
+            )
+
+            rationale = (
+                "The question requests multiple aspects "
+                "or an overview. A broader retrieval scope "
+                "is selected to collect more supporting evidence."
+            )
+
+        else:
+            intent = "factual"
+            planned_top_k = requested_top_k
+
+            rationale = (
+                "The question appears to request a focused fact. "
+                "The requested retrieval depth is retained."
+            )
+
+        return ReasoningPlan(
+            intent=intent,
+            retrieval_top_k=planned_top_k,
+            rationale=rationale,
+        )
+
+    def _retrieve_and_validate(
+        self,
+        question: str,
+        top_k: int,
+    ) -> tuple[RetrievedChunk, ...]:
+        """Retrieve document chunks and validate the results."""
+
+        retrieved_chunks = self.retriever.retrieve(
+            question,
+            top_k=top_k,
+        )
+
+        if (
+            not isinstance(retrieved_chunks, Sequence)
+            or isinstance(retrieved_chunks, (str, bytes))
+        ):
+            raise TypeError(
+                "Retriever must return a sequence of chunks."
+            )
+
+        for chunk in retrieved_chunks:
+            if not isinstance(chunk, RetrievedChunk):
+                raise TypeError(
+                    "Retriever returned an invalid chunk."
+                )
+
+        return tuple(retrieved_chunks)
+
     def ask(
         self,
         question: str,
         top_k: int = 5,
     ) -> AgentResponse:
         """
-        Process a user question and return an evidence-based answer.
+        Process a user question using an explainable agentic workflow.
         """
 
         # Stage 1: Observation
@@ -119,28 +230,36 @@ class RAGAgent:
             )
 
         # Stage 2: Reasoning
-        # Determine that document retrieval is required
-        # before generating an answer.
-
-        # Stage 3: Action
-        retrieved_chunks = self.retriever.retrieve(
+        reasoning_plan = self._reason(
             question,
-            top_k=top_k,
+            requested_top_k=top_k,
         )
 
-        if (
-            not isinstance(retrieved_chunks, Sequence)
-            or isinstance(retrieved_chunks, (str, bytes))
-        ):
-            raise TypeError(
-                "Retriever must return a sequence of chunks."
+        # Stage 3: Action
+        retrieved_chunks = self._retrieve_and_validate(
+            question,
+            reasoning_plan.retrieval_top_k,
+        )
+
+        retrieval_attempts = 1
+
+        # Retry with broader retrieval if no evidence is found.
+        retry_top_k = min(
+            reasoning_plan.retrieval_top_k * 2,
+            max(
+                reasoning_plan.retrieval_top_k,
+                self.MAX_AUTOMATIC_TOP_K,
+            ),
+        )
+
+        if not retrieved_chunks and retry_top_k > reasoning_plan.retrieval_top_k:
+
+            retrieved_chunks = self._retrieve_and_validate(
+                question,
+                retry_top_k,
             )
 
-        for chunk in retrieved_chunks:
-            if not isinstance(chunk, RetrievedChunk):
-                raise TypeError(
-                    "Retriever returned an invalid chunk."
-                )
+            retrieval_attempts += 1
 
         generated = self.generator.generate_answer(
             question,
@@ -156,7 +275,9 @@ class RAGAgent:
             question=question,
             answer=generated.answer,
             sources=generated.sources,
-            retrieved_chunks=tuple(retrieved_chunks),
+            retrieved_chunks=retrieved_chunks,
+            reasoning_plan=reasoning_plan,
+            retrieval_attempts=retrieval_attempts,
             created_at=datetime.now(timezone.utc).isoformat(),
         )
 
@@ -167,7 +288,7 @@ class RAGAgent:
         return response
 
     def _persist(self, response: AgentResponse) -> None:
-        """Append an agent response to a JSONL history file."""
+        """Append an agent response and reasoning trace to JSONL."""
 
         if self.history_path is None:
             return
@@ -181,6 +302,14 @@ class RAGAgent:
             "question": response.question,
             "answer": response.answer,
             "created_at": response.created_at,
+            "reasoning": {
+                "intent": response.reasoning_plan.intent,
+                "retrieval_top_k": (
+                    response.reasoning_plan.retrieval_top_k
+                ),
+                "rationale": response.reasoning_plan.rationale,
+                "retrieval_attempts": response.retrieval_attempts,
+            },
             "sources": [
                 {
                     "citation_id": source.citation_id,
