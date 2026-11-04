@@ -12,6 +12,8 @@ from src.embeddings.embedder import (
     DEFAULT_MODEL_NAME,
 )
 
+from src.metadata.document_metadata import DocumentMetadata
+
 
 @dataclass(frozen=True, slots=True)
 class VectorStoreRecord:
@@ -25,13 +27,14 @@ class VectorStoreRecord:
     page_numbers: tuple[int, ...]
     heading: str | None
     distance: float | None = None
+    document_metadata: DocumentMetadata | None = None
 
 
 class ChromaVectorStore:
     """
     Persistent vector storage for SafeSteps LK.
 
-    Stores text chunks, embeddings and metadata
+    Stores text chunks, embeddings and document metadata
     using ChromaDB.
     """
 
@@ -254,6 +257,61 @@ class ChromaVectorStore:
         return clean_ids
 
     # ======================================================
+    # DOCUMENT METADATA CONVERSION
+    # ======================================================
+
+    @staticmethod
+    def _serialize_document_metadata(
+        document_metadata: DocumentMetadata | None,
+    ) -> dict[str, str]:
+        """Convert document metadata into ChromaDB-compatible values."""
+
+        if document_metadata is None:
+            return {}
+
+        if not isinstance(
+            document_metadata,
+            DocumentMetadata,
+        ):
+            raise TypeError(
+                "document_metadata must be a DocumentMetadata object."
+            )
+
+        return document_metadata.to_chroma_metadata()
+
+    @staticmethod
+    def _deserialize_document_metadata(
+        metadata: dict[str, Any],
+    ) -> DocumentMetadata | None:
+        """Reconstruct document metadata from ChromaDB."""
+
+        # Support legacy records without document metadata.
+        if "document_id" not in metadata:
+            return None
+
+        try:
+            return DocumentMetadata(
+                document_id=metadata["document_id"],
+                document_scope=metadata["document_scope"],
+                document_category=metadata["document_category"],
+                document_title=metadata["document_title"],
+                institution_id=metadata.get("institution_id") or None,
+                document_version=metadata.get("document_version") or None,
+                source_authority=metadata.get("source_authority") or None,
+                source_url=metadata.get("source_url") or None,
+            )
+
+        except (
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as error:
+
+            raise RuntimeError(
+                "Could not reconstruct document metadata."
+            ) from error
+
+    # ======================================================
     # ADD / UPDATE EMBEDDINGS
     # ======================================================
 
@@ -306,19 +364,29 @@ class ChromaVectorStore:
                 )
             )
 
-            # ChromaDB metadata supports scalar values.
-            # Page numbers are therefore stored as JSON.
-            metadatas.append(
-                {
-                    "source": chunk.source,
-                    "chunk_index": int(chunk.chunk_index),
-                    "token_count": int(chunk.token_count),
-                    "page_numbers": json.dumps(
-                        list(chunk.page_numbers)
-                    ),
-                    "heading": chunk.heading or "",
-                }
+            # Basic chunk metadata.
+            chunk_metadata = {
+                "source": chunk.source,
+                "chunk_index": int(chunk.chunk_index),
+                "token_count": int(chunk.token_count),
+                "page_numbers": json.dumps(
+                    list(chunk.page_numbers)
+                ),
+                "heading": chunk.heading or "",
+            }
+
+            # Add institution/document metadata.
+            document_metadata = (
+                self._serialize_document_metadata(
+                    chunk.document_metadata
+                )
             )
+
+            chunk_metadata.update(
+                document_metadata
+            )
+
+            metadatas.append(chunk_metadata)
 
         self._validate_ids(ids)
 
@@ -397,8 +465,7 @@ class ChromaVectorStore:
         """
         Search for semantically similar chunks.
 
-        Returns the nearest matching documents
-        with their distance scores.
+        Supports metadata-based filtering.
         """
 
         if (
@@ -498,6 +565,12 @@ class ChromaVectorStore:
                 )
             )
 
+            document_metadata = (
+                ChromaVectorStore._deserialize_document_metadata(
+                    metadata
+                )
+            )
+
             return VectorStoreRecord(
                 chunk_id=chunk_id,
                 text=text,
@@ -511,6 +584,7 @@ class ChromaVectorStore:
                 page_numbers=page_numbers,
                 heading=metadata.get("heading") or None,
                 distance=distance,
+                document_metadata=document_metadata,
             )
 
         except (

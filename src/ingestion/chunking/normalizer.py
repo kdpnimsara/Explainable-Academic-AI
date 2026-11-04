@@ -125,6 +125,7 @@ class TextNormalizer:
             page_number=page.page_number,
             text=normalized_text,
             extraction_mode=page.extraction_mode,
+            document_metadata=page.document_metadata,
         )
 
     def normalize_pages(

@@ -1,10 +1,12 @@
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
+
+from src.metadata.document_metadata import DocumentMetadata
 
 
 ExtractionMode = Literal["plain", "layout"]
@@ -18,6 +20,22 @@ class PDFPage:
     page_number: int
     text: str
     extraction_mode: ExtractionMode = "plain"
+    document_metadata: DocumentMetadata | None = None
+
+    def __post_init__(self) -> None:
+        """Validate document metadata."""
+
+        if (
+            self.document_metadata is not None
+            and not isinstance(
+                self.document_metadata,
+                DocumentMetadata,
+            )
+        ):
+            raise TypeError(
+                "document_metadata must be a "
+                "DocumentMetadata object or None."
+            )
 
 
 class PDFLoader:
@@ -36,6 +54,47 @@ class PDFLoader:
             )
 
         self.extraction_mode = extraction_mode
+
+    # ========================================================
+    # METADATA VALIDATION
+    # ========================================================
+
+    @staticmethod
+    def _validate_metadata_mapping(
+        metadata_by_filename: Mapping[
+            str,
+            DocumentMetadata,
+        ] | None,
+    ) -> Mapping[str, DocumentMetadata]:
+        """Validate metadata assigned to multiple PDF files."""
+
+        if metadata_by_filename is None:
+            return {}
+
+        if not isinstance(metadata_by_filename, Mapping):
+            raise TypeError(
+                "metadata_by_filename must be a mapping or None."
+            )
+
+        for filename, metadata in metadata_by_filename.items():
+
+            if not isinstance(filename, str):
+                raise TypeError(
+                    "Metadata filename keys must be strings."
+                )
+
+            if not filename.strip():
+                raise ValueError(
+                    "Metadata filename cannot be empty."
+                )
+
+            if not isinstance(metadata, DocumentMetadata):
+                raise TypeError(
+                    "Each metadata value must be a "
+                    "DocumentMetadata object."
+                )
+
+        return metadata_by_filename
 
     # ========================================================
     # PAGE TEXT EXTRACTION
@@ -62,8 +121,21 @@ class PDFLoader:
     def load(
         self,
         file_path: str | Path,
+        document_metadata: DocumentMetadata | None = None,
     ) -> list[PDFPage]:
         """Load and extract text from a single PDF document."""
+
+        if (
+            document_metadata is not None
+            and not isinstance(
+                document_metadata,
+                DocumentMetadata,
+            )
+        ):
+            raise TypeError(
+                "document_metadata must be a "
+                "DocumentMetadata object or None."
+            )
 
         path = Path(file_path)
 
@@ -111,6 +183,7 @@ class PDFLoader:
                         page_number=page_number,
                         text=text,
                         extraction_mode=self.extraction_mode,
+                        document_metadata=document_metadata,
                     )
                 )
 
@@ -134,6 +207,10 @@ class PDFLoader:
     def load_many(
         self,
         file_paths: Sequence[str | Path],
+        document_metadata_by_filename: Mapping[
+            str,
+            DocumentMetadata,
+        ] | None = None,
     ) -> list[PDFPage]:
         """
         Load multiple PDF documents.
@@ -141,6 +218,9 @@ class PDFLoader:
         Documents are processed in the supplied order.
         Duplicate filenames are rejected to prevent
         ambiguous source metadata.
+
+        Metadata can be assigned separately to each PDF
+        using its filename.
         """
 
         if not isinstance(
@@ -157,6 +237,10 @@ class PDFLoader:
 
         if not file_paths:
             return []
+
+        metadata_mapping = self._validate_metadata_mapping(
+            document_metadata_by_filename
+        )
 
         paths = [
             Path(file_path)
@@ -180,7 +264,12 @@ class PDFLoader:
         # Load each document independently.
         for path in paths:
 
-            document_pages = self.load(path)
+            document_pages = self.load(
+                path,
+                document_metadata=metadata_mapping.get(
+                    path.name
+                ),
+            )
 
             all_pages.extend(
                 document_pages
@@ -195,6 +284,10 @@ class PDFLoader:
     def load_directory(
         self,
         directory_path: str | Path,
+        document_metadata_by_filename: Mapping[
+            str,
+            DocumentMetadata,
+        ] | None = None,
     ) -> list[PDFPage]:
         """
         Load every PDF document from a directory.
@@ -233,4 +326,7 @@ class PDFLoader:
         )
 
         # Reuse the multiple PDF loading implementation.
-        return self.load_many(pdf_paths)
+        return self.load_many(
+            pdf_paths,
+            document_metadata_by_filename=document_metadata_by_filename,
+        )

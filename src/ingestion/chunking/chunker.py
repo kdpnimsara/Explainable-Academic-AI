@@ -22,6 +22,8 @@ from src.ingestion.chunking.recursive_splitter import (
     RecursiveTextSplitter,
 )
 
+from src.metadata.document_metadata import DocumentMetadata
+
 
 class TextChunker:
     """Coordinate PDF normalization, heading detection and chunking."""
@@ -53,7 +55,6 @@ class TextChunker:
         self.config = config
         self.tokenizer = tokenizer
 
-        # Inject text normalizer.
         self.normalizer = (
             normalizer
             if normalizer is not None
@@ -67,7 +68,6 @@ class TextChunker:
                 "Normalizer must implement normalize_pages()."
             )
 
-        # Inject heading detector.
         self.heading_detector = (
             heading_detector
             if heading_detector is not None
@@ -81,10 +81,35 @@ class TextChunker:
                 "Heading detector must implement detect()."
             )
 
-        # Initialize recursive splitter.
         self.splitter = RecursiveTextSplitter(
             config=self.config,
             tokenizer=self.tokenizer,
+        )
+
+    # ========================================================
+    # DOCUMENT IDENTITY
+    # ========================================================
+
+    @staticmethod
+    def _document_key(
+        source: str,
+        document_metadata: DocumentMetadata | None,
+    ) -> str:
+        """Create a unique key for document-level processing."""
+
+        if document_metadata is None:
+            return f"source:{source}"
+
+        identity = {
+            "document_id": document_metadata.document_id,
+            "document_scope": document_metadata.document_scope,
+            "institution_id": document_metadata.institution_id,
+        }
+
+        return json.dumps(
+            identity,
+            sort_keys=True,
+            separators=(",", ":"),
         )
 
     # ========================================================
@@ -176,8 +201,16 @@ class TextChunker:
         chunk_index: int,
         text: str,
         heading: str | None = None,
+        document_metadata: DocumentMetadata | None = None,
     ) -> str:
         """Generate a deterministic SHA-256 chunk identifier."""
+
+        metadata_identity = None
+
+        if document_metadata is not None:
+            metadata_identity = (
+                document_metadata.to_chroma_metadata()
+            )
 
         identity_data = {
             "source": source,
@@ -185,6 +218,7 @@ class TextChunker:
             "chunk_index": chunk_index,
             "text": text,
             "heading": heading,
+            "document_metadata": metadata_identity,
         }
 
         serialized_data = json.dumps(
@@ -221,12 +255,7 @@ class TextChunker:
         page: PDFPage,
         heading_stack: list[HeadingMatch],
     ) -> list[tuple[str, str | None]]:
-        """
-        Separate page content according to heading context.
-
-        Heading context is preserved across pages belonging
-        to the same document.
-        """
+        """Separate page content according to heading context."""
 
         segments: list[tuple[str, str | None]] = []
 
@@ -250,7 +279,6 @@ class TextChunker:
 
             content_lines.clear()
 
-        # Preserve the original extracted PDF page text.
         cleaned_text = page.text
 
         for line_number, line in enumerate(
@@ -267,10 +295,8 @@ class TextChunker:
                 content_lines.append(line)
                 continue
 
-            # Finish content belonging to the previous heading.
             flush_segment()
 
-            # Remove headings at the same or deeper level.
             while (
                 heading_stack
                 and heading_stack[-1].level
@@ -282,7 +308,6 @@ class TextChunker:
                 detected_heading
             )
 
-        # Save remaining page content.
         flush_segment()
 
         return segments
@@ -303,19 +328,22 @@ class TextChunker:
 
         chunks: list[TextChunk] = []
 
-        # Independent heading contexts per document.
         heading_contexts: dict[
             str,
             list[HeadingMatch],
         ] = {}
 
-        # Independent chunk indexes per document.
         document_indexes: dict[str, int] = {}
 
         for page in normalized_pages:
 
-            heading_stack = heading_contexts.setdefault(
+            document_key = self._document_key(
                 page.source,
+                page.document_metadata,
+            )
+
+            heading_stack = heading_contexts.setdefault(
+                document_key,
                 [],
             )
 
@@ -341,9 +369,7 @@ class TextChunker:
                         chunk_text
                     )
 
-                    token_count = len(
-                        token_ids
-                    )
+                    token_count = len(token_ids)
 
                     if token_count == 0:
                         raise ValueError(
@@ -357,12 +383,12 @@ class TextChunker:
                             "token limit."
                         )
 
-                    document_indexes[page.source] = (
-                        document_indexes.get(page.source, 0) + 1
+                    document_indexes[document_key] = (
+                        document_indexes.get(document_key, 0) + 1
                     )
 
                     chunk_index = document_indexes[
-                        page.source
+                        document_key
                     ]
 
                     page_numbers = (
@@ -375,6 +401,7 @@ class TextChunker:
                         chunk_index=chunk_index,
                         text=chunk_text,
                         heading=heading_path,
+                        document_metadata=page.document_metadata,
                     )
 
                     chunks.append(
@@ -386,10 +413,10 @@ class TextChunker:
                             token_count=token_count,
                             page_numbers=page_numbers,
                             heading=heading_path,
+                            document_metadata=page.document_metadata,
                         )
                     )
 
-        # Merge eligible chunks across page boundaries.
         return self._merge_cross_page_chunks(
             chunks
         )
@@ -402,13 +429,7 @@ class TextChunker:
         self,
         chunks: Sequence[TextChunk],
     ) -> list[TextChunk]:
-        """
-        Merge adjacent chunks across consecutive PDF pages
-        when they belong to the same document and heading.
-
-        A merge is performed only when the combined text
-        stays within the configured token limit.
-        """
+        """Merge eligible chunks while preserving document metadata."""
 
         records: list[
             tuple[
@@ -417,10 +438,17 @@ class TextChunker:
                 tuple[int, ...],
                 str | None,
                 int,
+                DocumentMetadata | None,
+                str,
             ]
         ] = []
 
         for chunk in chunks:
+
+            document_key = self._document_key(
+                chunk.source,
+                chunk.document_metadata,
+            )
 
             if records:
 
@@ -430,14 +458,21 @@ class TextChunker:
                     previous_pages,
                     previous_heading,
                     previous_token_count,
+                    previous_metadata,
+                    previous_document_key,
                 ) = records[-1]
 
                 same_document = (
-                    previous_source == chunk.source
+                    previous_document_key == document_key
+                    and previous_source == chunk.source
                 )
 
                 same_heading = (
                     previous_heading == chunk.heading
+                )
+
+                same_metadata = (
+                    previous_metadata == chunk.document_metadata
                 )
 
                 consecutive_pages = (
@@ -448,6 +483,7 @@ class TextChunker:
                 if (
                     same_document
                     and same_heading
+                    and same_metadata
                     and consecutive_pages
                 ):
 
@@ -481,6 +517,8 @@ class TextChunker:
                             combined_pages,
                             previous_heading,
                             combined_token_count,
+                            previous_metadata,
+                            previous_document_key,
                         )
 
                         continue
@@ -492,6 +530,8 @@ class TextChunker:
                     chunk.page_numbers,
                     chunk.heading,
                     chunk.token_count,
+                    chunk.document_metadata,
+                    document_key,
                 )
             )
 
@@ -506,13 +546,15 @@ class TextChunker:
             page_numbers,
             heading,
             token_count,
+            document_metadata,
+            document_key,
         ) in records:
 
-            document_indexes[source] = (
-                document_indexes.get(source, 0) + 1
+            document_indexes[document_key] = (
+                document_indexes.get(document_key, 0) + 1
             )
 
-            chunk_index = document_indexes[source]
+            chunk_index = document_indexes[document_key]
 
             chunk_id = self._generate_chunk_id(
                 source=source,
@@ -520,6 +562,7 @@ class TextChunker:
                 chunk_index=chunk_index,
                 text=text,
                 heading=heading,
+                document_metadata=document_metadata,
             )
 
             merged_chunks.append(
@@ -531,6 +574,7 @@ class TextChunker:
                     token_count=token_count,
                     page_numbers=page_numbers,
                     heading=heading,
+                    document_metadata=document_metadata,
                 )
             )
 
@@ -574,13 +618,25 @@ class TextChunker:
             else 0
         )
 
-        total_documents = len(
-            {page.source for page in pages}
-        )
+        document_keys = {
+            TextChunker._document_key(
+                page.source,
+                page.document_metadata,
+            )
+            for page in pages
+        }
+
+        total_documents = len(document_keys)
 
         total_pages = len(
             {
-                (page.source, page.page_number)
+                (
+                    TextChunker._document_key(
+                        page.source,
+                        page.document_metadata,
+                    ),
+                    page.page_number,
+                )
                 for page in pages
             }
         )
