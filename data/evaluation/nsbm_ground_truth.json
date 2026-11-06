@@ -1,0 +1,387 @@
+
+{
+  "dataset_name": "NSBM Ground Truth Evaluation Dataset",
+  "version": "1.0",
+  "institution_id": "NSBM",
+  "total_questions": 21,
+  "description": "Ground-truth questions for evaluating document retrieval, answer groundedness and unsupported-question handling.",
+  "evaluation_notes": [
+    "Expected answers are based only on the supplied PDF documents.",
+    "Document page numbers refer to PDF page numbers.",
+    "A correct abstention is required when the supplied documents do not contain the requested information.",
+    "The Examination Regulations document records approval in August 2015 and a proposed review in August 2018. Its current validity has not been verified.",
+    "The Repeat Coursework Procedure has no confirmed publication or review date in the supplied PDF.",
+    "The EC Guidelines filename indicates August 2023. Their current validity has not been independently verified."
+  ],
+  "questions": [
+    {
+      "id": "NSBM001",
+      "category": "examination",
+      "question": "When can candidates enter the examination room?",
+      "answerable": true,
+      "expected_answer": "Candidates must wait until instructed by an invigilator. They are not admitted until ten minutes before the official examination commencement time or approved reading time, whichever applies.",
+      "required_facts": [
+        "Wait for invigilator instructions",
+        "Admission begins ten minutes before the official commencement or approved reading time"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [2],
+          "context": "Candidates shall not enter the examination room until instructed to do so by an invigilator. Candidates shall not be admitted to the examination room until ten minutes before the official time of commencement of the examination or of approved reading time, whichever is applicable."
+        }
+      ]
+    },
+    {
+      "id": "NSBM002",
+      "category": "examination",
+      "question": "How late can a candidate arrive after the official examination start time?",
+      "answerable": true,
+      "expected_answer": "Candidates may be admitted up to thirty minutes after the official examination start time, but normally not after that. Additional examination time is not given to candidates arriving late.",
+      "required_facts": [
+        "Maximum late admission period is thirty minutes",
+        "No additional examination time for late arrival"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [2],
+          "context": "Candidates shall be admitted to the examination room up to thirty minutes after the official start of the examination, but not normally thereafter. Additional time will not be given for any candidate arriving after the start of the examination."
+        }
+      ]
+    },
+    {
+      "id": "NSBM003",
+      "category": "examination",
+      "question": "How long must a candidate wait before leaving the examination hall?",
+      "answerable": true,
+      "expected_answer": "A candidate cannot leave until at least one hour has passed from the commencement of the examination. Candidates are also not allowed to leave during the final thirty minutes.",
+      "required_facts": [
+        "At least one hour must pass",
+        "Cannot leave during the final thirty minutes"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [2],
+          "context": "Nor shall any candidate be allowed to leave the hall until after one hour has lapsed from the commencement of the examination. No candidate is allowed to leave before the last 30 minutes of the examination."
+        }
+      ]
+    },
+    {
+      "id": "NSBM004",
+      "category": "examination",
+      "question": "Which identification documents must candidates bring to the examination hall?",
+      "answerable": true,
+      "expected_answer": "Candidates must bring their Identity Card and Admission Card for every examination paper.",
+      "required_facts": [
+        "Identity Card",
+        "Admission Card"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [2],
+          "context": "The candidate should have his/her Identity Card and the Admission Card with him/her in the hall on every occasion he/she presents himself for an Examination Paper."
+        }
+      ]
+    },
+    {
+      "id": "NSBM005",
+      "category": "examination",
+      "question": "What must a candidate do before temporarily leaving the examination room?",
+      "answerable": true,
+      "expected_answer": "The candidate must obtain prior permission from an invigilator and must be accompanied by the invigilator throughout the absence.",
+      "required_facts": [
+        "Prior permission from an invigilator",
+        "Accompanied throughout the absence"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [3],
+          "context": "If candidate wish to leave the examination room temporarily, Candidate shall seek the prior permission of an invigilator, and will be accompanied by the invigilator throughout their absence."
+        }
+      ]
+    },
+    {
+      "id": "NSBM006",
+      "category": "examination",
+      "question": "Are mobile phones or other communication devices allowed in the examination room?",
+      "answerable": true,
+      "expected_answer": "No. Mobile phones and other communication devices are not permitted in the examination room.",
+      "required_facts": [
+        "Mobile phones are prohibited",
+        "Other communication devices are prohibited"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [3],
+          "context": "A mobile ‘phone or any other communication device is not permitted into the examination room."
+        }
+      ]
+    },
+    {
+      "id": "NSBM007",
+      "category": "examination",
+      "question": "With whom may candidates communicate during an examination?",
+      "answerable": true,
+      "expected_answer": "Candidates must not communicate with anyone other than an invigilator during the examination.",
+      "required_facts": [
+        "Communication is restricted to an invigilator"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [4],
+          "context": "During the examination Candidates shall not communicate in any way with any person other than an invigilator."
+        }
+      ]
+    },
+    {
+      "id": "NSBM008",
+      "category": "examination",
+      "question": "What penalties may result from breaches of examination regulations?",
+      "answerable": true,
+      "expected_answer": "Depending on the seriousness of the offence, penalties may include a warning, cancellation of the examination and its results, a ban from further examinations for up to three years, or cancellation of studentship at NSBM.",
+      "required_facts": [
+        "Warning",
+        "Cancellation of examination and results",
+        "Possible examination ban up to three years",
+        "Cancellation of studentship"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [5],
+          "context": "Penalties depend on the seriousness of the offence and can vary from a warning; cancellation of the examination and its results; cancellation and prohibiting the candidate from further examinations at NSBM for up to three years; or cancellation of studentship at NSBM."
+        }
+      ]
+    },
+    {
+      "id": "NSBM009",
+      "category": "repeat_coursework",
+      "question": "What is the first step in the NSBM repeat coursework procedure?",
+      "answerable": true,
+      "expected_answer": "Students must register for repeat coursework using the repeat registration form and make the required repeat payment to the cashier.",
+      "required_facts": [
+        "Complete repeat registration form",
+        "Make repeat payment to cashier"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Repeat coursework Procedure.pdf",
+          "pages": [1],
+          "context": "Step 01: Register for your repeat coursework using the repeat registration form link given below and make the necessary repeat payments to the cashier."
+        }
+      ]
+    },
+    {
+      "id": "NSBM010",
+      "category": "repeat_coursework",
+      "question": "Which recovery strategies can students select when registering for repeat coursework?",
+      "answerable": true,
+      "expected_answer": "Students can select either Coursework or Exam + Coursework as the recovery strategy.",
+      "required_facts": [
+        "Coursework option",
+        "Exam + Coursework option"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Repeat coursework Procedure.pdf",
+          "pages": [1],
+          "context": "Please choose a recovery strategy as a Coursework or Exam + Coursework option."
+        }
+      ]
+    },
+    {
+      "id": "NSBM011",
+      "category": "repeat_coursework",
+      "question": "Where should students obtain their repeat coursework assignment brief?",
+      "answerable": true,
+      "expected_answer": "Students should obtain the relevant coursework brief from the repository linked in the repeat coursework procedure. They should select the correct faculty, degree, year and semester, and search using the module code or module name.",
+      "required_facts": [
+        "Obtain the brief from the repository",
+        "Choose the correct faculty, degree, year and semester",
+        "Search by module code or module name"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Repeat coursework Procedure.pdf",
+          "pages": [2, 3],
+          "context": "Step 02: Obtain your relevant coursework brief from the repository available in the link below. Please select the right faculty, Degree, Year, and semester and find relevant assignments for your module. Use the Module code or name to find it."
+        }
+      ]
+    },
+    {
+      "id": "NSBM012",
+      "category": "repeat_coursework",
+      "question": "What is the submission deadline for repeat coursework after downloading the coursework?",
+      "answerable": true,
+      "expected_answer": "Students must submit the assignment on or before the fourteenth day after downloading the coursework from the portal. The procedure describes this as two weeks from the download date.",
+      "required_facts": [
+        "Deadline is the fourteenth day after download",
+        "Two-week period"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Repeat coursework Procedure.pdf",
+          "pages": [3],
+          "context": "Submit your assignment to this portal on or before the 14th day upon the downloaded date of coursework from the portal. You only have 2 weeks from the downloaded date of coursework."
+        }
+      ]
+    },
+    {
+      "id": "NSBM013",
+      "category": "repeat_coursework",
+      "question": "What information and payment details must students provide when submitting repeat coursework?",
+      "answerable": true,
+      "expected_answer": "Students must enter the correct module code, module name and lecturer name, follow the upload instructions, make the relevant payment and enter the receipt number in the submission form.",
+      "required_facts": [
+        "Correct module code",
+        "Correct module name",
+        "Correct lecturer name",
+        "Payment completed",
+        "Receipt number entered"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Repeat coursework Procedure.pdf",
+          "pages": [4],
+          "context": "Please enter the correct module code, correct module name and correct lecturer name when you submit the Repeat Assignment and properly follow the instructions given in the form when uploading the Assignment. When submitting your assignment please make sure you have made the relevant payment, and the receipt number should be entered into the submission form."
+        }
+      ]
+    },
+    {
+      "id": "NSBM014",
+      "category": "extenuating_circumstances",
+      "question": "What is the submission deadline for an examination extenuating circumstances claim?",
+      "answerable": true,
+      "expected_answer": "The claim should be submitted no later than fourteen working days following the examination date. The guidelines also advise students to submit as soon as possible.",
+      "required_facts": [
+        "Fourteen working days after examination date",
+        "Submit as soon as possible"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [2, 3],
+          "context": "Submit no later than 14 working days following the exam date. Note for students: Extenuating circumstances claims should be submitted as soon as possible without waiting for 14 days."
+        }
+      ]
+    },
+    {
+      "id": "NSBM015",
+      "category": "extenuating_circumstances",
+      "question": "Can an extenuating circumstances claim be used to obtain additional examination marks?",
+      "answerable": true,
+      "expected_answer": "No. A valid extenuating circumstances claim can only be used to obtain a fresh examination attempt and cannot be used to gain additional marks.",
+      "required_facts": [
+        "Fresh examination attempt only",
+        "No additional marks"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [2],
+          "context": "Valid extenuating circumstances can only be used to gain a fresh attempt for examination and cannot be used to gain additional marks."
+        }
+      ]
+    },
+    {
+      "id": "NSBM016",
+      "category": "extenuating_circumstances",
+      "question": "Are outpatient department medical certificates accepted as evidence for an extenuating circumstances claim?",
+      "answerable": true,
+      "expected_answer": "No. The supplied guidelines explicitly state that OPD Medical Certificates are not accepted. They list other supporting evidence such as diagnosed cards, medical reports and hospital medical certificates for relevant hospitalisation or illness claims.",
+      "required_facts": [
+        "OPD medical certificates are not accepted",
+        "Other listed medical evidence examples"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [2],
+          "context": "Evidence supplied: Diagnosed card, medical reports, Hospital medical certificate. Mentioning the residential treatments, Hospital bill, lab reports. NOTE: OPD Medical Certificates are not accepted."
+        }
+      ]
+    },
+    {
+      "id": "NSBM017",
+      "category": "extenuating_circumstances",
+      "question": "Which technical problems are listed as reasons that will not be approved for extenuating circumstances?",
+      "answerable": true,
+      "expected_answer": "The guidelines list corrupt data or media, poor internet connectivity, printer failure, uploading an assessment in the wrong format or uploading the wrong file by accident, and accidental resubmission after the deadline.",
+      "required_facts": [
+        "Corrupt data or media",
+        "Poor internet connectivity",
+        "Printer failure",
+        "Incorrect format or wrong file",
+        "Accidental resubmission after deadline"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [3],
+          "context": "The following problems will not be approved: Corrupt data or media; Poor internet connectivity; Printer failure; E-submission of an assessment file in an incorrect format or of the wrong file by accident; Re-submission of an assessment accidentally after the deadline."
+        }
+      ]
+    },
+    {
+      "id": "NSBM018",
+      "category": "extenuating_circumstances",
+      "question": "What happens if an extenuating circumstances claim is submitted without the required form or supporting evidence?",
+      "answerable": true,
+      "expected_answer": "Incomplete claims that lack either the completed form or supporting evidence will not be considered. Students are advised to submit claims as soon as possible.",
+      "required_facts": [
+        "Required EC form",
+        "Supporting evidence",
+        "Incomplete claims will not be considered"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [3],
+          "context": "Incomplete claims (i.e., those lacking either the form or the supporting evidence) will not be considered. Note for students: Extenuating circumstances claims should be submitted as soon as possible without waiting for 14 days."
+        }
+      ]
+    },
+    {
+      "id": "NSBM019",
+      "category": "unsupported",
+      "question": "What is the exact amount of the NSBM library late return fine for 2026?",
+      "answerable": false,
+      "expected_answer": "I could not find sufficient supporting evidence in the available NSBM documents to answer this question. Please check the latest official NSBM library information.",
+      "required_facts": [
+        "Must not invent a fine amount",
+        "Must state that the supplied documents do not contain the information"
+      ],
+      "supporting_contexts": []
+    },
+    {
+      "id": "NSBM020",
+      "category": "unsupported",
+      "question": "What are the exact dates of the NSBM 2026 examination timetable?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM documents do not contain the 2026 examination timetable dates. Please check the latest official NSBM examination announcements.",
+      "required_facts": [
+        "Must not invent examination dates",
+        "Must state that the supplied documents do not contain the timetable"
+      ],
+      "supporting_contexts": []
+    },
+    {
+      "id": "NSBM021",
+      "category": "unsupported",
+      "question": "Has NSBM officially cancelled examinations today because of heavy rain?",
+      "answerable": false,
+      "expected_answer": "The supplied academic documents do not confirm an official examination cancellation. Please check an authorised and current NSBM announcement.",
+      "required_facts": [
+        "Must not claim an official cancellation",
+        "Must request confirmation from an authorised current institutional source"
+      ],
+      "supporting_contexts": []
+    }
+  ]
+}
