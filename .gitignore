@@ -34,3 +34,6 @@ data/documents/**/*.pdf
 
 # Local vector database files
 data/vector_store/
+# Local review documents and runtime history
+data/review_pending/
+data/history/
