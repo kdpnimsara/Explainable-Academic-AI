@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from collections import Counter
 
@@ -227,7 +226,7 @@ def main():
 
     tokenizer = HuggingFaceTokenizerAdapter.from_pretrained(
         MODEL_NAME,
-        local_files_only=False,
+        local_files_only=True,
     )
 
     # Initialize chunker
