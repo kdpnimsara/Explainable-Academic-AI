@@ -317,21 +317,32 @@ class WeatherAwareRAGAgent(RAGAgent):
         answer_text = generated.answer
 
         # Clearly communicate missing weather information.
+        # Academic answers must retain their evidence-validated result.
         if not weather_evidence:
-            if location is None:
-                notice = tool_errors[0]
-            else:
-                notice = (
-                    "Current weather information could not be "
-                    "verified. This answer therefore does not "
-                    "confirm current weather conditions or their "
-                    "impact on university activities."
-                )
+            if requires_academic:
+                # For combined questions, do not append a location
+                # prompt to an academic answer when location is missing.
+                # If a location was identified but weather data is
+                # unavailable, explain that weather could not be verified.
+                if retrieved_chunks and location is not None:
+                    notice = (
+                        "Current weather information could not be "
+                        "verified. This answer therefore does not "
+                        "confirm current weather conditions or their "
+                        "impact on university activities."
+                    )
+                    answer_text += "\n\n" + notice
 
-            if requires_academic and retrieved_chunks:
-                answer_text += "\n\n" + notice
+            elif location is None:
+                # Preserve the location prompt for weather-only questions.
+                answer_text = tool_errors[0]
+
             else:
-                answer_text = notice
+                # Weather-only question with no available weather evidence.
+                answer_text = (
+                    "Current weather information could not be "
+                    "verified."
+                )
 
         elif tool_errors:
             answer_text += (

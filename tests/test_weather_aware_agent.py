@@ -401,3 +401,21 @@ def test_agent_handles_weather_and_academic_evidence():
         "weather_information",
         "academic_retrieval",
     )
+
+def test_combined_academic_question_without_location_preserves_answer():
+    agent, retriever, generator, weather = make_agent()
+
+    result = agent.ask(
+        "Has NSBM officially cancelled examinations today because of heavy rain?",
+        institution_id="NSBM",
+    )
+
+    assert isinstance(result, WeatherAwareAgentResponse)
+    assert len(retriever.calls) == 1
+    assert weather.calls == []
+    assert len(result.tool_errors) == 1
+
+    assert "location could not be identified" not in result.answer.lower()
+    assert "please specify a location" not in result.answer.lower()
+
+    assert result.answer != result.tool_errors[0]
