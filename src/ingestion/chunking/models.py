@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from src.metadata.document_metadata import DocumentMetadata
+
 
 @dataclass(frozen=True, slots=True)
 class ChunkingConfig:
@@ -56,6 +58,7 @@ class TextChunk:
     token_count: int
     page_numbers: tuple[int, ...]
     heading: str | None = None
+    document_metadata: DocumentMetadata | None = None
 
     def __post_init__(self) -> None:
         """Validate chunk data."""
@@ -91,6 +94,18 @@ class TextChunk:
         if tuple(sorted(set(self.page_numbers))) != self.page_numbers:
             raise ValueError(
                 "page_numbers must be unique and sorted."
+            )
+
+        if (
+            self.document_metadata is not None
+            and not isinstance(
+                self.document_metadata,
+                DocumentMetadata,
+            )
+        ):
+            raise TypeError(
+                "document_metadata must be a "
+                "DocumentMetadata object or None."
             )
 
 

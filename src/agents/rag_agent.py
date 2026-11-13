@@ -20,6 +20,7 @@ class RetrieverProtocol(Protocol):
         self,
         query: str,
         top_k: int = 5,
+        institution_id: str | None = None,
     ) -> list[RetrievedChunk]:
         ...
 
@@ -55,6 +56,7 @@ class AgentResponse:
     reasoning_plan: ReasoningPlan
     retrieval_attempts: int
     created_at: str
+    institution_id: str | None = None
 
 
 class RAGAgent:
@@ -63,6 +65,8 @@ class RAGAgent:
 
     Workflow:
         Observation -> Reasoning -> Action -> Persistence
+
+    Supports multi-institution retrieval.
     """
 
     MAX_AUTOMATIC_TOP_K = 20
@@ -99,6 +103,29 @@ class RAGAgent:
         self.retriever = retriever
         self.generator = generator
 
+    @staticmethod
+    def _validate_institution_id(
+        institution_id: str | None,
+    ) -> str | None:
+        """Validate the optional institution identifier."""
+
+        if institution_id is None:
+            return None
+
+        if not isinstance(institution_id, str):
+            raise TypeError(
+                "institution_id must be a string or None."
+            )
+
+        institution_id = institution_id.strip()
+
+        if not institution_id:
+            raise ValueError(
+                "institution_id cannot be empty."
+            )
+
+        return institution_id
+
     def _reason(
         self,
         question: str,
@@ -106,9 +133,6 @@ class RAGAgent:
     ) -> ReasoningPlan:
         """
         Analyze the question and create a retrieval plan.
-
-        Comparative and multi-aspect questions receive
-        a broader retrieval scope than simple factual questions.
         """
 
         normalized = " ".join(question.lower().split())
@@ -173,13 +197,23 @@ class RAGAgent:
         self,
         question: str,
         top_k: int,
+        institution_id: str | None = None,
     ) -> tuple[RetrievedChunk, ...]:
         """Retrieve document chunks and validate the results."""
 
-        retrieved_chunks = self.retriever.retrieve(
-            question,
-            top_k=top_k,
-        )
+        # Preserve compatibility with existing retrievers
+        # when no institution is selected.
+        if institution_id is None:
+            retrieved_chunks = self.retriever.retrieve(
+                question,
+                top_k=top_k,
+            )
+        else:
+            retrieved_chunks = self.retriever.retrieve(
+                question,
+                top_k=top_k,
+                institution_id=institution_id,
+            )
 
         if (
             not isinstance(retrieved_chunks, Sequence)
@@ -201,9 +235,13 @@ class RAGAgent:
         self,
         question: str,
         top_k: int = 5,
+        institution_id: str | None = None,
     ) -> AgentResponse:
         """
         Process a user question using an explainable agentic workflow.
+
+        institution_id optionally limits retrieval to common
+        documents and documents belonging to one institution.
         """
 
         # Stage 1: Observation
@@ -229,6 +267,10 @@ class RAGAgent:
                 "top_k must be greater than zero."
             )
 
+        institution_id = self._validate_institution_id(
+            institution_id
+        )
+
         # Stage 2: Reasoning
         reasoning_plan = self._reason(
             question,
@@ -239,11 +281,13 @@ class RAGAgent:
         retrieved_chunks = self._retrieve_and_validate(
             question,
             reasoning_plan.retrieval_top_k,
+            institution_id=institution_id,
         )
 
         retrieval_attempts = 1
 
         # Retry with broader retrieval if no evidence is found.
+        # The selected institution remains unchanged.
         retry_top_k = min(
             reasoning_plan.retrieval_top_k * 2,
             max(
@@ -252,11 +296,14 @@ class RAGAgent:
             ),
         )
 
-        if not retrieved_chunks and retry_top_k > reasoning_plan.retrieval_top_k:
-
+        if (
+            not retrieved_chunks
+            and retry_top_k > reasoning_plan.retrieval_top_k
+        ):
             retrieved_chunks = self._retrieve_and_validate(
                 question,
                 retry_top_k,
+                institution_id=institution_id,
             )
 
             retrieval_attempts += 1
@@ -279,6 +326,7 @@ class RAGAgent:
             reasoning_plan=reasoning_plan,
             retrieval_attempts=retrieval_attempts,
             created_at=datetime.now(timezone.utc).isoformat(),
+            institution_id=institution_id,
         )
 
         # Stage 4: Persistence
@@ -302,6 +350,7 @@ class RAGAgent:
             "question": response.question,
             "answer": response.answer,
             "created_at": response.created_at,
+            "institution_id": response.institution_id,
             "reasoning": {
                 "intent": response.reasoning_plan.intent,
                 "retrieval_top_k": (

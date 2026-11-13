@@ -1,4 +1,3 @@
-
 import json
 
 import pytest
@@ -36,9 +35,17 @@ class FakeRetriever:
     def __init__(self, chunks=None):
         self.chunks = chunks or []
         self.calls = []
+        self.institution_ids = []
 
-    def retrieve(self, query, top_k=5):
+    def retrieve(
+        self,
+        query,
+        top_k=5,
+        institution_id=None,
+    ):
         self.calls.append((query, top_k))
+        self.institution_ids.append(institution_id)
+
         return self.chunks[:top_k]
 
 
@@ -180,6 +187,7 @@ def test_agent_rejects_empty_history_path():
             history_path="   ",
         )
 
+
 def test_agent_identifies_factual_question():
     retriever = FakeRetriever([make_chunk()])
     agent = RAGAgent(retriever, FakeGenerator())
@@ -191,6 +199,7 @@ def test_agent_identifies_factual_question():
 
     assert result.reasoning_plan.intent == "factual"
     assert result.reasoning_plan.retrieval_top_k == 3
+
     assert retriever.calls == [
         ("What is disaster preparedness?", 3)
     ]
@@ -207,6 +216,7 @@ def test_agent_uses_broader_retrieval_for_comparison():
 
     assert result.reasoning_plan.intent == "comparative"
     assert result.reasoning_plan.retrieval_top_k == 6
+
     assert retriever.calls == [
         ("Compare flood and landslide preparedness", 6)
     ]
@@ -242,3 +252,55 @@ def test_agent_retries_when_no_evidence_is_found():
     assert result.retrieval_attempts == 2
     assert result.retrieved_chunks == ()
     assert "could not find sufficient" in result.answer.lower()
+
+
+# Institution-specific tests
+
+
+def test_agent_passes_institution_id_to_retriever():
+    retriever = FakeRetriever([make_chunk()])
+    agent = RAGAgent(retriever, FakeGenerator())
+
+    result = agent.ask(
+        "What are the academic regulations?",
+        institution_id="NSBM",
+    )
+
+    assert retriever.institution_ids == ["NSBM"]
+    assert result.institution_id == "NSBM"
+
+
+def test_agent_preserves_institution_id_during_retry():
+    retriever = FakeRetriever([])
+    agent = RAGAgent(retriever, FakeGenerator())
+
+    result = agent.ask(
+        "What are the academic regulations?",
+        top_k=3,
+        institution_id="NSBM",
+    )
+
+    assert retriever.institution_ids == ["NSBM", "NSBM"]
+    assert result.institution_id == "NSBM"
+    assert result.retrieval_attempts == 2
+
+
+def test_agent_persists_institution_id(tmp_path):
+    history_path = tmp_path / "agent.jsonl"
+
+    agent = RAGAgent(
+        FakeRetriever([make_chunk()]),
+        FakeGenerator(),
+        history_path=history_path,
+    )
+
+    agent.ask(
+        "What are the academic regulations?",
+        institution_id="NSBM",
+    )
+
+    saved = json.loads(
+        history_path.read_text(encoding="utf-8").splitlines()[0]
+    )
+
+    assert saved["institution_id"] == "NSBM"

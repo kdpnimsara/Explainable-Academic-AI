@@ -474,3 +474,29 @@ def test_delete_empty_list(store):
     store.delete([])
 
     assert store.count() == 0
+
+# ======================================================
+# LEGACY RECORD COMPATIBILITY TESTS
+# ======================================================
+
+def test_legacy_record_without_document_metadata(store):
+
+    legacy_metadata = {
+        "source": "old_disaster_plan.pdf",
+        "chunk_index": "1",
+        "token_count": "5",
+        "page_numbers": "[1, 2]",
+        "heading": "Emergency Preparedness",
+    }
+
+    record = store._create_record(
+        chunk_id="legacy_chunk_001",
+        text="Legacy emergency preparedness information.",
+        metadata=legacy_metadata,
+    )
+
+    assert record.chunk_id == "legacy_chunk_001"
+    assert record.source == "old_disaster_plan.pdf"
+    assert record.page_numbers == (1, 2)
+    assert record.heading == "Emergency Preparedness"
+    assert record.document_metadata is None

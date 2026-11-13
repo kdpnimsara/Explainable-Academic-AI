@@ -34,3 +34,12 @@ data/documents/**/*.pdf
 
 # Local vector database files
 data/vector_store/
+# Local review documents and runtime history
+data/review_pending/
+data/history/
+
+# NSBM local backups and generated evaluation reports
+data/backups/
+data/evaluation/nsbm_batch_evaluation_report*.json
+data/evaluation/nsbm_batch_evaluation_report*.csv
+data/evaluation/nsbm_test_bundle.zip

@@ -1,4 +1,3 @@
-
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
@@ -25,9 +24,15 @@ class HybridRetriever:
     Retrieve relevant document chunks using:
     1. Dense semantic retrieval through ChromaDB.
     2. Keyword retrieval through TF-IDF.
-    3. Reciprocal Rank Fusion (RRF) for hybrid ranking.
+    3. Reciprocal Rank Fusion (RRF).
 
-    corpus_records must contain the records available for TF-IDF search.
+    Supports institution-based retrieval filtering.
+
+    When an institution is selected, retrieval includes:
+    - Common documents.
+    - Documents belonging to the selected institution.
+
+    Documents belonging to other institutions are excluded.
     """
 
     def __init__(
@@ -43,10 +48,7 @@ class HybridRetriever:
         if not callable(getattr(vector_store, "query", None)):
             raise TypeError("vector_store must provide query().")
 
-        if (
-            isinstance(rrf_k, bool)
-            or not isinstance(rrf_k, int)
-        ):
+        if isinstance(rrf_k, bool) or not isinstance(rrf_k, int):
             raise TypeError("rrf_k must be an integer.")
 
         if rrf_k <= 0:
@@ -118,15 +120,76 @@ class HybridRetriever:
         self._vectorizer = vectorizer
         self._tfidf_matrix = matrix
 
+    @staticmethod
+    def _validate_institution_id(
+        institution_id: str | None,
+    ) -> str | None:
+        """Validate the optional institution identifier."""
+
+        if institution_id is None:
+            return None
+
+        if not isinstance(institution_id, str):
+            raise TypeError("institution_id must be a string or None.")
+
+        institution_id = institution_id.strip()
+
+        if not institution_id:
+            raise ValueError("institution_id cannot be empty.")
+
+        return institution_id
+
+    @staticmethod
+    def _matches_institution(
+        record: VectorStoreRecord,
+        institution_id: str,
+    ) -> bool:
+        """
+        Check whether a record belongs to the selected institution
+        or is a common document.
+        """
+
+        metadata = record.document_metadata
+
+        # Exclude legacy records without document metadata.
+        if metadata is None:
+            return False
+
+        if metadata.document_scope == "common":
+            return True
+
+        return (
+            metadata.document_scope == "institution"
+            and metadata.institution_id == institution_id
+        )
+
+    @staticmethod
+    def _build_institution_filter(
+        institution_id: str,
+    ) -> dict[str, Any]:
+        """Build the ChromaDB filter for institution-based retrieval."""
+
+        return {
+            "$or": [
+                {"document_scope": "common"},
+                {"institution_id": institution_id},
+            ]
+        }
+
     def retrieve(
         self,
         query: str,
         top_k: int = 5,
+        institution_id: str | None = None,
     ) -> list[RetrievedChunk]:
         """
-        Retrieve and rank the most relevant document chunks.
+        Retrieve and rank relevant document chunks.
 
-        Returns results ordered by Reciprocal Rank Fusion score.
+        If institution_id is provided, only common documents and
+        documents belonging to that institution are retrieved.
+
+        If institution_id is None, the original unfiltered
+        retrieval behaviour is preserved.
         """
 
         if not isinstance(query, str):
@@ -143,13 +206,37 @@ class HybridRetriever:
         if top_k <= 0:
             raise ValueError("top_k must be greater than zero.")
 
+        institution_id = self._validate_institution_id(
+            institution_id
+        )
+
         # Step 1: Dense semantic retrieval.
         query_embedding = self.embedder.embed_query(query)
 
-        dense_results = self.vector_store.query(
-            query_embedding=query_embedding,
-            top_k=top_k,
-        )
+        if institution_id is None:
+            dense_results = self.vector_store.query(
+                query_embedding=query_embedding,
+                top_k=top_k,
+            )
+        else:
+            where = self._build_institution_filter(institution_id)
+
+            dense_results = self.vector_store.query(
+                query_embedding=query_embedding,
+                top_k=top_k,
+                where=where,
+            )
+
+            # Additional validation prevents unwanted records
+            # if a vector store does not apply the filter correctly.
+            dense_results = [
+                record
+                for record in dense_results
+                if self._matches_institution(
+                    record,
+                    institution_id,
+                )
+            ]
 
         # Keep candidate details using chunk IDs.
         candidates: dict[str, dict[str, Any]] = {}
@@ -170,11 +257,51 @@ class HybridRetriever:
             }
 
         # Step 2: TF-IDF keyword retrieval.
-        if self._vectorizer is not None and self._tfidf_matrix is not None:
-            query_vector = self._vectorizer.transform([query])
+        if institution_id is None:
+            eligible_records = self._corpus
+            vectorizer = self._vectorizer
+            tfidf_matrix = self._tfidf_matrix
+
+        else:
+            eligible_records = tuple(
+                record
+                for record in self._corpus
+                if self._matches_institution(
+                    record,
+                    institution_id,
+                )
+            )
+
+            vectorizer = None
+            tfidf_matrix = None
+
+            # Build a separate TF-IDF index using only eligible
+            # documents to prevent other institutions influencing
+            # the keyword retrieval ranking.
+            if eligible_records:
+                filtered_vectorizer = TfidfVectorizer(
+                    lowercase=True,
+                    token_pattern=r"(?u)\b\w+\b",
+                    ngram_range=(1, 2),
+                )
+
+                try:
+                    filtered_matrix = filtered_vectorizer.fit_transform(
+                        [record.text for record in eligible_records]
+                    )
+
+                    vectorizer = filtered_vectorizer
+                    tfidf_matrix = filtered_matrix
+
+                except ValueError as error:
+                    if "empty vocabulary" not in str(error).lower():
+                        raise
+
+        if vectorizer is not None and tfidf_matrix is not None:
+            query_vector = vectorizer.transform([query])
 
             scores = cosine_similarity(
-                self._tfidf_matrix,
+                tfidf_matrix,
                 query_vector,
             ).ravel()
 
@@ -190,7 +317,7 @@ class HybridRetriever:
                     break
 
                 tfidf_rank += 1
-                record = self._corpus[int(index)]
+                record = eligible_records[int(index)]
 
                 if record.chunk_id not in candidates:
                     candidates[record.chunk_id] = {
@@ -204,6 +331,7 @@ class HybridRetriever:
                     candidates[record.chunk_id]["tfidf_rank"] = (
                         tfidf_rank
                     )
+
                     candidates[record.chunk_id]["tfidf_score"] = score
 
                 if tfidf_rank >= top_k:
