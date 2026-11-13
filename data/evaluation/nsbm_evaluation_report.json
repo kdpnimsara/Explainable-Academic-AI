@@ -1,0 +1,1529 @@
+{
+  "dataset_name": "NSBM Ground Truth Evaluation Dataset",
+  "dataset_version": "1.0",
+  "institution_id": "NSBM",
+  "retrieval_top_k": 5,
+  "metrics": {
+    "total_questions": 21,
+    "answerable_questions": 18,
+    "true_positives": 18,
+    "true_negatives": 3,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "answerability_accuracy": 1.0,
+    "answerability_precision": 1.0,
+    "answerability_recall": 1.0,
+    "answerability_f1": 1.0,
+    "unsupported_rejection_rate": 1.0,
+    "context_hit_rate_at_5": 1.0,
+    "context_precision_at_5": 0.4333,
+    "supporting_fact_coverage_proxy": 0.8889,
+    "answer_relevance": {
+      "status": "NOT_EVALUATED",
+      "reason": "A production answer-generation model and generated-answer evaluation have not yet been integrated into this evaluation runner."
+    },
+    "faithfulness": {
+      "status": "NOT_FULLY_EVALUATED",
+      "reason": "Supporting-fact coverage is a lexical proxy. Generated-answer faithfulness requires evaluation of actual model responses."
+    }
+  },
+  "question_results": [
+    {
+      "id": "NSBM001",
+      "question": "When can candidates enter the examination room?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "candidate",
+        "enter",
+        "examination",
+        "room"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8766345977783203,
+          "tfidf_score": 0.1754197356791195,
+          "hybrid_score": 0.032018442622950824
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": 0.8532035946846008,
+          "tfidf_score": 0.1897054308201319,
+          "hybrid_score": 0.03125763125763126
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8573823571205139,
+          "tfidf_score": 0.1713404316769606,
+          "hybrid_score": 0.031009615384615385
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.312817956213947,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.2258493328175601,
+          "hybrid_score": 0.016129032258064516
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.4444
+    },
+    {
+      "id": "NSBM002",
+      "question": "How late can a candidate arrive after the official examination start time?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.875,
+      "matched_terms": [
+        "after",
+        "arrive",
+        "candidate",
+        "examination",
+        "official",
+        "start",
+        "time"
+      ],
+      "missing_terms": [
+        "late"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8899059295654297,
+          "tfidf_score": 0.23056661307106563,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.874970018863678,
+          "tfidf_score": 0.19767680707469432,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.08915563048360245,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8448296785354614,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.08566003579635323,
+          "hybrid_score": 0.015625
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.4167
+    },
+    {
+      "id": "NSBM003",
+      "question": "How long must a candidate wait before leaving the examination hall?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.6667,
+      "matched_terms": [
+        "candidate",
+        "examination",
+        "hall",
+        "leave"
+      ],
+      "missing_terms": [
+        "must",
+        "wait"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.9032670855522156,
+          "tfidf_score": 0.1986167053318958,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.13416138131564775,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8632031679153442,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.12110562392263033,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8500502705574036,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.45
+    },
+    {
+      "id": "NSBM004",
+      "question": "Which identification documents must candidates bring to the examination hall?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.5714,
+      "matched_terms": [
+        "candidate",
+        "document",
+        "examination",
+        "hall"
+      ],
+      "missing_terms": [
+        "bring",
+        "identification",
+        "must"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8300700783729553,
+          "tfidf_score": 0.15177873187027086,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8346158266067505,
+          "tfidf_score": 0.11403823041205435,
+          "hybrid_score": 0.031754032258064516
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.15658205301049805,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8383790254592896,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.132493526476823,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 1.0
+    },
+    {
+      "id": "NSBM005",
+      "question": "What must a candidate do before temporarily leaving the examination room?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.6667,
+      "matched_terms": [
+        "candidate",
+        "examination",
+        "leave",
+        "room"
+      ],
+      "missing_terms": [
+        "must",
+        "temporarily"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": 0.8753308057785034,
+          "tfidf_score": 0.1769829211804959,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8848603367805481,
+          "tfidf_score": 0.14986016500579524,
+          "hybrid_score": 0.032018442622950824
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8664361238479614,
+          "tfidf_score": 0.16637941548672422,
+          "hybrid_score": 0.031746031746031744
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8636226058006287,
+          "tfidf_score": 0.14690843475318857,
+          "hybrid_score": 0.03076923076923077
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.24565499551951808,
+          "hybrid_score": 0.01639344262295082
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.8333
+    },
+    {
+      "id": "NSBM006",
+      "question": "Are mobile phones or other communication devices allowed in the examination room?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.75,
+      "matched_terms": [
+        "device",
+        "examination",
+        "mobile",
+        "other",
+        "phone",
+        "room"
+      ],
+      "missing_terms": [
+        "allow",
+        "communication"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8245458006858826,
+          "tfidf_score": 0.24597032500618876,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8209073543548584,
+          "tfidf_score": 0.16053248852040286,
+          "hybrid_score": 0.031746031746031744
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": 0.81446373462677,
+          "tfidf_score": 0.14902161578572692,
+          "hybrid_score": 0.03125
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            3,
+            4
+          ],
+          "dense_score": 0.834856390953064,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.24573169613678827,
+          "hybrid_score": 0.016129032258064516
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.5833
+    },
+    {
+      "id": "NSBM007",
+      "question": "With whom may candidates communicate during an examination?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.6667,
+      "matched_terms": [
+        "candidate",
+        "dur",
+        "examination",
+        "may"
+      ],
+      "missing_terms": [
+        "communicate",
+        "whom"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8376263380050659,
+          "tfidf_score": 0.14330046665120144,
+          "hybrid_score": 0.032266458495966696
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8437743186950684,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.12965240900162173,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8389788269996643,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.12908436462601092,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.3333
+    },
+    {
+      "id": "NSBM008",
+      "question": "What penalties may result from breaches of examination regulations?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "breache",
+        "examination",
+        "may",
+        "penalty",
+        "regulation",
+        "result"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.825700581073761,
+          "tfidf_score": 0.1530436924452516,
+          "hybrid_score": 0.032266458495966696
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8518803119659424,
+          "tfidf_score": 0.15031917000552705,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8840510845184326,
+          "tfidf_score": 0.11960791372064368,
+          "hybrid_score": 0.032018442622950824
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.14050055466557,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            3,
+            4
+          ],
+          "dense_score": 0.825518012046814,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015625
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.9167
+    },
+    {
+      "id": "NSBM009",
+      "question": "What is the first step in the NSBM repeat coursework procedure?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "coursework",
+        "first",
+        "nsbm",
+        "procedure",
+        "repeat",
+        "step"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8779414892196655,
+          "tfidf_score": 0.3041770957590816,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": 0.8362201452255249,
+          "tfidf_score": 0.08985279677495153,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8396546840667725,
+          "tfidf_score": 0.0822109369198631,
+          "hybrid_score": 0.0315136476426799
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.819735586643219,
+          "tfidf_score": 0.08238450878295354,
+          "hybrid_score": 0.031009615384615385
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.08645510646441933,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.875
+    },
+    {
+      "id": "NSBM010",
+      "question": "Which recovery strategies can students select when registering for repeat coursework?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "coursework",
+        "recovery",
+        "register",
+        "repeat",
+        "select",
+        "strategy",
+        "student"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8774274587631226,
+          "tfidf_score": 0.3524154163469108,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": 0.8254974484443665,
+          "tfidf_score": 0.09158293470459922,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.7883749008178711,
+          "tfidf_score": 0.13283739481523457,
+          "hybrid_score": 0.0315136476426799
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.7985522747039795,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.07716539946127823,
+          "hybrid_score": 0.015625
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 1.0
+    },
+    {
+      "id": "NSBM011",
+      "question": "Where should students obtain their repeat coursework assignment brief?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "assignment",
+        "brief",
+        "coursework",
+        "obtain",
+        "repeat",
+        "student"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8438692688941956,
+          "tfidf_score": 0.25876077697460065,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": 0.875859260559082,
+          "tfidf_score": 0.12105923628635999,
+          "hybrid_score": 0.032266458495966696
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8332765102386475,
+          "tfidf_score": 0.12189139805123414,
+          "hybrid_score": 0.031754032258064516
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8368759155273438,
+          "tfidf_score": 0.08757696358930678,
+          "hybrid_score": 0.03149801587301587
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8035454154014587,
+          "tfidf_score": 0.06506694896454124,
+          "hybrid_score": 0.03076923076923077
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.9167
+    },
+    {
+      "id": "NSBM012",
+      "question": "What is the submission deadline for repeat coursework after downloading the coursework?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "after",
+        "coursework",
+        "deadline",
+        "download",
+        "repeat",
+        "submission"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": 0.8577405214309692,
+          "tfidf_score": 0.11618822381790035,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8313543796539307,
+          "tfidf_score": 0.3674546777481207,
+          "hybrid_score": 0.032018442622950824
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8507089614868164,
+          "tfidf_score": 0.11421335597016935,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8327646851539612,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.08926925955262995,
+          "hybrid_score": 0.015625
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.5667
+    },
+    {
+      "id": "NSBM013",
+      "question": "What information and payment details must students provide when submitting repeat coursework?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.7778,
+      "matched_terms": [
+        "coursework",
+        "detail",
+        "information",
+        "payment",
+        "repeat",
+        "student",
+        "submit"
+      ],
+      "missing_terms": [
+        "must",
+        "provide"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8505090475082397,
+          "tfidf_score": 0.22831933269633398,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": 0.8877290487289429,
+          "tfidf_score": 0.18444185104525612,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8389785885810852,
+          "tfidf_score": 0.09639376479134058,
+          "hybrid_score": 0.031746031746031744
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8313170671463013,
+          "tfidf_score": 0.08683255602352061,
+          "hybrid_score": 0.03125
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.06162852763593339,
+          "hybrid_score": 0.015384615384615385
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 1.0
+    },
+    {
+      "id": "NSBM014",
+      "question": "What is the submission deadline for an examination extenuating circumstances claim?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "circumstance",
+        "claim",
+        "deadline",
+        "examination",
+        "extenuat",
+        "submission"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": 0.879915714263916,
+          "tfidf_score": 0.21583046476240664,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8887580633163452,
+          "tfidf_score": 0.14476153936562502,
+          "hybrid_score": 0.032266458495966696
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.860053300857544,
+          "tfidf_score": 0.19099732524830346,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8480553030967712,
+          "tfidf_score": 0.11148577326298229,
+          "hybrid_score": 0.03125
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.10380190204912668,
+          "hybrid_score": 0.015384615384615385
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.9167
+    },
+    {
+      "id": "NSBM015",
+      "question": "Can an extenuating circumstances claim be used to obtain additional examination marks?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 1.0,
+      "matched_terms": [
+        "additional",
+        "circumstance",
+        "claim",
+        "examination",
+        "extenuat",
+        "mark",
+        "obtain",
+        "used"
+      ],
+      "missing_terms": [],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8886405825614929,
+          "tfidf_score": 0.1641674016176127,
+          "hybrid_score": 0.032266458495966696
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": 0.8527927398681641,
+          "tfidf_score": 0.24000619553421235,
+          "hybrid_score": 0.032018442622950824
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8770372867584229,
+          "tfidf_score": 0.19252739843211067,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": 0.8840131759643555,
+          "tfidf_score": 0.143871885361079,
+          "hybrid_score": 0.031754032258064516
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.09273723499014422,
+          "hybrid_score": 0.015384615384615385
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 1.0
+    },
+    {
+      "id": "NSBM016",
+      "question": "Are outpatient department medical certificates accepted as evidence for an extenuating circumstances claim?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.7778,
+      "matched_terms": [
+        "accept",
+        "certificate",
+        "circumstance",
+        "claim",
+        "evidence",
+        "extenuat",
+        "medical"
+      ],
+      "missing_terms": [
+        "department",
+        "outpatient"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8549506664276123,
+          "tfidf_score": 0.19856186453163355,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": 0.8495620489120483,
+          "tfidf_score": 0.1880962313276138,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8428963422775269,
+          "tfidf_score": 0.15682670796797787,
+          "hybrid_score": 0.03149801587301587
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.8492977023124695,
+          "tfidf_score": 0.1206693718547171,
+          "hybrid_score": 0.03149801587301587
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.08396559750382859,
+          "hybrid_score": 0.015384615384615385
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.9
+    },
+    {
+      "id": "NSBM017",
+      "question": "Which technical problems are listed as reasons that will not be approved for extenuating circumstances?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.75,
+      "matched_terms": [
+        "approv",
+        "circumstance",
+        "extenuat",
+        "not",
+        "problem",
+        "technical"
+      ],
+      "missing_terms": [
+        "list",
+        "reason"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8262182474136353,
+          "tfidf_score": 0.2892585999878505,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8169776797294617,
+          "tfidf_score": 0.19634412522067674,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": 0.8112329244613647,
+          "tfidf_score": 0.1685757181098995,
+          "hybrid_score": 0.03149801587301587
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8118637204170227,
+          "tfidf_score": 0.13180827578779383,
+          "hybrid_score": 0.03149801587301587
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            2,
+            3
+          ],
+          "dense_score": 0.8094649314880371,
+          "tfidf_score": 0.12799684199687256,
+          "hybrid_score": 0.03076923076923077
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.9
+    },
+    {
+      "id": "NSBM018",
+      "question": "What happens if an extenuating circumstances claim is submitted without the required form or supporting evidence?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.8182,
+      "matched_terms": [
+        "circumstance",
+        "claim",
+        "evidence",
+        "extenuat",
+        "form",
+        "if",
+        "submit",
+        "support",
+        "without"
+      ],
+      "missing_terms": [
+        "happen",
+        "requir"
+      ],
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "retrieved_documents": [
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8921413421630859,
+          "tfidf_score": 0.25870655912566676,
+          "hybrid_score": 0.03278688524590164
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": 0.8571128845214844,
+          "tfidf_score": 0.21906006526219593,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.842922568321228,
+          "tfidf_score": 0.15897439585955286,
+          "hybrid_score": 0.03149801587301587
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.8476723432540894,
+          "tfidf_score": 0.1111780293242006,
+          "hybrid_score": 0.03125763125763126
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            4
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.1510487332642735,
+          "hybrid_score": 0.015625
+        }
+      ],
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.8889
+    },
+    {
+      "id": "NSBM019",
+      "question": "What is the exact amount of the NSBM library late return fine for 2026?",
+      "expected_answerable": false,
+      "predicted_answerable": false,
+      "status": "CORRECTLY_REJECTED",
+      "validation_coverage": 0.1667,
+      "matched_terms": [
+        "nsbm"
+      ],
+      "missing_terms": [
+        "2026",
+        "fine",
+        "late",
+        "library",
+        "return"
+      ],
+      "validation_reason": "The requested year is not confirmed by the evidence: 2026",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.803996205329895,
+          "tfidf_score": 0.19686289551830985,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8247160911560059,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.1713056408119163,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.1512794318977773,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            3
+          ],
+          "dense_score": 0.7951310276985168,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "matched_gold_contexts": 0,
+      "expected_gold_contexts": 0,
+      "context_hit": null,
+      "supporting_fact_coverage_proxy": null
+    },
+    {
+      "id": "NSBM020",
+      "question": "What are the exact dates of the NSBM 2026 examination timetable?",
+      "expected_answerable": false,
+      "predicted_answerable": false,
+      "status": "CORRECTLY_REJECTED",
+      "validation_coverage": 0.6,
+      "matched_terms": [
+        "date",
+        "examination",
+        "nsbm"
+      ],
+      "missing_terms": [
+        "2026",
+        "timetable"
+      ],
+      "validation_reason": "The requested year is not confirmed by the evidence: 2026",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8135782480239868,
+          "tfidf_score": 0.17938765899733553,
+          "hybrid_score": 0.03225806451612903
+        },
+        {
+          "source": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
+          "pages": [
+            1,
+            2
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.18465637250258554,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8607056140899658,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.14524045416513426,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Repeat coursework Procedure.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": 0.7930663228034973,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "matched_gold_contexts": 0,
+      "expected_gold_contexts": 0,
+      "context_hit": null,
+      "supporting_fact_coverage_proxy": null
+    },
+    {
+      "id": "NSBM021",
+      "question": "Has NSBM officially cancelled examinations today because of heavy rain?",
+      "expected_answerable": false,
+      "predicted_answerable": false,
+      "status": "CORRECTLY_REJECTED",
+      "validation_coverage": 0.4286,
+      "matched_terms": [
+        "cancel",
+        "examination",
+        "nsbm"
+      ],
+      "missing_terms": [
+        "heavy",
+        "officially",
+        "rain",
+        "today"
+      ],
+      "validation_reason": "No current, authoritative institutional document explicitly confirms the requested educational decision and its supporting conditions.",
+      "retrieved_documents": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": 0.8465810418128967,
+          "tfidf_score": 0.16624402316110645,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8565593361854553,
+          "tfidf_score": 0.14562183083533733,
+          "hybrid_score": 0.03252247488101534
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            1
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.0715474285509763,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            5
+          ],
+          "dense_score": 0.8174730539321899,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.015873015873015872
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": [
+            2
+          ],
+          "dense_score": null,
+          "tfidf_score": 0.06776901813423294,
+          "hybrid_score": 0.015625
+        }
+      ],
+      "matched_gold_contexts": 0,
+      "expected_gold_contexts": 0,
+      "context_hit": null,
+      "supporting_fact_coverage_proxy": null
+    }
+  ]
+}
