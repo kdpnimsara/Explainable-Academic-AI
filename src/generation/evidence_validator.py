@@ -1,3 +1,4 @@
+
 """Validate whether retrieved evidence is relevant and sufficient.
 
 Includes a conservative policy gate for official institutional
@@ -268,13 +269,11 @@ class EvidenceValidator:
 
         question_lower = question.lower()
 
-        requested_institutions = (
-            set(
-                re.findall(
-                    r"\b(?:NSBM|SLIIT|UOM|UOC|USJ)\b",
-                    question,
-                    re.IGNORECASE,
-                )
+        requested_institutions = set(
+            re.findall(
+                r"\b(?:NSBM|SLIIT|UOM|UOC|USJ)\b",
+                question,
+                re.IGNORECASE,
             )
         )
 
@@ -342,6 +341,256 @@ class EvidenceValidator:
             return True
 
         return False
+
+    @classmethod
+    def _unsupported_request_reason(
+        cls,
+        question: str,
+        retrieved_chunks: Sequence[RetrievedChunk],
+    ) -> str | None:
+        """Reject requests whose exact facts are not covered by this source set."""
+
+        q = question.casefold()
+        categories: set[str] = set()
+        evidence_parts: list[str] = []
+
+        for chunk in retrieved_chunks:
+            metadata = getattr(
+                chunk.record,
+                "document_metadata",
+                None,
+            )
+
+            if metadata is not None:
+                category = getattr(
+                    metadata,
+                    "document_category",
+                    None,
+                )
+
+                if category:
+                    categories.add(str(category).casefold())
+
+            evidence_parts.append(cls._document_text(chunk))
+
+        evidence = " ".join(evidence_parts).casefold()
+
+        def has_category(*values: str) -> bool:
+            return bool(
+                categories.intersection(
+                    value.casefold() for value in values
+                )
+            )
+
+        def has_money_amount(text: str) -> bool:
+            return bool(
+                re.search(
+                    r"(?:LKR|Rs\.?|rupees?)\s*\d[\d,]*(?:\.\d{1,2})?"
+                    r"|\d[\d,]*(?:\.\d{1,2})?\s*(?:LKR|rupees?)",
+                    text,
+                    re.IGNORECASE,
+                )
+            )
+
+        # Private student records cannot be inferred from public NSBM material.
+        if re.search(r"\bmy\b", q) and re.search(
+            r"\b(?:gpa|grade|result|results|transcript|student portal|exam result)\b",
+            q,
+        ):
+            return (
+                "This request asks for an individual student record. "
+                "The public NSBM knowledge base has no authenticated "
+                "access to personal Student Portal data."
+            )
+
+        # An exact Library fine needs an authoritative Library fine/fee schedule.
+        if re.search(r"\blibrary\b", q) and re.search(
+            r"\b(?:fine|late return|overdue|late fee)\b",
+            q,
+        ) and re.search(
+            r"\b(?:exact|amount|how much|2026|current)\b",
+            q,
+        ):
+            has_library_amount = (
+                has_category(
+                    "library_fee_policy",
+                    "library_fees",
+                    "library_policy",
+                )
+                and has_money_amount(evidence)
+                and bool(
+                    re.search(
+                        r"fine|late return|overdue|late fee",
+                        evidence,
+                    )
+                )
+            )
+
+            if not has_library_amount:
+                requested_years = re.findall(
+                    r"\b(?:19|20)\d{2}\b",
+                    question,
+                )
+
+                year_suffix = (
+                    " for " + ", ".join(requested_years)
+                    if requested_years
+                    else ""
+                )
+
+                return (
+                    "The available NSBM sources do not establish the exact "
+                    "current Library late-return fine"
+                    + year_suffix
+                    + ". Confirm it with the NSBM Library."
+                )
+
+        # A portal link directory is not the actual current examination timetable.
+        if re.search(r"\b(?:exam|examination)\b", q) and re.search(
+            r"\b(?:timetable|schedule)\b",
+            q,
+        ) and re.search(
+            r"\b(?:exact|date|dates|2026|when)\b",
+            q,
+        ):
+            if not has_category(
+                "examination_timetable",
+                "examination_schedule",
+            ):
+                return (
+                    "The indexed NSBM documents do not contain the official "
+                    "2026 examination timetable dates. Check the live "
+                    "Examination Portal."
+                )
+
+        # Data Science tuition needs a current programme-fee schedule.
+        if re.search(r"\bdata science\b", q) and re.search(
+            r"\b(?:tuition|course fee|programme fee|program fee)\b",
+            q,
+        ) and re.search(
+            r"\b(?:exact|total|current|amount|how much)\b",
+            q,
+        ):
+            has_programme_fee = (
+                has_category(
+                    "tuition_fees",
+                    "programme_fees",
+                    "data_science_fees",
+                )
+                and has_money_amount(evidence)
+            )
+
+            if not has_programme_fee:
+                return (
+                    "The indexed NSBM sources do not establish the current "
+                    "total Data Science tuition fee. Confirm the fee with "
+                    "NSBM Admissions."
+                )
+
+        # Internship existence is not evidence of its duration, hours or credits.
+        if re.search(
+            r"\binternship\b|\bindustrial placement\b",
+            q,
+        ) and re.search(
+            r"\b(?:months?|weeks?|hours?|credits?|duration|how long|how many)\b",
+            q,
+        ):
+            has_internship_spec = (
+                has_category(
+                    "internship_requirements",
+                    "internship_guidelines",
+                    "industrial_training",
+                    "industrial_placement",
+                )
+                and bool(
+                    re.search(
+                        r"(?:internship|industrial placement).{0,140}"
+                        r"\b\d+\s*(?:months?|weeks?|hours?|credits?)\b"
+                        r"|\b\d+\s*(?:months?|weeks?|hours?|credits?).{0,140}"
+                        r"(?:internship|industrial placement)",
+                        evidence,
+                        re.IGNORECASE,
+                    )
+                )
+            )
+
+            if not has_internship_spec:
+                return (
+                    "The available Data Science programme information "
+                    "confirms an internship, but does not establish its "
+                    "exact duration, hours or credits."
+                )
+
+        # A curriculum announcement is not an approved module-by-module map.
+        if re.search(r"\bcurriculum\b", q) and re.search(
+            r"module.by.module|module changes|exact modules|which modules|"
+            r"modules were changed|approved changes",
+            q,
+        ):
+            if not has_category(
+                "approved_curriculum",
+                "programme_curriculum",
+                "module_specification",
+            ):
+                return (
+                    "The NSBM curriculum-revision announcement does not "
+                    "provide the approved module-by-module changes. "
+                    "The revised curriculum document is not indexed."
+                )
+
+        # Attendance percentage requires an undergraduate attendance policy.
+        if re.search(r"\battendance\b", q) and re.search(
+            r"%|percent(?:age)?|eligible to sit|minimum attendance",
+            q,
+        ):
+            has_attendance_rule = (
+                has_category(
+                    "attendance_policy",
+                    "undergraduate_student_handbook",
+                    "programme_attendance_policy",
+                )
+                and bool(
+                    re.search(
+                        r"attendance.{0,100}\b\d{1,3}\s*%"
+                        r"|\b\d{1,3}\s*%.{0,100}attendance",
+                        evidence,
+                        re.IGNORECASE,
+                    )
+                )
+            )
+
+            if not has_attendance_rule:
+                return (
+                    "The indexed NSBM sources do not establish the current "
+                    "attendance percentage required for Data Science "
+                    "examination eligibility."
+                )
+
+        # A broad FAQ or career page is not a current scholarship schedule.
+        if re.search(r"\bscholarship", q) and re.search(
+            r"\b(?:current|categories|eligibility|amount|amounts|undergraduates?)\b",
+            q,
+        ):
+            has_scholarship_schedule = (
+                has_category(
+                    "scholarship_policy",
+                    "scholarships_and_bursaries",
+                    "financial_aid_policy",
+                )
+                and has_money_amount(evidence)
+                and bool(
+                    re.search(r"eligib|criteria|qualif", evidence)
+                )
+            )
+
+            if not has_scholarship_schedule:
+                return (
+                    "The indexed NSBM sources do not contain a complete "
+                    "current scholarship schedule with undergraduate "
+                    "eligibility and exact award amounts."
+                )
+
+        return None
 
     def validate(
         self,
@@ -421,6 +670,21 @@ class EvidenceValidator:
         )
 
         coverage = len(matched_terms) / len(query_terms)
+
+        # Check known unsupported requests before generic relevance scoring.
+        gap_reason = self._unsupported_request_reason(
+            question,
+            retrieved_chunks,
+        )
+
+        if gap_reason:
+            return EvidenceValidationResult(
+                sufficient=False,
+                coverage=coverage,
+                matched_terms=matched_terms,
+                missing_terms=missing_terms,
+                reason=gap_reason,
+            )
 
         # Official university decisions require authoritative evidence.
         # A weather forecast alone must never confirm a cancellation.
@@ -504,7 +768,9 @@ class EvidenceValidatingGenerator:
         generator: Any,
         validator: EvidenceValidator | None = None,
     ) -> None:
-        if not callable(getattr(generator, "generate_answer", None)):
+        if not callable(
+            getattr(generator, "generate_answer", None)
+        ):
             raise TypeError(
                 "generator must provide generate_answer()."
             )
@@ -546,12 +812,7 @@ class EvidenceValidatingGenerator:
         retrieved_chunks: Sequence[RetrievedChunk],
         weather_evidence: Sequence[WeatherEvidence],
     ) -> GeneratedAnswer:
-        """Validate evidence and preserve safe weather-only answers.
-
-        A weather forecast may be shown as context for an
-        institution-related weather question. It must never be treated
-        as proof that the institution has made an official decision.
-        """
+        """Validate evidence and preserve safe weather-only answers."""
 
         method = getattr(
             self.generator,
@@ -586,8 +847,8 @@ class EvidenceValidatingGenerator:
             and item.is_current()
         )
 
-        # The official decision safeguard remains active.
-        # However, current weather evidence can still be shown separately.
+        # Weather evidence can provide context, but cannot prove an
+        # official institutional cancellation or postponement.
         if not result.sufficient:
             if (
                 is_weather_related_decision

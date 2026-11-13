@@ -1,17 +1,20 @@
-
 {
   "dataset_name": "NSBM Ground Truth Evaluation Dataset",
-  "version": "1.0",
+  "version": "2.0",
   "institution_id": "NSBM",
-  "total_questions": 21,
-  "description": "Ground-truth questions for evaluating document retrieval, answer groundedness and unsupported-question handling.",
+  "total_questions": 60,
+  "description": "Expanded ground-truth dataset for NSBM retrieval, answerability, source matching, and evidence-grounded response evaluation. It retains the original 21 questions and adds 39 questions grounded in the collected NSBM source bundle.",
   "evaluation_notes": [
-    "Expected answers are based only on the supplied PDF documents.",
-    "Document page numbers refer to PDF page numbers.",
-    "A correct abstention is required when the supplied documents do not contain the requested information.",
-    "The Examination Regulations document records approval in August 2015 and a proposed review in August 2018. Its current validity has not been verified.",
-    "The Repeat Coursework Procedure has no confirmed publication or review date in the supplied PDF.",
-    "The EC Guidelines filename indicates August 2023. Their current validity has not been independently verified."
+    "The original 21 questions are retained from dataset version 1.0.",
+    "New answerable questions are grounded in the supplied NSBM PDFs and dated official website snapshots.",
+    "Page numbers are 1-based PDF pages; Markdown website snapshots use page 1.",
+    "A correct abstention is required for unanswerable questions.",
+    "The 2026 EC webpage says applications are due within 14 days; the older August 2023 EC PDF says 14 working days. These are distinct source versions and must not be conflated.",
+    "The BSc/BM/BA degree by-laws question set is explicitly historical: the file is version dated 26/7/2016 for 17.2 intake onwards. Current validity is not established.",
+    "The 2025 Faculty of Computing curriculum-revision announcement does not include the revised module-by-module curriculum.",
+    "The Data Science programme webpage is a dated public snapshot, not an approved full curriculum document. Current fees were excluded because the page showed inconsistent fee formats.",
+    "Four short or conflicted Markdown pages are archived but intentionally excluded from indexing; unsupported questions must not be answered from those pages.",
+    "Supporting-context matching should compare source basenames, because Markdown pages were ingested with absolute source paths while PDF records may use basenames."
   ],
   "questions": [
     {
@@ -27,7 +30,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [2],
+          "pages": [
+            2
+          ],
           "context": "Candidates shall not enter the examination room until instructed to do so by an invigilator. Candidates shall not be admitted to the examination room until ten minutes before the official time of commencement of the examination or of approved reading time, whichever is applicable."
         }
       ]
@@ -45,7 +50,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [2],
+          "pages": [
+            2
+          ],
           "context": "Candidates shall be admitted to the examination room up to thirty minutes after the official start of the examination, but not normally thereafter. Additional time will not be given for any candidate arriving after the start of the examination."
         }
       ]
@@ -63,7 +70,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [2],
+          "pages": [
+            2
+          ],
           "context": "Nor shall any candidate be allowed to leave the hall until after one hour has lapsed from the commencement of the examination. No candidate is allowed to leave before the last 30 minutes of the examination."
         }
       ]
@@ -81,7 +90,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [2],
+          "pages": [
+            2
+          ],
           "context": "The candidate should have his/her Identity Card and the Admission Card with him/her in the hall on every occasion he/she presents himself for an Examination Paper."
         }
       ]
@@ -99,7 +110,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [3],
+          "pages": [
+            3
+          ],
           "context": "If candidate wish to leave the examination room temporarily, Candidate shall seek the prior permission of an invigilator, and will be accompanied by the invigilator throughout their absence."
         }
       ]
@@ -117,7 +130,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [3],
+          "pages": [
+            3
+          ],
           "context": "A mobile ‘phone or any other communication device is not permitted into the examination room."
         }
       ]
@@ -134,7 +149,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [4],
+          "pages": [
+            4
+          ],
           "context": "During the examination Candidates shall not communicate in any way with any person other than an invigilator."
         }
       ]
@@ -154,7 +171,9 @@
       "supporting_contexts": [
         {
           "document": "Examination Regulations_Instructions To Candidates.pdf",
-          "pages": [5],
+          "pages": [
+            5
+          ],
           "context": "Penalties depend on the seriousness of the offence and can vary from a warning; cancellation of the examination and its results; cancellation and prohibiting the candidate from further examinations at NSBM for up to three years; or cancellation of studentship at NSBM."
         }
       ]
@@ -172,7 +191,9 @@
       "supporting_contexts": [
         {
           "document": "Repeat coursework Procedure.pdf",
-          "pages": [1],
+          "pages": [
+            1
+          ],
           "context": "Step 01: Register for your repeat coursework using the repeat registration form link given below and make the necessary repeat payments to the cashier."
         }
       ]
@@ -190,7 +211,9 @@
       "supporting_contexts": [
         {
           "document": "Repeat coursework Procedure.pdf",
-          "pages": [1],
+          "pages": [
+            1
+          ],
           "context": "Please choose a recovery strategy as a Coursework or Exam + Coursework option."
         }
       ]
@@ -209,7 +232,10 @@
       "supporting_contexts": [
         {
           "document": "Repeat coursework Procedure.pdf",
-          "pages": [2, 3],
+          "pages": [
+            2,
+            3
+          ],
           "context": "Step 02: Obtain your relevant coursework brief from the repository available in the link below. Please select the right faculty, Degree, Year, and semester and find relevant assignments for your module. Use the Module code or name to find it."
         }
       ]
@@ -227,7 +253,9 @@
       "supporting_contexts": [
         {
           "document": "Repeat coursework Procedure.pdf",
-          "pages": [3],
+          "pages": [
+            3
+          ],
           "context": "Submit your assignment to this portal on or before the 14th day upon the downloaded date of coursework from the portal. You only have 2 weeks from the downloaded date of coursework."
         }
       ]
@@ -248,7 +276,9 @@
       "supporting_contexts": [
         {
           "document": "Repeat coursework Procedure.pdf",
-          "pages": [4],
+          "pages": [
+            4
+          ],
           "context": "Please enter the correct module code, correct module name and correct lecturer name when you submit the Repeat Assignment and properly follow the instructions given in the form when uploading the Assignment. When submitting your assignment please make sure you have made the relevant payment, and the receipt number should be entered into the submission form."
         }
       ]
@@ -266,7 +296,10 @@
       "supporting_contexts": [
         {
           "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
-          "pages": [2, 3],
+          "pages": [
+            2,
+            3
+          ],
           "context": "Submit no later than 14 working days following the exam date. Note for students: Extenuating circumstances claims should be submitted as soon as possible without waiting for 14 days."
         }
       ]
@@ -284,7 +317,9 @@
       "supporting_contexts": [
         {
           "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
-          "pages": [2],
+          "pages": [
+            2
+          ],
           "context": "Valid extenuating circumstances can only be used to gain a fresh attempt for examination and cannot be used to gain additional marks."
         }
       ]
@@ -302,7 +337,9 @@
       "supporting_contexts": [
         {
           "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
-          "pages": [2],
+          "pages": [
+            2
+          ],
           "context": "Evidence supplied: Diagnosed card, medical reports, Hospital medical certificate. Mentioning the residential treatments, Hospital bill, lab reports. NOTE: OPD Medical Certificates are not accepted."
         }
       ]
@@ -323,7 +360,9 @@
       "supporting_contexts": [
         {
           "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
-          "pages": [3],
+          "pages": [
+            3
+          ],
           "context": "The following problems will not be approved: Corrupt data or media; Poor internet connectivity; Printer failure; E-submission of an assessment file in an incorrect format or of the wrong file by accident; Re-submission of an assessment accidentally after the deadline."
         }
       ]
@@ -342,7 +381,9 @@
       "supporting_contexts": [
         {
           "document": "Revision to NSBM EC Guidelines to students from Aug2023.pdf",
-          "pages": [3],
+          "pages": [
+            3
+          ],
           "context": "Incomplete claims (i.e., those lacking either the form or the supporting evidence) will not be considered. Note for students: Extenuating circumstances claims should be submitted as soon as possible without waiting for 14 days."
         }
       ]
@@ -382,6 +423,780 @@
         "Must request confirmation from an authorised current institutional source"
       ],
       "supporting_contexts": []
+    },
+    {
+      "id": "NSBM022",
+      "category": "extenuating_circumstances",
+      "question": "From what date did NSBM make EC applications for NSBM examinations fully online through UMIS?",
+      "answerable": true,
+      "expected_answer": "The process took effect on 4 May 2026. From that date, EC applications for NSBM examinations must be submitted online through the student profile in UMIS.",
+      "required_facts": [
+        "Effective from 4 May 2026",
+        "Fully online EC application process",
+        "Submission is mandatory through the Student Profile in UMIS"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "With effect from 4th May 2026, the Extenuating Circumstances (EC) Application Process for NSBM examinations will transition to a fully online mode, and all submissions will be mandatory via your Student Profile in UMIS."
+        }
+      ]
+    },
+    {
+      "id": "NSBM023",
+      "category": "extenuating_circumstances",
+      "question": "What steps does a student follow to submit an EC application through UMIS?",
+      "answerable": true,
+      "expected_answer": "Log in to the Student Profile, open the Exam Schedule tab, click Apply next to the relevant module, then complete the EC form and upload the supporting evidence.",
+      "required_facts": [
+        "Log in to Student Profile",
+        "Navigate to Exam Schedule tab",
+        "Click Apply next to relevant module",
+        "Complete EC form and upload supporting evidence"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "Step 01: Log in to your Student Profile. Step 02: Navigate to the \"Exam Schedule\" tab. Step 03: Click on the “Apply” button next to the relevant module. Step 04: Complete the EC form and upload supporting evidence."
+        }
+      ]
+    },
+    {
+      "id": "NSBM024",
+      "category": "extenuating_circumstances",
+      "question": "Within how many days of the examination date must a student submit an EC application under the 2026 UMIS procedure?",
+      "answerable": true,
+      "expected_answer": "The application may be submitted within 14 days of the examination date and must be accompanied by valid supporting evidence.",
+      "required_facts": [
+        "Application deadline is within 14 days of exam date",
+        "Valid supporting evidence must accompany the application"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "If you face such circumstances, you may submit an EC application within 14 days of the exam date, accompanied by valid supporting evidence as detailed in the attached EC guidelines."
+        }
+      ],
+      "evaluation_note": "This 2026 webpage says 14 days; do not silently replace it with the older August 2023 PDF wording of 14 working days."
+    },
+    {
+      "id": "NSBM025",
+      "category": "extenuating_circumstances",
+      "question": "After submitting an EC application online, what must the student do with the original supporting documents?",
+      "answerable": true,
+      "expected_answer": "The student must also submit the original supporting documents to the Examination Division so they can be forwarded to the EC Board.",
+      "required_facts": [
+        "Original supporting documents must be submitted",
+        "Submit them to the Examination Division",
+        "The Examination Division forwards them to the EC Board"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "After submitting the online EC application, you must also submit the original supporting documents to the Examination Division for forwarding to the EC Board."
+        }
+      ]
+    },
+    {
+      "id": "NSBM026",
+      "category": "extenuating_circumstances",
+      "question": "How many EC applications may a student submit throughout the entire degree programme under the 2026 procedure?",
+      "answerable": true,
+      "expected_answer": "A student may submit up to three EC applications throughout the entire degree programme.",
+      "required_facts": [
+        "Maximum of 3 EC applications",
+        "Limit applies across the entire degree programme"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "Each student may submit up to 3 EC applications throughout their entire degree program, which will be automatically forwarded to the EC Board for approval."
+        }
+      ]
+    },
+    {
+      "id": "NSBM027",
+      "category": "extenuating_circumstances",
+      "question": "What happens when a student submits more than three EC applications during the degree programme?",
+      "answerable": true,
+      "expected_answer": "Applications beyond the three-application limit are not automatically processed by UMIS. The student must follow the prescribed procedure, including obtaining Head of Department approval as described in the system-generated email.",
+      "required_facts": [
+        "Applications beyond 3 are not automatically processed",
+        "Prescribed procedure must be followed",
+        "Head of Department approval is required as detailed in system-generated email"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "Applications submitted beyond this limit via UMIS will not be automatically processed by the system. Instead, students must follow the prescribed procedure, including obtaining approval from the Head of Department (HOD), as detailed in the system-generated email triggered when an EC application exceeds the permitted limit."
+        }
+      ]
+    },
+    {
+      "id": "NSBM028",
+      "category": "extenuating_circumstances",
+      "question": "Does the 2026 UMIS EC process apply to examinations conducted by the University of Plymouth, Victoria University, or Southern Cross University?",
+      "answerable": true,
+      "expected_answer": "No. The process applies exclusively to NSBM examinations. Students taking examinations conducted by the University of Plymouth, Victoria University, or Southern Cross University must follow those universities’ specific instructions.",
+      "required_facts": [
+        "2026 process applies exclusively to NSBM examinations",
+        "Not applicable to Plymouth, Victoria, or Southern Cross University examinations",
+        "Partner-university instructions must be followed"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Extenuating_Circumstances_Online_Process_2026.md",
+          "pages": [
+            1
+          ],
+          "context": "This process will be implemented and will apply exclusively to all NSBM examinations commencing from 4th May 2026. It is not applicable to examinations conducted by partner universities (University of Plymouth, Victoria University, Southern Cross University); please adhere to their specific instructions."
+        }
+      ]
+    },
+    {
+      "id": "NSBM029",
+      "category": "data_science_programme",
+      "question": "How long is the NSBM BSc (Honours) in Data Science programme, and is it full-time or part-time?",
+      "answerable": true,
+      "expected_answer": "The programme page describes it as a four-year, full-time degree.",
+      "required_facts": [
+        "Duration is 4 years",
+        "Study mode is full-time"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "Duration - 4 Years (Full time)"
+        }
+      ]
+    },
+    {
+      "id": "NSBM030",
+      "category": "data_science_programme",
+      "question": "Name three Data Science-related modules listed for Year 2 of the NSBM BSc (Honours) in Data Science.",
+      "answerable": true,
+      "expected_answer": "Examples include Introduction to Data Science, Data Programming with R, Statistics for Data Science, and Data Science in Python. Any three of these are acceptable.",
+      "required_facts": [
+        "Year 2 includes Introduction to Data Science",
+        "Year 2 includes Data Programming with R",
+        "Year 2 includes Statistics for Data Science",
+        "Year 2 includes Data Science in Python"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "Year 2: Introduction to Data Science; Human Computer Interaction; Data Programming with R; Statistics for Data Science; Introduction to Software Engineering; Development of Enterprise Applications I; System Fundamentals; Algorithms and Complexity; Data Science in Python; Ethics in Data Science."
+        }
+      ]
+    },
+    {
+      "id": "NSBM031",
+      "category": "data_science_programme",
+      "question": "In which year does the NSBM BSc (Honours) in Data Science require students to complete a mandatory industry placement?",
+      "answerable": true,
+      "expected_answer": "The mandatory industry placement is listed in Year 3.",
+      "required_facts": [
+        "Mandatory industry placement is in Year 3"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "In the third year, whilst sharpening their skills on data science, they ought to fulfill a mandatory industry placement."
+        }
+      ]
+    },
+    {
+      "id": "NSBM032",
+      "category": "data_science_programme",
+      "question": "What major individual project component is listed for students in Year 4 of the NSBM BSc (Honours) in Data Science?",
+      "answerable": true,
+      "expected_answer": "Students are guided to pursue an individual research project; the Year 4 programme contents list the DS Honors Award Project.",
+      "required_facts": [
+        "Year 4 includes an individual research project",
+        "Year 4 programme contents list DS Honors Award Project"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "In the fourth year, they are being guided to pursue an individual research project to showcase the expertise they have developed through the Programme. Year 4 includes DS Honors Award Project."
+        }
+      ]
+    },
+    {
+      "id": "NSBM033",
+      "category": "data_science_admission",
+      "question": "What GCE Advanced Level subjects and results satisfy Option 1 of the published entry qualifications for the NSBM BSc (Honours) in Data Science?",
+      "answerable": true,
+      "expected_answer": "Option 1 requires at least three simple passes in one sitting in the Physical Sciences stream or Engineering Technology stream at the Sri Lankan GCE A/L examination, or an equivalent qualification.",
+      "required_facts": [
+        "At least 3 simple passes",
+        "Physical Sciences or Engineering Technology stream",
+        "Passed in one sitting",
+        "Sri Lankan GCE A/L or equivalent qualification"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "Option 1: At least three (3) simple passes (S) in the Physical Sciences stream or Engineering Technology stream in one sitting at the GCE A/L Examination conducted by the Department of Examinations of Sri Lanka or an equivalent qualification."
+        }
+      ]
+    },
+    {
+      "id": "NSBM034",
+      "category": "data_science_admission",
+      "question": "What additional requirements apply under Option 2 for entry to the NSBM BSc (Honours) in Data Science?",
+      "answerable": true,
+      "expected_answer": "Option 2 requires at least three simple passes in any stream in one sitting at GCE A/L, a credit pass in O/L Mathematics, and completion of the bridging programme approved by the specified authority.",
+      "required_facts": [
+        "At least 3 simple passes in any A/L stream in one sitting",
+        "Credit pass in O/L Mathematics",
+        "Completion of approved bridging programme"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "Option 2: At least three (3) simple passes (S) in any stream in one sitting at the GCE A/L Examination ... and a Credit pass (C) in Mathematics at the GCE O/L Examination ... Completion of the bridging programme approved by the Specified Authority."
+        }
+      ]
+    },
+    {
+      "id": "NSBM035",
+      "category": "data_science_admission",
+      "question": "Which students are exempted from the Data Science bridging programme, and what Mathematics requirement still applies?",
+      "answerable": true,
+      "expected_answer": "Students with a simple pass in ICT plus two other simple passes at A/L are exempted from the bridging programme. They must still have a credit pass in O/L Mathematics.",
+      "required_facts": [
+        "A/L ICT simple pass plus two other simple passes gives bridging exemption",
+        "O/L Mathematics credit pass is still required"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "Students who have obtained a Simple pass (S) for ICT along with two other simple passes at the GCE A/L Examination are exempted from the bridging programme. However, such students must still possess a Credit pass (C) in Mathematics at the GCE O/L Examination."
+        }
+      ]
+    },
+    {
+      "id": "NSBM036",
+      "category": "data_science_programme",
+      "question": "Which professional guidelines does the NSBM BSc (Honours) in Data Science programme page say its design follows?",
+      "answerable": true,
+      "expected_answer": "The programme page says it is designed in line with the latest ACM and IEEE guidelines for Data Science undergraduate awards.",
+      "required_facts": [
+        "ACM guidelines",
+        "IEEE guidelines",
+        "Guidelines are for Data Science undergraduate awards"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_BSc_Hons_Data_Science_Programme.md",
+          "pages": [
+            1
+          ],
+          "context": "BSc (Honors) in Data Science programme at NSBM Faculty of Computing is carefully designed in line with the latest ACM and IEEE guidelines for Data Science undergraduate awards."
+        }
+      ]
+    },
+    {
+      "id": "NSBM037",
+      "category": "thesis_guidelines",
+      "question": "According to the NSBM thesis guidelines, what is the typical abstract length and what should it summarize?",
+      "answerable": true,
+      "expected_answer": "The abstract is typically 200–300 words, subject to degree requirements. It should summarize the study objectives, methods, main findings, and conclusions.",
+      "required_facts": [
+        "Typical abstract length is 200-300 words",
+        "Abstract summarizes objectives",
+        "Abstract summarizes methods",
+        "Abstract summarizes main findings and conclusions"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            4
+          ],
+          "context": "The abstract is typically 200-300 words, but this may change based on your degree requirements. A summary of the study, including objectives, methods, main findings, and conclusions."
+        }
+      ]
+    },
+    {
+      "id": "NSBM038",
+      "category": "thesis_guidelines",
+      "question": "What page size and margins are specified in the NSBM thesis formatting guidelines?",
+      "answerable": true,
+      "expected_answer": "The thesis must use A4 paper. The standard margins are one inch on the left, right, top, and bottom; the left margin may be 1¼ inches to allow for binding if desired.",
+      "required_facts": [
+        "A4 page size",
+        "Left margin 1 inch or 1.25 inches for binding",
+        "Right margin 1 inch",
+        "Top and bottom margins 1 inch"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            7
+          ],
+          "context": "The thesis or dissertation must be in A4 size ... Left: 1 inch (or 1 1/4 inch to ensure sufficient room for binding if desired); Right: 1 inch; Bottom: 1 inch; Top: 1 inch."
+        }
+      ]
+    },
+    {
+      "id": "NSBM039",
+      "category": "thesis_guidelines",
+      "question": "What font, font size, column layout, and line spacing are required by the NSBM thesis guidelines?",
+      "answerable": true,
+      "expected_answer": "Use Times New Roman, 12 pt, in a single-column layout, with 1.5-line spacing throughout.",
+      "required_facts": [
+        "Times New Roman font",
+        "12 pt size",
+        "Single column",
+        "1.5 line spacing"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            7
+          ],
+          "context": "Times New Roman, 12 pt. The text must appear in a single column on each page, and 1.5-line spacing should be applied throughout the document."
+        }
+      ]
+    },
+    {
+      "id": "NSBM040",
+      "category": "thesis_guidelines",
+      "question": "How should preliminary pages and the main thesis text be numbered under the NSBM thesis guidelines?",
+      "answerable": true,
+      "expected_answer": "Use lower-case Roman numerals for preliminary pages, beginning with the inner title page counted as i but not visibly numbered. Start Arabic numbering at the Introduction with page 1. Page numbers appear at the bottom centre, and running headers or footers are not used except for page numbers.",
+      "required_facts": [
+        "Preliminary pages use lower-case Roman numerals",
+        "Inner title page counts as i but number is not shown",
+        "Arabic numbering begins at Introduction with 1",
+        "Page numbers at bottom centre",
+        "No running headers or footers except page numbers"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            7
+          ],
+          "context": "Use lower-case Roman numerals ... starting with the Inner Title page. The Inner Title page counts as page i, but the number does not appear ... Arabic numerals ... start at the Introduction ... Page numbers will appear at the bottom center ... Pages must not contain running headers or footers, aside from page numbers."
+        }
+      ]
+    },
+    {
+      "id": "NSBM041",
+      "category": "thesis_guidelines",
+      "question": "Which referencing styles may be used in an NSBM thesis according to the faculty specification?",
+      "answerable": true,
+      "expected_answer": "The guidelines list Vancouver, APA, or IEEE referencing style, as specified by the student’s faculty.",
+      "required_facts": [
+        "Vancouver style is listed",
+        "APA style is listed",
+        "IEEE style is listed",
+        "Use the style specified by the faculty"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            6
+          ],
+          "context": "Use Vancouver, APA or IEEE referencing style as specified by your faculty."
+        }
+      ]
+    },
+    {
+      "id": "NSBM042",
+      "category": "thesis_guidelines",
+      "question": "What types of material may be included in thesis appendices, and where must the appendices appear?",
+      "answerable": true,
+      "expected_answer": "Appendices may include questionnaires, raw data, ethical letters, or supplementary tables. They must appear at the end of the document after the references, not inside the chapter to which they relate.",
+      "required_facts": [
+        "Examples include questionnaires, raw data, ethical letters, supplementary tables",
+        "Appendices appear at the end",
+        "Appendices follow references",
+        "Do not place appendices in the related chapter"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            6
+          ],
+          "context": "Include additional information such as questionnaires, raw data, ethical letters, or supplementary tables. Appendices must appear at the end of the document (after references) and not the chapter to which they pertain."
+        }
+      ]
+    },
+    {
+      "id": "NSBM043",
+      "category": "thesis_guidelines",
+      "question": "Where should table headings and figure captions be placed in an NSBM thesis?",
+      "answerable": true,
+      "expected_answer": "Table captions should appear above tables, while figure captions should appear below figures.",
+      "required_facts": [
+        "Table captions above tables",
+        "Figure captions below figures"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            8
+          ],
+          "context": "Captions for tables should appear above the table, and captions for figures should appear below the figure (Font 12)."
+        }
+      ]
+    },
+    {
+      "id": "NSBM044",
+      "category": "thesis_guidelines",
+      "question": "What binding and cover-lettering requirements are stated for the final corrected thesis copy?",
+      "answerable": true,
+      "expected_answer": "After corrections requested by examiners or the viva panel, one copy should be hardbound in black. The cover lettering should be gold, and the spine should show the short degree name, submission year, and candidate name with initials.",
+      "required_facts": [
+        "Submit one corrected hardbound copy",
+        "Hardbound copy is black",
+        "Cover lettering is gold",
+        "Spine shows short degree name, year, candidate name with initials"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Thesis_Preparation_and_Formatting_Guidelines.pdf",
+          "pages": [
+            3
+          ],
+          "context": "After making the alterations mentioned by the examiners/VIVA panellists, one (01) copy of the thesis should be hardbound with BLACK color. The lettering on the Cover should be in GOLD. The short name of the degree, the year submitted and the name of the candidate with initials should be indicated at the spine."
+        }
+      ]
+    },
+    {
+      "id": "NSBM045",
+      "category": "postgraduate_assessment",
+      "question": "What overall mark is required to pass an MBA course under the supplied NSBM MBA assessment criteria?",
+      "answerable": true,
+      "expected_answer": "A student passes a course with an overall weighted average of 60% or above from continuous evaluation and the end-semester examination; this corresponds to Letter Grade C+.",
+      "required_facts": [
+        "Pass threshold is 60%",
+        "Average combines continuous evaluation and end-semester examination",
+        "Corresponding letter grade is C+"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Criteria for Assessment of MBA Programmes (NSBM).pdf",
+          "pages": [
+            1
+          ],
+          "context": "A candidate shall be deemed to have passed a course if an overall average (weighted average marks of continuous evaluation and end-semester examination) of 60% (Letter Grade C+) or above is obtained for that course."
+        }
+      ]
+    },
+    {
+      "id": "NSBM046",
+      "category": "postgraduate_assessment",
+      "question": "What are the stated completion requirements for the NSBM MBA programme?",
+      "answerable": true,
+      "expected_answer": "The criteria require 63 credit hours, an overall GPA of at least 2.30, at least C+ in each course, attendance of at least 70% in each course, and completion within five academic years from first registration.",
+      "required_facts": [
+        "Complete 63 credit hours",
+        "Overall GPA at least 2.30",
+        "Minimum C+ in each course",
+        "At least 70% attendance in each course",
+        "Complete within 5 academic years from first registration"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Criteria for Assessment of MBA Programmes (NSBM).pdf",
+          "pages": [
+            2
+          ],
+          "context": "Completed 63 credit hours; GPA of not less than 2.30; minimum Letter Grade C+ for each course; attendance 70% or above in each course; completed within 5 academic years from first registration."
+        }
+      ]
+    },
+    {
+      "id": "NSBM047",
+      "category": "postgraduate_assessment",
+      "question": "What are the stated credit, GPA, course-grade, and attendance requirements for completing an NSBM MBS programme?",
+      "answerable": true,
+      "expected_answer": "The supplied MBS criteria require 30 credit hours, an overall GPA of at least 2.30, at least C+ in each course, and at least 70% attendance in each course. The requirements must be completed within five academic years from first registration.",
+      "required_facts": [
+        "Complete 30 credit hours",
+        "Overall GPA at least 2.30",
+        "Minimum C+ in each course",
+        "At least 70% attendance per course",
+        "Complete within 5 academic years"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Criteria for Assessment of MBS Programmes (NSBM).pdf",
+          "pages": [
+            2
+          ],
+          "context": "Completed 30 credit hours; earned a GPA of not less than 2.30; minimum Letter Grade C+ for each course; attendance 70% or above in each course; completed within 5 academic years from the date of first registration."
+        }
+      ]
+    },
+    {
+      "id": "NSBM048",
+      "category": "postgraduate_assessment",
+      "question": "What is the pass threshold for a course in the supplied NSBM Postgraduate Diploma assessment criteria?",
+      "answerable": true,
+      "expected_answer": "A candidate passes a course with an overall weighted average of 50% or above from continuous evaluation and the end-semester examination. The stated letter grade is C.",
+      "required_facts": [
+        "Pass threshold is 50%",
+        "Average combines continuous evaluation and end-semester examination",
+        "Corresponding letter grade is C"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Criteria for Assessment of Postgraduate Diploma Programmes (NSBM).pdf",
+          "pages": [
+            2
+          ],
+          "context": "A candidate shall be deemed to have passed a course if an overall average (weighted average marks of continuous evaluation and end-semester examination) of 50% (Letter Grade C) or above is obtained for that course."
+        }
+      ]
+    },
+    {
+      "id": "NSBM049",
+      "category": "postgraduate_assessment",
+      "question": "What are the stated completion requirements for an NSBM Postgraduate Diploma under the supplied assessment criteria?",
+      "answerable": true,
+      "expected_answer": "The criteria require 30 credit hours, an overall GPA of at least 2.00, at least C in each course, at least 70% attendance in each course, and completion within five academic years from first registration.",
+      "required_facts": [
+        "Complete 30 credit hours",
+        "Overall GPA at least 2.00",
+        "Minimum C in each course",
+        "At least 70% attendance per course",
+        "Complete within 5 academic years"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "Criteria for Assessment of Postgraduate Diploma Programmes (NSBM).pdf",
+          "pages": [
+            2
+          ],
+          "context": "Completed 30 credit hours; earned a GPA of not less than 2.00; minimum Letter Grade C for each course; attendance rate of 70% or above in each course; completed within 5 academic years from the date of the first registration."
+        }
+      ]
+    },
+    {
+      "id": "NSBM050",
+      "category": "undergraduate_bylaws_historical",
+      "question": "According to the supplied 2016 version of the By-Laws for 17.2 intake onwards, what are the basic completion requirements for the NSBM BSc, BM, and BA degrees?",
+      "answerable": true,
+      "expected_answer": "The by-laws require grades of C or better in course units totalling 120 credits, no D+, D, or F grades, no more than one C- per year and no more than four C- grades across the programme, a minimum GPA of 2.0, and completion within seven academic years. This is the supplied 2016 version; current validity is not established by the file.",
+      "required_facts": [
+        "At least 120 credits with grades C or better",
+        "No D+, D, or F grades",
+        "At most one C- per year",
+        "At most four C- grades in entire programme",
+        "Minimum GPA 2.0",
+        "Complete within 7 academic years"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM Degree Programmes_Exam By Laws _ Version 1 (17.2 onwards) _Students.pdf",
+          "pages": [
+            3
+          ],
+          "context": "To be eligible for the BSc, BM and BA degrees a student must accumulate grades “C” or better in course units aggregating to 120 credits. Furthermore: no fail grade D+, D, F; no more than one C- per year and no more than 4 C- grades for the entire programme; minimum GPA of 2.0; complete within seven academic years."
+        }
+      ],
+      "evaluation_note": "Historical source dated 26/7/2016; do not present as current policy without confirmation."
+    },
+    {
+      "id": "NSBM051",
+      "category": "undergraduate_bylaws_historical",
+      "question": "Under the supplied 2016 By-Laws, what are the stated academic requirements for First Class Honours in the BSc, BM, and BA degree framework?",
+      "answerable": true,
+      "expected_answer": "The by-laws state that a student must earn C or better in 120 credits with no grade below C at the first attempt, earn A or better in at least half the courses, achieve a minimum GPA of 3.7, and complete the requirements within four academic years. The special note also says attendance below 70% in any module or an absence without a valid reason makes a student ineligible for First Class. This is a historical 2016 version.",
+      "required_facts": [
+        "C or better in 120 credits",
+        "No grade below C at first attempt",
+        "A or better in at least half the courses",
+        "Minimum GPA 3.7",
+        "Complete within 4 academic years",
+        "Below 70% attendance in any module disqualifies from First Class under the special note"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM Degree Programmes_Exam By Laws _ Version 1 (17.2 onwards) _Students.pdf",
+          "pages": [
+            3,
+            4
+          ],
+          "context": "First Class: grade C or better in 120 credits and no grade below C at first attempt; grade A or better in at least half the courses; minimum GPA 3.7; complete within four academic years. Special Note: a student with lower than 70% attendance in any module is not eligible for first class."
+        }
+      ],
+      "evaluation_note": "Historical source dated 26/7/2016; do not present as current policy without confirmation."
+    },
+    {
+      "id": "NSBM052",
+      "category": "undergraduate_bylaws_historical",
+      "question": "How does the supplied 2016 NSBM undergraduate By-Law calculate overall GPA?",
+      "answerable": true,
+      "expected_answer": "It calculates the credit-weighted average of module grade points across completed modules, excluding non-credit modules: the sum of each module’s credit weight multiplied by its grade point divided by the sum of the credit weights.",
+      "required_facts": [
+        "Module grade points are weighted by credit allocation",
+        "Non-credit modules are excluded",
+        "Divide total weighted grade points by total credit weights"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM Degree Programmes_Exam By Laws _ Version 1 (17.2 onwards) _Students.pdf",
+          "pages": [
+            6
+          ],
+          "context": "For determination of award classification, average of the Module Grade Points weighted by the credit allocation is calculated across all modules, excluding any Non-Credit modules."
+        }
+      ]
+    },
+    {
+      "id": "NSBM053",
+      "category": "career_guidance",
+      "question": "What is the name of the preparation programme provided by NFORCE for Faculty of Computing students before their first industry exposure?",
+      "answerable": true,
+      "expected_answer": "The Faculty of Computing preparation programme is IPT, which stands for Industry Preparation Program.",
+      "required_facts": [
+        "Faculty of Computing programme is IPT",
+        "IPT stands for Industry Preparation Program"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_NFORCE_Career_Guidance_Unit.md",
+          "pages": [
+            1
+          ],
+          "context": "Each faculty has separate programs. The Faculty of Computing has IPT- Industry Preparation Program, Faculty of Business has C2C – Campus to Corporate and Faculty of Engineering has E4.0+ – Engineering 4.0."
+        }
+      ]
+    },
+    {
+      "id": "NSBM054",
+      "category": "library_services",
+      "question": "What steps should an NSBM Library member follow when suggesting a new book or resource for the library?",
+      "answerable": true,
+      "expected_answer": "The member should first check the library catalogue to confirm the item is not already available, provide as much detail as possible, and submit a separate form for each item. The Library considers the request and informs the member whether it will be purchased. For urgent needs, the Library may help obtain the item from a nearby library or through an inter-library loan.",
+      "required_facts": [
+        "Only NSBM Library members may request",
+        "Check catalogue first",
+        "Provide details",
+        "Submit a separate form per item",
+        "Library informs requester whether purchase will be made",
+        "Urgent resource may be obtained from a nearby library or by inter-library loan"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "NSBM_Library_Learning_Support.md",
+          "pages": [
+            1
+          ],
+          "context": "Requests can be made by NSBM Library members. Before submitting a request, please check the library catalogue. Provide as much detail as possible. Use a separate form for each item. All requests will be considered by the Library, and we will inform you whether the item is being purchased. If required sooner, we may be able to obtain the item from a nearby library or via an Inter-Library Loan."
+        }
+      ]
+    },
+    {
+      "id": "NSBM055",
+      "category": "unsupported_fees",
+      "question": "What is the exact current total tuition fee for the NSBM BSc (Honours) in Data Science programme?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM source collection does not establish this information. The assistant should state that it cannot verify the answer from the available sources.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "evaluation_note": "The collected programme snapshot intentionally omits inconsistent fee figures and does not establish a verified current total fee."
+    },
+    {
+      "id": "NSBM056",
+      "category": "unsupported_internship",
+      "question": "How many months, hours, or credits must a student complete for the mandatory third-year Data Science internship?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM source collection does not establish this information. The assistant should state that it cannot verify the answer from the available sources.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "evaluation_note": "The programme page says a mandatory industry placement is part of Year 3, but the supplied source set does not specify its duration, hours, or credit value."
+    },
+    {
+      "id": "NSBM057",
+      "category": "unsupported_curriculum",
+      "question": "What exact module-by-module changes were approved in the 2025 curriculum revision for the NSBM Data Science degree?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM source collection does not establish this information. The assistant should state that it cannot verify the answer from the available sources.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "evaluation_note": "The supplied 2025 announcement confirms a curriculum-revision exercise but does not provide the approved revised curriculum or a module-by-module change list."
+    },
+    {
+      "id": "NSBM058",
+      "category": "unsupported_attendance",
+      "question": "What exact attendance percentage is required to be eligible to sit each NSBM BSc (Honours) in Data Science examination?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM source collection does not establish this information. The assistant should state that it cannot verify the answer from the available sources.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "evaluation_note": "The supplied sources do not establish a current Data Science examination-admission attendance threshold. The older 2016 By-Law only mentions an attendance condition for First Class eligibility."
+    },
+    {
+      "id": "NSBM059",
+      "category": "unsupported_scholarships",
+      "question": "What are the current NSBM scholarship categories, eligibility rules, and exact scholarship amounts for Data Science undergraduates?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM source collection does not establish this information. The assistant should state that it cannot verify the answer from the available sources.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "evaluation_note": "The supplied source collection does not provide current scholarship categories, eligibility rules, or amounts."
+    },
+    {
+      "id": "NSBM060",
+      "category": "unsupported_personal_records",
+      "question": "What is my current individual NSBM GPA and latest examination result according to my Student Portal?",
+      "answerable": false,
+      "expected_answer": "The supplied NSBM source collection does not establish this information. The assistant should state that it cannot verify the answer from the available sources.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "evaluation_note": "The attached sources contain only public portal information and do not contain the user’s private student profile, GPA, or examination results."
     }
   ]
 }

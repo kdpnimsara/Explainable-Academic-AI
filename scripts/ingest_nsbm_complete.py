@@ -87,7 +87,7 @@ def legacy_metadata(path):
             "degree programmes exam by laws",
             "examination_bylaws",
             "NSBM Degree Programmes Examination By-Laws",
-            "Version 1 (17.2 onwards)",
+            "26 July 2016 (Version 1; 17.2 intake onwards)",
             "NSBM Examination Department",
             "https://drive.google.com/file/d/18X4qyr1138KX6lbo-SAokh1rQTLZ34di/view",
         ),
