@@ -1,0 +1,81 @@
+{
+  "scope": [
+    "NSBM",
+    "SLIIT"
+  ],
+  "tests": [
+    {
+      "institution": "NSBM",
+      "question": "What are the examination instructions for candidates at NSBM?",
+      "answer": "Based on the provided academic documents, the examination instructions and regulations for candidates at NSBM include the following:\n\n* **Attendance and Conduct:** Candidates are instructed on the expectations for their attendance and conduct during examinations [S3]. This includes requirements regarding taking the required examinations and presenting themselves at the examination room in good time before the examination begins [S1].\n* **Applicability:** These examination regulations apply to candidates sitting for any examination conducted by the institution [S3], with the regulations approved by the Academic Governing Council and maintained by the Examinations Unit [S3].\n* **Timing and Attempts:** Regarding postgraduate examinations, if a student does not take the examination on the first occasion it is held, they are generally deemed to have taken it on that occasion (unless the Senate determines otherwise), and they must take the examination at the very next occasion it is held [S5].",
+      "chunk_count": 5,
+      "citation_count": 5,
+      "wrong_evidence": [],
+      "evidence": [
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": "(2,)",
+          "institution_id": "NSBM"
+        },
+        {
+          "source": "C:\\Users\\USER\\Desktop\\Explainable-Academic-AI\\data\\documents\\institutions\\nsbm\\student_services\\NSBM_Official_FAQ.md",
+          "pages": "(1,)",
+          "institution_id": "NSBM"
+        },
+        {
+          "source": "Examination Regulations_Instructions To Candidates.pdf",
+          "pages": "(1,)",
+          "institution_id": "NSBM"
+        },
+        {
+          "source": "C:\\Users\\USER\\Desktop\\Explainable-Academic-AI\\data\\documents\\institutions\\nsbm\\programmes_and_faculties\\NSBM_Faculty_of_Computing.md",
+          "pages": "(1,)",
+          "institution_id": "NSBM"
+        },
+        {
+          "source": "NSBM_Postgraduate_Diploma_Handbook_2025.1.pdf",
+          "pages": "(20,)",
+          "institution_id": "NSBM"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "institution": "SLIIT",
+      "question": "What are the semester module registration timelines and examination rules at SLIIT?",
+      "answer": "Based on the provided academic documents, here are the semester module registration timelines and examination rules at SLIIT:\n\n### Semester and Module Registration Timelines\nAccording to SLIIT's general guidelines, registration timelines are structured around the semester schedule as follows [S1, S3]:\n* **Semester Registration:** Typically occurs four weeks before semester commencement (December/January for the January–June semester, and May/June for the July–December semester) [S3].\n* **Late Semester Registration:** Allowed up to one week into semester commencement, though penalty fees apply (January for the first semester, June for the second) [S3].\n* **Elective Registration:** Two weeks after semester commencement (February for the January–June semester, July for the July–December semester) [S3].\n* **Module Registration:** At the latest, three weeks after semester commencement (March for the January–June semester, August for the July–December semester) [S3].\n* **Repeat Student Registration:** Repeat students must register on a pro-rata basis before taking their respective modules [S2].\n\n*Note: These timelines are subject to change based on institutional requirements, and official registration and examination timelines are announced through CourseWeb notices [S1].*\n\n### Examination and Grading Rules\n* **Passing Requirements:** To pass a course module, students must obtain a minimum Grade “C” in each component of the module, which includes both the written examination and project-based activities [S2].\n* **Grading Scale and Points:** \n  * **Pass Grades:** Grades ranging from $\\text{A}+$ to $\\text{C}$ (corresponding grade points from $4.00$ to $2.00$) [S2].\n  * **Fail Grades:** Grades ranging from $\\text{C}-$ to $\\text{E}$ (corresponding grade points from $1.70$ to $0.00$) [S2].\n  * **Incomplete (`IC`):** Also listed in the grading system without assigned grade points [S2].\n* **Examination Timelines:** Within a standard semester, mid examinations generally take place eight weeks after semester commencement (April or September), and final examinations occur fifteen weeks after commencement (May/June or October/November) [S3].",
+      "chunk_count": 5,
+      "citation_count": 5,
+      "wrong_evidence": [],
+      "evidence": [
+        {
+          "source": "C:\\Users\\USER\\Desktop\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": "(1,)",
+          "institution_id": "SLIIT"
+        },
+        {
+          "source": "fgsr-booklet-2026-v1_1771395541.pdf",
+          "pages": "(35,)",
+          "institution_id": "SLIIT"
+        },
+        {
+          "source": "C:\\Users\\USER\\Desktop\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": "(1,)",
+          "institution_id": "SLIIT"
+        },
+        {
+          "source": "C:\\Users\\USER\\Desktop\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\research_and_projects\\research_c49cbe80.md",
+          "pages": "(1,)",
+          "institution_id": "SLIIT"
+        },
+        {
+          "source": "C:\\Users\\USER\\Desktop\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\quality_assurance\\academic-quality-and-regulations_76db1b4c.md",
+          "pages": "(1,)",
+          "institution_id": "SLIIT"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "overall_passed": true
+}

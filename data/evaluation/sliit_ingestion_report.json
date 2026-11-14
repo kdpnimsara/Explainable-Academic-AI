@@ -1,0 +1,44 @@
+{
+  "institution_id": "SLIIT",
+  "institution_name": "Sri Lanka Institute of Information Technology",
+  "manifest_path": "data\\documents\\institutions\\sliit\\sliit_sources_manifest.json",
+  "manifest_source_count": 438,
+  "indexed_source_count": 437,
+  "archive_only_source_count": 1,
+  "archive_only_sources": [
+    "data/documents/institutions/sliit/academic_calendars/SLIIT_CourseWeb_Public_Calendar_Access_and_Limitations_2026-11-14.md"
+  ],
+  "pdf_count": 44,
+  "text_snapshot_count": 393,
+  "extracted_page_or_text_units": 1755,
+  "unique_documents": 437,
+  "chunks_upserted": 10622,
+  "vector_records_before": 760,
+  "vector_records_after": 11382,
+  "sliit_chunk_ids_before": 0,
+  "sliit_chunk_ids_after": 10622,
+  "other_institution_records_preserved": 760,
+  "category_document_counts": {
+    "academic_regulations": 5,
+    "fees_and_scholarships": 13,
+    "official_notices": 54,
+    "programmes_and_faculties": 205,
+    "quality_assurance": 3,
+    "research_and_projects": 68,
+    "student_services": 87,
+    "examinations": 2
+  },
+  "category_chunk_counts": {
+    "academic_regulations": 82,
+    "fees_and_scholarships": 221,
+    "official_notices": 1101,
+    "programmes_and_faculties": 5633,
+    "quality_assurance": 55,
+    "research_and_projects": 1161,
+    "student_services": 2363,
+    "examinations": 6
+  },
+  "completed_at_utc": "2026-11-14T15:55:05.026342+00:00",
+  "backup_path": "data\\backups\\vector_store_before_sliit_ingestion_20261114_212419",
+  "note": "SLIIT chunks upserted only. No existing vector records were deleted. Other-institution IDs were verified unchanged."
+}
