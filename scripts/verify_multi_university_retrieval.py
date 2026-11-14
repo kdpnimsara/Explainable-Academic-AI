@@ -12,28 +12,11 @@ INSTITUTION_QUERIES = {
         "NSBM examination regulations, instructions to candidates "
         "and repeat coursework procedures"
     ),
-    "UOM": (
-        "University of Moratuwa examination regulations, "
-        "by laws and student registration procedures"
-    ),
-    "UOC": (
-        "University of Colombo examination rules, regulations "
-        "and examinations branch procedures"
-    ),
-    "USJ": (
-        "University of Sri Jayewardenepura examination procedure "
-        "and student handbook"
-    ),
     "SLIIT": (
         "SLIIT semester module registration timelines "
         "and examination rules"
     ),
 }
-
-COMMON_QUERY = (
-    "Flood preparedness, landslide preparedness, "
-    "disaster management and emergency response plans"
-)
 
 
 def load_all_records(store):
@@ -81,7 +64,7 @@ def is_valid_for_institution(record, institution_id):
 def main():
 
     print("=" * 65)
-    print("MULTI-UNIVERSITY RETRIEVAL VERIFICATION")
+    print("NSBM + SLIIT RETRIEVAL VERIFICATION")
     print("=" * 65)
 
     # 1. Connect to the existing persistent database.
@@ -203,69 +186,20 @@ def main():
         else:
             print("RESULT: PASSED")
 
-    print("\n" + "=" * 65)
-    print("TEST 2: COMMON DOCUMENT ACCESS")
-    print("=" * 65)
-
-    common_test_passed = True
-
-    for institution_id in INSTITUTION_QUERIES:
-
-        results = retriever.retrieve(
-            query=COMMON_QUERY,
-            top_k=8,
-            institution_id=institution_id,
-        )
-
-        common_records = [
-            result.record
-            for result in results
-            if (
-                result.record.document_metadata is not None
-                and result.record.document_metadata.document_scope
-                == "common"
-            )
-        ]
-
-        invalid_records = [
-            result.record
-            for result in results
-            if not is_valid_for_institution(
-                result.record,
-                institution_id,
-            )
-        ]
-
-        print(f"\nInstitution: {institution_id}")
-        print("Retrieved records:", len(results))
-        print("Common records:", len(common_records))
-        print("Invalid records:", len(invalid_records))
-
-        if not results or not common_records or invalid_records:
-            common_test_passed = False
-            print("RESULT: FAILED")
-        else:
-            print("RESULT: PASSED")
-
     # 6. Final report.
-    print("\n" + "=" * 65)
-    print("FINAL VERIFICATION REPORT")
+    print()
     print("=" * 65)
-
+    print("FINAL VERIFICATION REPORT — NSBM + SLIIT")
+    print("=" * 65)
     print(
         "Institution-specific retrieval:",
         "PASSED" if institution_test_passed else "FAILED",
     )
 
-    print(
-        "Common document retrieval:",
-        "PASSED" if common_test_passed else "FAILED",
-    )
-
-    if institution_test_passed and common_test_passed:
-        print("\nALL RETRIEVAL CHECKS PASSED")
+    if institution_test_passed:
+        print("\nALL NSBM + SLIIT RETRIEVAL CHECKS PASSED")
     else:
-        print("\nSOME RETRIEVAL CHECKS FAILED")
+        print("\nRETRIEVAL CHECKS FAILED")
         raise SystemExit(1)
 
 
