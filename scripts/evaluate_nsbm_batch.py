@@ -38,6 +38,8 @@ REPORT_CSV = ROOT / "data" / "evaluation" / "nsbm_batch_evaluation_report.csv"
 INSTITUTION_ID = "NSBM"
 
 ABSTENTION_MARKERS = (
+    "could not find sufficient supporting evidence",
+
     "insufficient information",
     "not enough information",
     "cannot determine",
@@ -221,6 +223,12 @@ def evaluate(args):
 
     dataset = json.loads(DATASET_PATH.read_text(encoding="utf-8"))
     questions = dataset["questions"]
+    if args.question_ids:
+        selected_ids = {value.strip() for value in args.question_ids.split(",") if value.strip()}
+        questions = [q for q in questions if q["id"] in selected_ids]
+        missing_ids = selected_ids - {q["id"] for q in questions}
+        if missing_ids:
+            raise ValueError(f"Question IDs not found: {sorted(missing_ids)}")
     if args.limit:
         questions = questions[:args.limit]
 
@@ -501,6 +509,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run the NSBM 60-question batch evaluator.")
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--limit", type=int, default=0, help="Optional smoke-test limit; 0 runs all questions.")
+    parser.add_argument("--question-ids", type=str, default="", help="Comma-separated question IDs to evaluate.")
     parser.add_argument(
         "--generate-answers",
         action="store_true",

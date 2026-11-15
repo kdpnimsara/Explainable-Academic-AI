@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLIIT_ROOT = ROOT / "data" / "documents" / "institutions" / "sliit"
 MANIFEST = SLIIT_ROOT / "sliit_sources_manifest.json"
 VECTOR = ROOT / "data" / "vector_store"
-BACKUPS = ROOT / "data" / "backups"
+BACKUPS = Path("D:/C_Drive_Extra")
 REPORTS = ROOT / "data" / "evaluation"
 MODEL = "intfloat/multilingual-e5-small"
 COLLECTION = "multi_university_admin_chunks"
@@ -35,12 +35,14 @@ MIN_TEXT_CHARS = 500
 
 
 def sha256(path: Path) -> str:
+    if path.suffix.lower() in TEXT_SUFFIXES:
+        normalized = path.read_bytes().replace(bytes([13, 10]), bytes([10]))
+        return hashlib.sha256(normalized).hexdigest()
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
-
 
 def safe_source_path(record: dict) -> Path:
     local_path = record.get("local_path")
@@ -117,7 +119,7 @@ def load_manifest_sources() -> tuple[dict, list[tuple[dict, Path]], list[tuple[d
         if not path.is_file():
             raise RuntimeError(f"Manifest source is missing locally: {rel}")
         expected_hash = record.get("sha256")
-        if expected_hash and sha256(path).lower() != str(expected_hash).lower():
+        if expected_hash and record.get('index', True) is not False and sha256(path).lower() != str(expected_hash).lower():
             raise RuntimeError(f"SHA-256 mismatch: {rel}")
 
         suffix = path.suffix.lower()
@@ -383,7 +385,7 @@ def apply_ingestion(prepared) -> None:
         "category_document_counts": dict(category_documents),
         "category_chunk_counts": dict(category_chunks),
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
-        "backup_path": str(backup.relative_to(ROOT)),
+        "backup_path": str(backup),
         "note": "SLIIT chunks upserted only. No existing vector records were deleted. Other-institution IDs were verified unchanged.",
     }
     REPORTS.mkdir(parents=True, exist_ok=True)

@@ -30,6 +30,15 @@ class HeadingDetector:
         r"\s+(?P<title>[A-Z].*)$"
     )
 
+    # Numbered policy clauses are body text, not section headings.
+    NUMBERED_CLAUSE_PATTERN = re.compile(
+        r"\b(?:shall|must|may|should|will|cannot|"
+        r"is required to|are required to|"
+        r"is not permitted|are not permitted|"
+        r"is prohibited|are prohibited)\b",
+        re.IGNORECASE,
+    )
+
     # Table of contents entries often contain a trailing
     # printed document page number.
     TOC_PAGE_SUFFIX_PATTERN = re.compile(
@@ -144,6 +153,15 @@ class HeadingDetector:
         )
 
         if section_match is None:
+            return None
+
+        # A numbered line containing a policy verb is a clause,
+        # not a heading. Keep it in the chunk text for retrieval.
+        heading_title = section_match.group("title")
+        if (
+            len(heading_title.split()) >= 5
+            and self.NUMBERED_CLAUSE_PATTERN.search(heading_title)
+        ):
             return None
 
         section_number = section_match.group(
