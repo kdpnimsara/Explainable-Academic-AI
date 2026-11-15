@@ -3,6 +3,7 @@ from pathlib import Path
 from collections import Counter
 from datetime import datetime
 import hashlib
+import os
 import json
 import re
 import shutil
@@ -22,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 NSBM = ROOT / "data" / "documents" / "institutions" / "nsbm"
 MANIFEST = NSBM / "nsbm_sources_manifest.json"
 VECTOR = ROOT / "data" / "vector_store"
-BACKUPS = ROOT / "data" / "backups"
+BACKUPS = Path(os.environ.get("NSBM_BACKUP_ROOT", str(ROOT / "data" / "backups")))
 
 MODEL = "intfloat/multilingual-e5-small"
 COLLECTION = "multi_university_admin_chunks"

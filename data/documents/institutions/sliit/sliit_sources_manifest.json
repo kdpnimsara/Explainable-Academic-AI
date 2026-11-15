@@ -4797,8 +4797,8 @@
       "source_type": "curated_summary_of_public_official_source",
       "source_url": "https://support.sliit.lk/kb/articles/pdf/general-timelines-for-semester-module-registration-and-examination",
       "local_path": "data/documents/institutions/sliit/examinations/SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
-      "sha256": "9a8bb5f4736a4c2b85a7af748e12a84e63ae45f8b3a9323d6fd24539eb5f3103",
-      "bytes": 2389,
+      "sha256": "2dfed9bcad7be608b37deeee11042ff30faf5aabf6bb06ba3a4d0e7d18b05091",
+      "bytes": 2385,
       "status": "downloaded",
       "index": true,
       "collected_at_utc": "2026-11-14T11:08:50.943075+00:00"
@@ -4810,8 +4810,8 @@
       "source_type": "curated_summary_of_public_official_source",
       "source_url": "https://support.sliit.lk/kb/articles/pdf/rules-and-regulations-for-students",
       "local_path": "data/documents/institutions/sliit/academic_regulations/SLIIT_Student_Rules_and_Regulations_Public_Overview_2021-01-24.md",
-      "sha256": "3fa0e5218329d7f7e2189a0eb30d1038142c9caba41618dd94f170d87f369342",
-      "bytes": 2069,
+      "sha256": "046ea25bcc2326cedfbb75b3f1c5a58aac5be55f16ae064904031716a79518ea",
+      "bytes": 2065,
       "status": "downloaded",
       "index": true,
       "collected_at_utc": "2026-11-14T11:08:50.943075+00:00"
@@ -4823,8 +4823,8 @@
       "source_type": "curated_summary_of_public_official_source",
       "source_url": "https://courseweb.sliit.lk/pluginfile.php/113/mod_forum/attachment/10191/Introduction%20of%20Reference%20Sheets%20to%20be%20used%20during%20Examinations.pdf?forcedownload=1",
       "local_path": "data/documents/institutions/sliit/examinations/SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
-      "sha256": "45416ee3294a757e8c7414be77cddc7b63c7ee4147c92820ac7d46815a201c33",
-      "bytes": 2034,
+      "sha256": "fbc9380c98afd0a29dcd9d28d9c1ce93f7193656878593c82cf559d02d0309ef",
+      "bytes": 2030,
       "status": "downloaded",
       "index": true,
       "collected_at_utc": "2026-11-14T11:08:50.943075+00:00"
