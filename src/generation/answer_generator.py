@@ -110,22 +110,45 @@ class AnswerGenerator:
     )
 
     @staticmethod
-    def _ensure_first_class_completeness(question, answer, retrieved_chunks, document_sources):
+    def _ensure_first_class_completeness(
+        question,
+        answer,
+        retrieved_chunks,
+        document_sources,
+    ):
+        """Add missing First Class requirements only when evidence supports them."""
+
         lowered_question = question.casefold()
+
         if "first class" not in lowered_question or not any(
             term in lowered_question for term in ("honours", "honors")
         ):
             return answer
 
-        sources = {source.chunk_id: source for source in document_sources}
+        sources = {
+            source.chunk_id: source
+            for source in document_sources
+        }
+
         missing = []
         answer_lower = answer.casefold()
+
         has_120_credit_requirement = "120 credits" in answer_lower
+        has_four_year_requirement = (
+            "four academic years" in answer_lower
+            or "4 academic years" in answer_lower
+        )
+        has_gpa_requirement = "gpa" in answer_lower
 
         for chunk in retrieved_chunks:
             record = chunk.record
-            evidence = ((record.heading or "") + " " + record.text).casefold()
+
+            evidence = (
+                (record.heading or "") + " " + record.text
+            ).casefold()
+
             source = sources.get(record.chunk_id)
+
             if source is None:
                 continue
 
@@ -136,24 +159,124 @@ class AnswerGenerator:
                 and not has_120_credit_requirement
             ):
                 missing.append(
-                    "A student must obtain a grade of C or better in course units "
-                    f"aggregating to 120 credits {source.citation_id}."
+                    "A student must obtain a grade of C or better "
+                    "in course units aggregating to 120 credits "
+                    f"{source.citation_id}."
                 )
+
                 has_120_credit_requirement = True
 
             if (
                 "four academic years" in evidence
-                and "four academic years" not in answer_lower
-                and "4 academic years" not in answer_lower
+                and not has_four_year_requirement
             ):
                 missing.append(
-                    "The relevant requirements must be completed within a period "
-                    f"of four academic years {source.citation_id}."
+                    "The relevant requirements must be completed "
+                    "within a period of four academic years "
+                    f"{source.citation_id}."
                 )
+
+                has_four_year_requirement = True
+
+            gpa_match = re.search(
+                r"minimum\s+gpa(?:\s+of)?\s*[:\-]?\s*"
+                r"(\d+(?:\.\d+)?)",
+                evidence,
+                re.IGNORECASE,
+            )
+
+            if gpa_match and not has_gpa_requirement:
+                gpa_value = gpa_match.group(1)
+
+                missing.append(
+                    f"The minimum GPA requirement is {gpa_value} "
+                    f"{source.citation_id}."
+                )
+
+                has_gpa_requirement = True
 
         if missing:
             answer += "\n\n**Additional mandatory requirements:**\n"
-            answer += "\n".join(f"- {item}" for item in missing)
+            answer += "\n".join(
+                f"- {item}"
+                for item in missing
+            )
+
+        return answer
+
+    @staticmethod
+    def _ensure_option_2_completeness(
+        question,
+        answer,
+        retrieved_chunks,
+        document_sources,
+    ):
+        """Add the Option 2 A/L requirement only when evidence supports it."""
+
+        lowered_question = question.casefold()
+
+        if "option 2" not in lowered_question:
+            return answer
+
+        sources = {
+            source.chunk_id: source
+            for source in document_sources
+        }
+
+        missing = []
+        answer_lower = answer.casefold()
+
+        answer_has_three_passes = (
+            "three" in answer_lower
+            and "simple pass" in answer_lower
+        )
+
+        for chunk in retrieved_chunks:
+            record = chunk.record
+
+            evidence = (
+                (record.heading or "") + " " + record.text
+            ).casefold()
+
+            source = sources.get(record.chunk_id)
+
+            if source is None:
+                continue
+
+            has_three_passes = bool(
+                re.search(
+                    r"at least\s+three\s*\(3\)\s+simple passes",
+                    evidence,
+                    re.IGNORECASE,
+                )
+            )
+
+            has_al_exam = (
+                "gce a/l examination" in evidence
+                and "one sitting" in evidence
+                and "any stream" in evidence
+            )
+
+            if (
+                has_three_passes
+                and has_al_exam
+                and not answer_has_three_passes
+            ):
+                missing.append(
+                    "At least three (3) simple passes (S) in any "
+                    "stream in one sitting at the GCE A/L Examination "
+                    f"{source.citation_id}."
+                )
+
+                answer_has_three_passes = True
+
+        if missing:
+            answer += "\n\n**Additional mandatory requirements:**\n"
+            answer += "\n".join(
+                f"- {item}"
+                for item in missing
+            )
+
         return answer
 
     def __init__(self, model: TextGenerationModel) -> None:
@@ -491,6 +614,13 @@ ANSWER:
             answer = self.ABSTENTION_MESSAGE
 
         answer = self._ensure_first_class_completeness(
+            question,
+            answer,
+            retrieved_chunks,
+            document_sources,
+        )
+
+        answer = self._ensure_option_2_completeness(
             question,
             answer,
             retrieved_chunks,

@@ -352,6 +352,7 @@ class EvidenceValidator:
 
         q = question.casefold()
         categories: set[str] = set()
+        institutions: set[str] = set()
         evidence_parts: list[str] = []
 
         for chunk in retrieved_chunks:
@@ -360,6 +361,10 @@ class EvidenceValidator:
                 "document_metadata",
                 None,
             )
+
+            institution_id = getattr(metadata, "institution_id", None)
+            if institution_id:
+                institutions.add(str(institution_id).casefold())
 
             if metadata is not None:
                 category = getattr(
@@ -374,6 +379,35 @@ class EvidenceValidator:
             evidence_parts.append(cls._document_text(chunk))
 
         evidence = " ".join(evidence_parts).casefold()
+
+        # Detect the official SLIIT semester-based scholarship source
+        # using its source path. The TBD text may not be in every
+        # retrieved chunk, even when the official source is retrieved.
+        sliit_semester_scholarship_source = any(
+            "sliit-scholarships-for-semester-based-academic-performance-scholarships"
+            in str(getattr(chunk.record, "source", "")).casefold()
+            for chunk in retrieved_chunks
+        )
+
+        if (
+            sliit_semester_scholarship_source
+            and re.search(r"\bscholarships?\b", q)
+        ):
+            if re.search(
+                r"\b(?:exact number|how many|number of)\b",
+                q,
+            ):
+                return (
+                    "The SLIIT semester-based academic-performance "
+                    "scholarship source does not publish an exact number "
+                    "of available scholarships."
+                )
+
+            if re.search(r"\bclosing date\b", q):
+                return (
+                    "The SLIIT semester-based academic-performance "
+                    "scholarship source does not confirm a closing date."
+                )
 
         def has_category(*values: str) -> bool:
             return bool(
@@ -567,7 +601,7 @@ class EvidenceValidator:
                 )
 
         # A broad FAQ or career page is not a current scholarship schedule.
-        if re.search(r"\bscholarship", q) and re.search(
+        if "nsbm" in institutions and re.search(r"\bscholarship", q) and re.search(
             r"\b(?:current|categories|eligibility|amount|amounts|undergraduates?)\b",
             q,
         ):

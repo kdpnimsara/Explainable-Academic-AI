@@ -1,0 +1,1505 @@
+{
+  "dataset_name": "SLIIT Academic Administration Ground Truth",
+  "dataset_version": "1.0",
+  "institution_id": "SLIIT",
+  "database_collection": "multi_university_admin_chunks",
+  "database_total_chunks": 14690,
+  "institution_chunk_count": 11068,
+  "institution_unique_documents": 440,
+  "retrieval_top_k": 5,
+  "generated_answers_requested": true,
+  "category_counts": {
+    "semester_registration": 2,
+    "module_registration": 2,
+    "examinations": 2,
+    "examination_results": 1,
+    "examination_rules": 2,
+    "scholarships": 3
+  },
+  "metrics": {
+    "total_questions": 12,
+    "answerable_questions": 10,
+    "unanswerable_questions": 2,
+    "true_positives": 10,
+    "true_negatives": 2,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "answerability_accuracy": 1.0,
+    "answerability_precision": 1.0,
+    "answerability_recall": 1.0,
+    "answerability_f1": 1.0,
+    "unsupported_rejection_rate": 1.0,
+    "context_hit_rate_at_5": 1.0,
+    "context_precision_at_5": 0.3,
+    "supporting_fact_coverage_proxy": 1.0,
+    "answer_generation": "COMPLETED",
+    "faithfulness_note": "Supporting-fact coverage is a lexical proxy, not a semantic or LLM-judge faithfulness score.",
+    "generated_answer_count": 12,
+    "generated_answer_errors": 0,
+    "answer_fact_coverage_proxy_mean": 0.7788,
+    "unanswerable_abstention_marker_rate_proxy": 1.0,
+    "generated_answer_evaluation_note": "Answer fact coverage is a lexical proxy, and abstention detection uses phrase markers. Neither is a semantic answer-quality or faithfulness judge. Human review is required."
+  },
+  "question_results": [
+    {
+      "id": "SLIIT001",
+      "category": "semester_registration",
+      "question": "According to SLIIT's general timeline, when should students complete semester registration for the January-June and July-December semesters?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.8462,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.8593,
+      "retrieved_documents": [
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.32164203050334117,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\faculty-board_6704750ade.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "Academic - About Faculty Structure | SLIIT",
+          "dense_score": 0.8532587885856628,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.24100403729406097,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\faculty-of-humanities-sciences_0f0d2b455b.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT | Step Into the World of Humanities and Sciences",
+          "dense_score": 0.8532587885856628,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.16641644348537535,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Semester registration should take place four weeks before semester commencement. For the January-June semester the general period is December or January, while for the July-December semester it is May or June.",
+      "required_facts": [
+        "Semester registration is four weeks before semester commencement",
+        "January-June semester registration is generally in December or January",
+        "July-December semester registration is generally in May or June"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "context": "Semester registration: Four weeks before semester commencement. January-June semester: December / January. July-December semester: May / June."
+        }
+      ],
+      "generated_answer": "According to SLIIT's general timeline, semester registration should be completed four weeks prior to semester commencement, specifically during the following months:\n\n* **January–June semester:** December / January [S1], [S3]\n* **July–December semester:** May / June [S1], [S3]",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\faculty-board_6704750ade.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\faculty-of-humanities-sciences_0f0d2b455b.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.6232804232804233,
+      "answer_facts_covered_proxy": 3,
+      "answer_facts_total": 3
+    },
+    {
+      "id": "SLIIT002",
+      "category": "semester_registration",
+      "question": "When does late semester registration normally take place, and what does SLIIT state about fees?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.5,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.8819,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.14465582438297814,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\bsc-hons-fashion-business-management_38252393cf.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "Fashion Business & Management | SLIIT",
+          "dense_score": 0.8760452270507812,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.142045935093069,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\bsc-hons-in-information-technology-specializing-in-information-technology_c241e834a5.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "Information Technology | SLIIT",
+          "dense_score": 0.8683420419692993,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.10320296184822353,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Late semester registration normally takes place one week into semester commencement, and penalty fees apply. The general periods shown are January for the January-June semester and June for the July-December semester.",
+      "required_facts": [
+        "Late semester registration is one week into semester commencement",
+        "Penalty fees apply to late semester registration",
+        "January is the listed period for the January-June semester",
+        "June is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "context": "Late semester registration (penalty fees apply): One week into semester commencement. January-June semester: January. July-December semester: June."
+        }
+      ],
+      "generated_answer": "Based on the retrieved evidence, here is the information regarding late semester registration and SLIIT's fee policies:\n\n* **Late Semester Registration Timing:** \n  * Late semester registration normally takes place one week into the semester commencement [S1, S3]. \n  * By specific semester periods, this occurs in **January** for the January–June semester and in **June** for the July–December semester [S1, S3]. \n  * Penalty fees apply to late semester registrations [S1, S3].\n\n* **SLIIT Fee Policies:**\n  * Fees for each semester must be paid before the commencement of the semester [S2, S4].\n  * Course fees are all-inclusive, covering lectures, tutorials, examinations, and access to library and computer laboratory facilities [S2, S4].\n  * Course fees are subject to change [S2, S4].\n  * Fees can be paid at any branch to the bank accounts of SLIIT, with further payment options and bank details available on the SLIIT website [S2, S4].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\bsc-hons-fashion-business-management_38252393cf.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\bsc-hons-in-information-technology-specializing-in-information-technology_c241e834a5.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.8819444444444444,
+      "answer_facts_covered_proxy": 4,
+      "answer_facts_total": 4
+    },
+    {
+      "id": "SLIIT003",
+      "category": "module_registration",
+      "question": "When does elective registration normally take place in the two SLIIT semester cycles?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.5556,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.7685,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.12168085792082926,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\student_services\\new-students_1c75ab8a.md",
+          "pages": [
+            1
+          ],
+          "document_category": "student_services",
+          "document_title": "New Student | SLIIT",
+          "dense_score": 0.8511947393417358,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "06_ndmp_2023_2030_candidate.pdf",
+          "pages": [
+            76
+          ],
+          "document_category": "disaster_management",
+          "document_title": "06 ndmp 2023 2030 candidate",
+          "dense_score": null,
+          "tfidf_score": 0.11569627073096636,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "sliit-student-guide-2026-v1_1770438399.pdf",
+          "pages": [
+            132
+          ],
+          "document_category": "student_administration",
+          "document_title": "sliit student guide 2026 v1 1770438399",
+          "dense_score": 0.8403751850128174,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Computing-Faculty-Booklet-2026-V1_1771395440.pdf",
+          "pages": [
+            25
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT Computing Faculty Booklet 2026 V1",
+          "dense_score": null,
+          "tfidf_score": 0.11512554051566022,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Elective registration normally takes place two weeks after semester commencement. The general period is February for the January-June semester and July for the July-December semester.",
+      "required_facts": [
+        "Elective registration takes place two weeks after semester commencement",
+        "February is the listed period for the January-June semester",
+        "July is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "context": "Elective registration: Two weeks after semester commencement. January-June semester: February. July-December semester: July."
+        }
+      ],
+      "generated_answer": "Based on the retrieved evidence, elective registration normally takes place two weeks after semester commencement, which corresponds to the following months in the two SLIIT semester cycles:\n\n* **January–June semester:** February [S1]\n* **July–December semester:** July [S1]",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\student_services\\new-students_1c75ab8a.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "06_ndmp_2023_2030_candidate.pdf",
+          "page_numbers": [
+            76
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "sliit-student-guide-2026-v1_1770438399.pdf",
+          "page_numbers": [
+            132
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "Computing-Faculty-Booklet-2026-V1_1771395440.pdf",
+          "page_numbers": [
+            25
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.6851851851851851,
+      "answer_facts_covered_proxy": 3,
+      "answer_facts_total": 3
+    },
+    {
+      "id": "SLIIT004",
+      "category": "module_registration",
+      "question": "What is the latest general timeline stated for module registration after a semester commences?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.8889,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.7407,
+      "retrieved_documents": [
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.2104793998297397,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\bed-hons-in-english_a6efc914f4.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "English | SLIIT",
+          "dense_score": 0.811420202255249,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.18502393677810808,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\java-programming_38eb70cc5c.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "Java Programming | SLIIT",
+          "dense_score": 0.811420202255249,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.16961136495114132,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Module registration should be completed no later than three weeks after semester commencement. The general periods shown are March for the January-June semester and August for the July-December semester.",
+      "required_facts": [
+        "Module registration is due no later than three weeks after semester commencement",
+        "March is the listed period for the January-June semester",
+        "August is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "context": "Module registration: Three weeks after semester commencement at the latest. January-June semester: March. July-December semester: August."
+        }
+      ],
+      "generated_answer": "Based on the retrieved evidence, the latest general timeline stated for module registration after a semester commences is **3 weeks after semester commencement (latest)** (occurring in March for the January–June semester and August for the July–December semester) [S3, S5].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\bed-hons-in-english_a6efc914f4.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\java-programming_38eb70cc5c.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.7129629629629629,
+      "answer_facts_covered_proxy": 3,
+      "answer_facts_total": 3
+    },
+    {
+      "id": "SLIIT005",
+      "category": "examinations",
+      "question": "How many weeks after semester commencement are mid examinations generally scheduled, and in which months?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.7778,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.7778,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.46692425224139605,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\fees_e0a9645c.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "Course fees | SLIIT | SLIIT",
+          "dense_score": 0.8041188716888428,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.3719895602013231,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\official_notices\\metro-campus_54bf7ea4.md",
+          "pages": [
+            1
+          ],
+          "document_category": "official_notices",
+          "document_title": "METRO CAMPUS | SLIIT",
+          "dense_score": 0.8041188716888428,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.11370319753242081,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Mid examinations are generally scheduled eight weeks after semester commencement. The listed periods are April for the January-June semester and September for the July-December semester.",
+      "required_facts": [
+        "Mid examinations are scheduled eight weeks after semester commencement",
+        "April is the listed period for the January-June semester",
+        "September is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "context": "Mid examination: Eight weeks after semester commencement. January-June semester: April. July-December semester: September."
+        }
+      ],
+      "generated_answer": "Based on the retrieved evidence, mid examinations are generally scheduled **eight weeks after semester commencement** [S1, S3]. \n\nRegarding the months in which they occur:\n* For the **January–June semester**, they are scheduled in **April** [S1, S3].\n* For the **July–December semester**, they are scheduled in **September** [S1, S3].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\fees_e0a9645c.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\official_notices\\metro-campus_54bf7ea4.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.7777777777777777,
+      "answer_facts_covered_proxy": 3,
+      "answer_facts_total": 3
+    },
+    {
+      "id": "SLIIT006",
+      "category": "examinations",
+      "question": "When are final examinations generally scheduled in the January-June and July-December semester cycles?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.7,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.7987,
+      "retrieved_documents": [
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.257629098467709,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\department-of-mathematics-and-statistics_eac442ed99.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT | Step Into the World of Humanities and Sciences | Mathematics and Statistics",
+          "dense_score": 0.8096917867660522,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT General Timelines for Semester and Module Registration and Examinations (10 June 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.20847682806079565,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\student_services\\enhancing-career-readiness-interview-skills-workshop-for-sliit-bba-undergraduates_882d97e0.md",
+          "pages": [
+            1
+          ],
+          "document_category": "student_services",
+          "document_title": "Enhancing Career Readiness: Interview Skills Workshop for SLIIT BBA Undergraduates | SLIIT",
+          "dense_score": 0.8096917867660522,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.09930002452831838,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Final examinations are generally scheduled fifteen weeks after semester commencement. The listed period is May or June for the January-June semester and October or November for the July-December semester.",
+      "required_facts": [
+        "Final examinations are scheduled fifteen weeks after semester commencement",
+        "May or June is the listed period for the January-June semester",
+        "October or November is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [
+            1
+          ],
+          "context": "Final examination: Fifteen weeks after semester commencement. January-June semester: May / June. July-December semester: October / November."
+        }
+      ],
+      "generated_answer": "Based on the provided evidence, final examinations are generally scheduled as follows:\n\n* **January–June semester:** May / June (15 weeks after semester commencement) [S1, S3]\n* **July–December semester:** October / November (15 weeks after semester commencement) [S1, S3] \n\nThese timelines serve as a general guideline and are subject to change based on institutional requirements and other specific situations [S1].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\department-of-mathematics-and-statistics_eac442ed99.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\student_services\\enhancing-career-readiness-interview-skills-workshop-for-sliit-bba-undergraduates_882d97e0.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.6447811447811448,
+      "answer_facts_covered_proxy": 3,
+      "answer_facts_total": 3
+    },
+    {
+      "id": "SLIIT007",
+      "category": "examination_results",
+      "question": "During which months are provisional results generally released for the two semester cycles?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.5556,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.8258,
+      "retrieved_documents": [
+        {
+          "source": "Business-Booklet-2024_1763367403.pdf",
+          "pages": [
+            25
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT Business Booklet 2024",
+          "dense_score": null,
+          "tfidf_score": 0.09051413711854918,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\department-of-mathematics-and-statistics_eac442ed99.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT | Step Into the World of Humanities and Sciences | Mathematics and Statistics",
+          "dense_score": 0.8032371401786804,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Business-Booklet-2023_1763367403.pdf",
+          "pages": [
+            25
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT Business Booklet 2023",
+          "dense_score": null,
+          "tfidf_score": 0.09051413711854918,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\research_and_projects\\a-workshop-on-action-research-at-mahaweli-national-college-of-education-polgolla_91c2f47f76.md",
+          "pages": [
+            1
+          ],
+          "document_category": "research_and_projects",
+          "document_title": "A Workshop on Action Research at Mahaweli National College of Education, Polgolla | SLIIT",
+          "dense_score": 0.8032371401786804,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations_assessment",
+          "document_title": "General timelines for Semester Module registration and examination",
+          "dense_score": null,
+          "tfidf_score": 0.08659402227792935,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "The general timeline lists July for provisional results of the January-June semester and December for provisional results of the July-December semester.",
+      "required_facts": [
+        "Provisional results for the January-June semester are generally released in July",
+        "Provisional results for the July-December semester are generally released in December"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [
+            1
+          ],
+          "context": "Provisional results release: January-June semester: July. July-December semester: December."
+        }
+      ],
+      "generated_answer": "Based on the retrieved evidence, the provisional results are generally released in the following months for the two semester cycles:\n\n* **January–June semester:** July [S5]\n* **July–December semester:** December [S5]",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "Business-Booklet-2024_1763367403.pdf",
+          "page_numbers": [
+            25
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\department-of-mathematics-and-statistics_eac442ed99.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "Business-Booklet-2023_1763367403.pdf",
+          "page_numbers": [
+            25
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\research_and_projects\\a-workshop-on-action-research-at-mahaweli-national-college-of-education-polgolla_91c2f47f76.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 1.0,
+      "answer_facts_covered_proxy": 2,
+      "answer_facts_total": 2
+    },
+    {
+      "id": "SLIIT008",
+      "category": "examination_rules",
+      "question": "Who decides whether a student may use a self-created reference sheet in a final examination under the May 2025 SLIIT notice?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.8,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.8796,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT Notice on Reference Sheets for Final Examinations (May 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.24920224973773902,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\official_notices\\chathurya.k_c39d704930.md",
+          "pages": [
+            1
+          ],
+          "document_category": "official_notices",
+          "document_title": "Ms. Chathurya Kumarapperuma | SLIIT",
+          "dense_score": 0.8439295887947083,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "Application-MPhil-PhD-2025_1763448366.pdf",
+          "pages": [
+            1
+          ],
+          "document_category": "research_and_projects",
+          "document_title": "SLIIT Application MPhil PhD 2025",
+          "dense_score": null,
+          "tfidf_score": 0.18364077237453907,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "Engineering-Faculty-Booklet-2026-V1_1771395303.pdf",
+          "pages": [
+            24
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT Engineering Faculty Booklet 2026 V1",
+          "dense_score": 0.8373750448226929,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT Notice on Reference Sheets for Final Examinations (May 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.15857642161274904,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Following a Senate recommendation, faculties may permit one self-created A4-size reference sheet in final examinations at the discretion of the Lecturer-in-Charge (LIC). It is not an automatic entitlement for every examination.",
+      "required_facts": [
+        "The reference-sheet arrangement follows a Senate recommendation",
+        "Faculties may permit one self-created A4-size reference sheet",
+        "Permission is at the discretion of the Lecturer-in-Charge"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "context": "Following a Senate recommendation, faculties may permit one self-created A4-size reference sheet in final examinations at the discretion of the Lecturer-in-Charge (LIC)."
+        }
+      ],
+      "generated_answer": "Under the May 2025 SLIIT notice, the decision of whether a student may use a self-created reference sheet in a final examination is at the discretion of the **Lecturer-in-Charge (LIC)** for the relevant module, following a Senate recommendation and faculty permission [S1].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\official_notices\\chathurya.k_c39d704930.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "Application-MPhil-PhD-2025_1763448366.pdf",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "Engineering-Faculty-Booklet-2026-V1_1771395303.pdf",
+          "page_numbers": [
+            24
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.75,
+      "answer_facts_covered_proxy": 3,
+      "answer_facts_total": 3
+    },
+    {
+      "id": "SLIIT009",
+      "category": "examination_rules",
+      "question": "What format and content restrictions does the May 2025 SLIIT notice specify for a permitted examination reference sheet?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.6667,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 1.0,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT Notice on Reference Sheets for Final Examinations (May 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.21548371559257848,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "fgsr-booklet-2026-v1_1771395541.pdf",
+          "pages": [
+            28
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "SLIIT fgsr booklet 2026 v1",
+          "dense_score": 0.8319692611694336,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT Notice on Reference Sheets for Final Examinations (May 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.17581989779173704,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\research_and_projects\\research_c49cbe80.md",
+          "pages": [
+            1
+          ],
+          "document_category": "research_and_projects",
+          "document_title": "Research | SLIIT",
+          "dense_score": 0.8317997455596924,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "document_category": "examinations",
+          "document_title": "SLIIT Notice on Reference Sheets for Final Examinations (May 2025)",
+          "dense_score": null,
+          "tfidf_score": 0.1654106446069491,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "The sheet must be one A4 page, handwritten or printed, and may use one or both sides. It must be concise and contain only material taught during the module; sample answers are not allowed. Students must prepare and use their own sheets and must not share them. The module name and candidate index number must appear at the top, and the sheet must be attached to the answer script.",
+      "required_facts": [
+        "The reference sheet is limited to one A4 page",
+        "It may be handwritten or printed and use one or both sides",
+        "It must contain concise material taught during the module only",
+        "Sample answers must not be included",
+        "Students must not share reference sheets",
+        "The module name and candidate index number must appear at the top",
+        "The reference sheet must be attached to the answer script"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [
+            1
+          ],
+          "context": "The reference sheet is limited to one A4 page, handwritten or printed, and may use one or both sides. It should be concise and contain only material taught during the module. Sample answers must not be included. Students must not share reference sheets during examinations; each student prepares and uses their own sheet. The module name and examination candidate's index number must appear at the top. The reference sheet must be attached to the answer script."
+        }
+      ],
+      "generated_answer": "Based on the May 2025 SLIIT notice, the format and content requirements, restrictions, and rules for permitted examination reference sheets are as follows:\n\n* **Format and Size:** \n  * Limited to **one self-created A4-size reference sheet** [S1, S5].\n  * May be **handwritten or printed** [S5].\n  * May use **one or both sides** [S5].\n  * The module name and the examination candidate's index number must appear at the top [S5].\n  * The reference sheet must be **attached to the answer script** at the end of the examination [S5].\n\n* **Content Restrictions:**\n  * Must be concise and contain **only material taught during the module** [S5].\n  * **Sample answers must not be included** [S5].\n\n* **Usage and Sharing Rules:**\n  * Permitted only in final examinations at the discretion of the Lecturer-in-Charge (LIC); it is not a universal entitlement for every module or examination [S1].\n  * Students **must not share** reference sheets during examinations; each student must prepare and use their own individual sheet [S5].\n  * Students must follow any further module-specific instructions provided by the LIC [S1, S5].\n\n* **Academic Misconduct Warning:**\n  * Pursuant to an update to Section 2.8 of the SLIIT Student Rule Book, the possession of unauthorized notes or materials—as well as copying or attempting to copy—is treated as examination misconduct, with potential consequences including **failing the examination, suspension, or expulsion** [S3, S5].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "fgsr-booklet-2026-v1_1771395541.pdf",
+          "page_numbers": [
+            28
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\research_and_projects\\research_c49cbe80.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\examinations\\SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.9841269841269842,
+      "answer_facts_covered_proxy": 7,
+      "answer_facts_total": 7
+    },
+    {
+      "id": "SLIIT010",
+      "category": "scholarships",
+      "question": "How does SLIIT's semester-based academic-performance scholarship recognise continuing undergraduate students, and do students need to apply?",
+      "expected_answerable": true,
+      "predicted_answerable": true,
+      "status": "CORRECTLY_ACCEPTED",
+      "validation_coverage": 0.8462,
+      "validation_reason": "The evidence passed the initial relevance check.",
+      "matched_gold_contexts": 1,
+      "expected_gold_contexts": 1,
+      "context_hit": true,
+      "supporting_fact_coverage_proxy": 0.941,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\scholarships_4ea1953d.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "Scholarships | SLIIT | SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.14628060094231818,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\academic_regulations\\SLIIT_Student_Rules_and_Regulations_Public_Overview_2021-01-24.md",
+          "pages": [
+            1
+          ],
+          "document_category": "academic_regulations",
+          "document_title": "SLIIT Student Rules and Regulations – Public Overview (24 January 2021)",
+          "dense_score": 0.8609253764152527,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.13320959981792874,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\academic-staff_1665de6eea.md",
+          "pages": [
+            1
+          ],
+          "document_category": "programmes_and_faculties",
+          "document_title": "Academic - People - Academic Staff | SLIIT",
+          "dense_score": 0.8591175675392151,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.1255032230289566,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "Undergraduate students ranking within the top 1% of their academic programme in a semester may receive full or partial tuition fee waivers. Students within the top 2% are also considered for partial scholarships. There is no application process; eligible students are identified through academic results and informed directly by the Academic Affairs Division. The awards are limited and competitive.",
+      "required_facts": [
+        "Undergraduates in the top 1% may receive full or partial tuition fee waivers",
+        "Students within the top 2% are considered for partial scholarships",
+        "There is no application process",
+        "Eligible students are identified through academic results",
+        "Selected students are informed directly by the Academic Affairs Division",
+        "Scholarships are limited and competitive"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "context": "Undergraduate students who rank within the top 1% of their academic program in a given semester may receive full or partial tuition fee waivers. Those within the top 2% are also considered for partial scholarships. There is no application process; eligible students are identified based on academic results and informed directly by the Academic Affairs Division. The number of scholarships is limited and competitive."
+        }
+      ],
+      "generated_answer": "Based on the provided evidence, SLIIT recognises and rewards exceptional academic performance for continuing undergraduate students through semester-based scholarships as follows:\n\n* **Recognition:** Students who rank in the top 1%–2% of their program receive full or partial semester fee waivers [S5]. This merit-based initiative is designed to reward consistent achievement and exceptional academic performance [S5].\n* **Application Requirement:** Students do not need to apply; eligible students are identified based on their academic results and are notified directly by the Academic Affairs Division [S5].",
+      "generated_citations": [
+        {
+          "citation_id": "[S1]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\scholarships_4ea1953d.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S2]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\academic_regulations\\SLIIT_Student_Rules_and_Regulations_Public_Overview_2021-01-24.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S3]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S4]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\programmes_and_faculties\\academic-staff_1665de6eea.md",
+          "page_numbers": [
+            1
+          ]
+        },
+        {
+          "citation_id": "[S5]",
+          "document": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "page_numbers": [
+            1
+          ]
+        }
+      ],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": false,
+      "answer_fact_coverage_proxy": 0.7282051282051282,
+      "answer_facts_covered_proxy": 5,
+      "answer_facts_total": 6
+    },
+    {
+      "id": "SLIIT011",
+      "category": "scholarships",
+      "question": "What exact number of semester-based academic-performance scholarships is available each semester?",
+      "expected_answerable": false,
+      "predicted_answerable": false,
+      "status": "CORRECTLY_REJECTED",
+      "validation_coverage": 0.875,
+      "validation_reason": "The SLIIT semester-based academic-performance scholarship source does not publish an exact number of available scholarships.",
+      "matched_gold_contexts": 0,
+      "expected_gold_contexts": 0,
+      "context_hit": null,
+      "supporting_fact_coverage_proxy": null,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": 0.845413088798523,
+          "tfidf_score": 0.12074368264222157,
+          "hybrid_score": 0.032018442622950824
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.2075459728056526,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\scholarships_4ea1953d.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "Scholarships | SLIIT | SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.20206836903532857,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-outstanding-performance-in-school-based-sports-extra-curricular-scholarship_e4d63ff043.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": 0.8332056403160095,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\fees-and-costs_29ebf95e.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "Fees and Cost | SLIIT | SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.1385349260572944,
+          "hybrid_score": 0.015873015873015872
+        }
+      ],
+      "expected_answer": "The indexed scholarship source does not specify an exact number. Its 'Number available' field is marked 'TBD', and it describes the awards as limited and competitive.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "generated_answer": "I could not find sufficient supporting evidence in the available sources to answer this question.",
+      "generated_citations": [],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": true,
+      "answer_fact_coverage_proxy": null,
+      "answer_facts_covered_proxy": 0,
+      "answer_facts_total": 0
+    },
+    {
+      "id": "SLIIT012",
+      "category": "scholarships",
+      "question": "What is the confirmed closing date for the SLIIT semester-based academic-performance scholarship?",
+      "expected_answerable": false,
+      "predicted_answerable": false,
+      "status": "CORRECTLY_REJECTED",
+      "validation_coverage": 0.8889,
+      "validation_reason": "The SLIIT semester-based academic-performance scholarship source does not confirm a closing date.",
+      "matched_gold_contexts": 0,
+      "expected_gold_contexts": 0,
+      "context_hit": null,
+      "supporting_fact_coverage_proxy": null,
+      "retrieved_documents": [
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": 0.8657519221305847,
+          "tfidf_score": 0.16268323247703256,
+          "hybrid_score": 0.032266458495966696
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-outstanding-performance-in-al-exam-scholarship_6b612a7d95.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": 0.861488401889801,
+          "tfidf_score": 0.16737889878675277,
+          "hybrid_score": 0.03200204813108039
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\fees-and-costs_29ebf95e.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "Fees and Cost | SLIIT | SLIIT",
+          "dense_score": 0.8607927560806274,
+          "tfidf_score": 0.15883655594432428,
+          "hybrid_score": 0.03125
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\scholarships_4ea1953d.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "Scholarships | SLIIT | SLIIT",
+          "dense_score": null,
+          "tfidf_score": 0.16740723009158154,
+          "hybrid_score": 0.01639344262295082
+        },
+        {
+          "source": "C:\\Users\\USER\\Explainable-Academic-AI\\data\\documents\\institutions\\sliit\\fees_and_scholarships\\sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [
+            1
+          ],
+          "document_category": "fees_and_scholarships",
+          "document_title": "SLIIT",
+          "dense_score": 0.8628197312355042,
+          "tfidf_score": 0.0,
+          "hybrid_score": 0.016129032258064516
+        }
+      ],
+      "expected_answer": "The indexed scholarship source does not provide a confirmed closing date; the closing-date field is marked 'TBD'.",
+      "required_facts": [],
+      "supporting_contexts": [],
+      "generated_answer": "I could not find sufficient supporting evidence in the available sources to answer this question.",
+      "generated_citations": [],
+      "generated_answer_error": null,
+      "generated_answer_abstained_proxy": true,
+      "answer_fact_coverage_proxy": null,
+      "answer_facts_covered_proxy": 0,
+      "answer_facts_total": 0
+    }
+  ],
+  "created_at": "2026-11-16T00:09:47.645039+05:30"
+}
