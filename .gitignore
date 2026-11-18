@@ -1,3 +1,4 @@
+
 # Python cache files
 __pycache__/
 *.py[cod]
@@ -51,8 +52,19 @@ data/vector_store/
 data/review_pending/
 data/history/
 
-# NSBM local backups and generated evaluation reports
+# Local backups and generated evaluation reports
 data/backups/
 data/evaluation/nsbm_batch_evaluation_report*.json
 data/evaluation/nsbm_batch_evaluation_report*.csv
 data/evaluation/nsbm_test_bundle.zip
+data/evaluation/rag_quality_judgement_report.before_retry.json
+
+# Generated ingestion cache
+/data/cache/
+
+# Temporary work files and backups
+/scratch/
+*.bak
+*.bak.py
+*.before_*.py
+*.before_*.json
