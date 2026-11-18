@@ -28,12 +28,25 @@ Thumbs.db
 # Generated logs
 *.log
 
-# Local PDF source documents
+# Local PDF source documents (exclude by default)
 data/documents/*.pdf
 data/documents/**/*.pdf
 
+# Include NSBM academic PDF documents
+!data/documents/institutions/nsbm/*.pdf
+!data/documents/institutions/nsbm/**/*.pdf
+
+# Include SLIIT academic PDF documents
+!data/documents/institutions/sliit/*.pdf
+!data/documents/institutions/sliit/**/*.pdf
+
+# Include weather and disaster preparedness PDFs
+!data/documents/safesteps/*.pdf
+!data/documents/safesteps/**/*.pdf
+
 # Local vector database files
 data/vector_store/
+
 # Local review documents and runtime history
 data/review_pending/
 data/history/
