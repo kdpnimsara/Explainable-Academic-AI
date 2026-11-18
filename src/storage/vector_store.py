@@ -320,10 +320,10 @@ class ChromaVectorStore:
         embedded_chunks: Sequence[EmbeddedChunk],
     ) -> int:
         """
-        Insert or update embedded chunks.
+        Insert or update embedded chunks in safe ChromaDB batches.
 
-        Existing chunk IDs are updated instead
-        of creating duplicate records.
+        Existing chunk IDs are updated instead of creating duplicate records.
+        The batch size is kept below ChromaDB's configured maximum.
         """
 
         if (
@@ -340,64 +340,87 @@ class ChromaVectorStore:
         if not embedded_chunks:
             return 0
 
+        # Validate every item and ID before writing any records.
         ids = []
-        documents = []
-        embeddings = []
-        metadatas = []
 
         for index, item in enumerate(embedded_chunks):
-
             if not isinstance(item, EmbeddedChunk):
                 raise TypeError(
                     f"Item at index {index} must be an EmbeddedChunk."
                 )
 
-            chunk = item.chunk
-
-            ids.append(chunk.chunk_id)
-
-            documents.append(chunk.text)
-
-            embeddings.append(
-                self._validate_embedding(
-                    item.embedding
-                )
-            )
-
-            # Basic chunk metadata.
-            chunk_metadata = {
-                "source": chunk.source,
-                "chunk_index": int(chunk.chunk_index),
-                "token_count": int(chunk.token_count),
-                "page_numbers": json.dumps(
-                    list(chunk.page_numbers)
-                ),
-                "heading": chunk.heading or "",
-            }
-
-            # Add institution/document metadata.
-            document_metadata = (
-                self._serialize_document_metadata(
-                    chunk.document_metadata
-                )
-            )
-
-            chunk_metadata.update(
-                document_metadata
-            )
-
-            metadatas.append(chunk_metadata)
+            ids.append(item.chunk.chunk_id)
 
         self._validate_ids(ids)
 
-        self._collection.upsert(
-            ids=ids,
-            documents=documents,
-            embeddings=embeddings,
-            metadatas=metadatas,
-        )
+        # Ask ChromaDB for its actual limit.
+        try:
+            max_batch_size = self._client.get_max_batch_size()
+        except (AttributeError, NotImplementedError):
+            max_batch_size = 5000
 
-        return len(ids)
+        if (
+            isinstance(max_batch_size, bool)
+            or not isinstance(max_batch_size, int)
+            or max_batch_size <= 0
+        ):
+            max_batch_size = 5000
+
+        # Keep each write below ChromaDB's maximum batch size.
+        batch_size = min(max_batch_size, 5000)
+
+        total_stored = 0
+
+        for start in range(0, len(embedded_chunks), batch_size):
+
+            batch = embedded_chunks[start:start + batch_size]
+
+            batch_ids = []
+            documents = []
+            embeddings = []
+            metadatas = []
+
+            for item in batch:
+
+                chunk = item.chunk
+
+                batch_ids.append(chunk.chunk_id)
+                documents.append(chunk.text)
+
+                embeddings.append(
+                    self._validate_embedding(item.embedding)
+                )
+
+                chunk_metadata = {
+                    "source": chunk.source,
+                    "chunk_index": int(chunk.chunk_index),
+                    "token_count": int(chunk.token_count),
+                    "page_numbers": json.dumps(
+                        list(chunk.page_numbers)
+                    ),
+                    "heading": chunk.heading or "",
+                }
+
+                document_metadata = (
+                    self._serialize_document_metadata(
+                        chunk.document_metadata
+                    )
+                )
+
+                chunk_metadata.update(document_metadata)
+
+                metadatas.append(chunk_metadata)
+
+            self._collection.upsert(
+                ids=batch_ids,
+                documents=documents,
+                embeddings=embeddings,
+                metadatas=metadatas,
+            )
+
+            total_stored += len(batch_ids)
+
+        return total_stored
 
     # ======================================================
     # DATABASE COUNT
