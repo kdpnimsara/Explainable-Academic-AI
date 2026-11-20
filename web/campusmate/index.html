@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CampusMate AI — Your NSBM &amp; SLIIT Academic Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CampusMate AI — Academic Assistant (NSBM &amp; SLIIT)</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +13,13 @@
 <body>
   <div class="app" id="app">
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
       <div class="sidebar-header">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">C</div>
           <div class="brand-info">
-            <h1>CampusMate AI</h1>
-            <p class="tagline">Your NSBM &amp; SLIIT Academic Assistant.</p>
+            <span class="brand-title">CampusMate AI</span>
+            <span class="brand-tagline">Academic Assistant</span>
           </div>
         </div>
         <button class="sidebar-toggle-btn" id="sidebar-collapse-btn" type="button" title="Collapse sidebar" aria-label="Collapse sidebar">
@@ -30,17 +31,14 @@
       </div>
 
       <div class="sidebar-actions">
-        <button class="new-chat-btn" id="new-chat" type="button">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"/>
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          <span>New Chat</span>
+        <button class="new-chat-btn" id="new-chat" type="button" aria-label="New Chat">
+          <span>+ New Chat</span>
         </button>
 
+        <!-- Campus Switcher in Sidebar -->
         <div class="campus-control">
           <div class="campus-control-header">
-            <span class="control-label">University Campus:</span>
+            <span class="control-label">University</span>
             <span class="active-campus-pill" id="sidebar-campus-pill">NSBM</span>
           </div>
           <div class="campus-switch" role="group" aria-label="University Campus Selector">
@@ -50,19 +48,21 @@
         </div>
       </div>
 
+      <!-- Chat History -->
       <nav class="history-nav" aria-label="Chat history">
         <div class="history-header">
-          <h2>Chat History</h2>
+          <h2>Conversations</h2>
         </div>
         <div class="history-list" id="history-list"></div>
       </nav>
 
+      <!-- Sidebar Footer Navigation -->
       <div class="sidebar-footer">
         <button class="nav-button active" id="open-chat" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
-          <span>Chat</span>
+          <span>Assistant Chat</span>
         </button>
         <button class="nav-button" id="open-evaluation" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -70,18 +70,19 @@
             <path d="M12 20V4"/>
             <path d="M6 20v-6"/>
           </svg>
-          <span>Evaluation</span>
+          <span>Evaluation Reports</span>
         </button>
       </div>
     </aside>
 
     <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
 
-    <!-- Main Content Area -->
+    <!-- Main Content Viewport -->
     <main class="main" id="main">
+      <!-- Topbar Header -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="menu-button" id="menu-button" type="button" aria-label="Open navigation menu">
+          <button class="menu-button" id="menu-button" type="button" aria-label="Open sidebar menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="3" y1="12" x2="21" y2="12"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
@@ -96,13 +97,26 @@
           </button>
           <div class="topbar-title-group">
             <strong id="view-title">CampusMate AI</strong>
-            <span class="campus-badge" id="campus-label">NSBM</span>
+          </div>
+
+          <!-- Quick Campus Switcher in Topbar -->
+          <div class="topbar-campus-toggle" role="group" aria-label="Campus Selector in Header">
+            <button class="topbar-campus-btn active" type="button" data-campus="NSBM">NSBM</button>
+            <button class="topbar-campus-btn" type="button" data-campus="SLIIT">SLIIT</button>
           </div>
         </div>
+
         <div class="topbar-right">
-          <div class="system-status" title="Academic retrieval system is online">
+          <!-- Top View Switcher Pills -->
+          <div class="topbar-nav-group">
+            <button class="topbar-nav-pill active" id="topbar-chat-btn" type="button">Chat</button>
+            <button class="topbar-nav-pill" id="topbar-eval-btn" type="button">Evaluation</button>
+          </div>
+
+          <!-- System Status Indicator -->
+          <div class="system-status" id="system-status" title="System status">
             <span class="status-indicator"></span>
-            <span class="status-text">Academic Agent Ready</span>
+            <span class="status-text" id="status-text">Academic Agent Ready</span>
           </div>
         </div>
       </header>
@@ -110,68 +124,73 @@
       <!-- Chat View -->
       <section class="chat-view" id="chat-view">
         <div class="transcript" id="transcript">
-          <!-- Welcome Screen -->
+          <!-- Welcome Screen Hero -->
           <div class="welcome" id="welcome">
             <div class="welcome-emblem-wrap">
               <span class="welcome-emblem">C</span>
             </div>
             <h2>CampusMate AI</h2>
-            <p class="welcome-tagline">Your NSBM &amp; SLIIT Academic Assistant.</p>
+            <p class="welcome-tagline">Your NSBM &amp; SLIIT Academic Assistant</p>
             <p class="welcome-description">
-              Official academic administration assistant. Get verifiable answers with citations from your selected university's official regulations, examination rules, degree specifications, and student policies.
+              Official university administration assistant providing explainable, evidence-backed answers with exact document citations from official regulations, examination bylaws, degree guides, and student policies.
             </p>
 
             <div class="welcome-campus-box">
               <span class="welcome-campus-label">Selected Campus:</span>
               <strong class="welcome-campus-name" id="welcome-campus-name">NSBM Green University</strong>
-              <span class="welcome-campus-hint">Switch campus anytime in the sidebar</span>
+              <div class="welcome-switch-buttons">
+                <button class="welcome-switch-btn active" type="button" data-campus="NSBM">NSBM</button>
+                <button class="welcome-switch-btn" type="button" data-campus="SLIIT">SLIIT</button>
+              </div>
             </div>
 
-            <!-- Suggested Questions Container -->
+            <!-- Suggested Questions Section -->
             <div class="suggested-questions-section">
               <div class="suggested-header">
                 <h3>Suggested Academic Questions</h3>
-                <p>Click any question below to ask instantly or type your own question.</p>
+                <p>Click any question below to ask instantly or use the composer below.</p>
               </div>
               <div class="category-tabs" id="category-tabs" role="tablist" aria-label="Question categories">
-                <!-- 5 category buttons -->
+                <!-- 5 category tabs rendered by JS -->
               </div>
               <div class="suggestions-grid" id="suggestions">
-                <!-- Category questions populated by JS -->
+                <!-- Question cards populated by JS -->
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Composer -->
+        <!-- ChatGPT-Style Bottom-Fixed Composer -->
         <div class="composer-container">
-          <form class="composer" id="composer">
-            <label class="sr-only" for="question">Message CampusMate AI</label>
-            <textarea
-              id="question"
-              rows="1"
-              placeholder="Ask about examinations, registration, regulations, or campus services (Enter to send, Shift + Enter for new line)…"
-              autocomplete="off"
-            ></textarea>
-            <button class="send-btn" id="send" type="submit" title="Send message" aria-label="Send message">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-            </button>
-          </form>
-          <p class="composer-disclaimer">
-            CampusMate AI answers using official NSBM &amp; SLIIT documents. Each question is evaluated independently. Verify critical deadlines with your faculty.
-          </p>
+          <div class="composer-inner">
+            <form class="composer" id="composer">
+              <label class="sr-only" for="question">Message CampusMate AI</label>
+              <textarea
+                id="question"
+                rows="1"
+                placeholder="Ask about examination rules, degree regulations, module registration, or campus policies…"
+                autocomplete="off"
+              ></textarea>
+              <button class="send-btn" id="send" type="submit" title="Send message (Enter)" aria-label="Send message">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </form>
+            <p class="composer-disclaimer">
+              Press <kbd>Enter</kbd> to send, <kbd>Shift + Enter</kbd> for a new line. Answers are grounded in official university documents.
+            </p>
+          </div>
         </div>
       </section>
 
-      <!-- Evaluation View -->
+      <!-- Evaluation Reports Dashboard View -->
       <section class="evaluation-view" id="evaluation-view" hidden>
         <div class="evaluation-scroll" id="evaluation-content">
           <div class="loading-state">
             <div class="spinner"></div>
-            <p>Loading evaluation reports…</p>
+            <p>Loading evaluation reports from disk…</p>
           </div>
         </div>
       </section>
