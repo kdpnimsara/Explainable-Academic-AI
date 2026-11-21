@@ -404,7 +404,7 @@ Automated unit, integration, and server tests are managed with `pytest`:
 
 ## 👥 Contributors & Academic Context
 
-- **Author**: K. D. P. Nimsara (`kdpnimsara@students.nsbm.ac.lk`) / C.H.B.Amarathunga ('chbamarathunga@students.nsbm.ac.lk')
+- **Author**: K. D. P. Nimsara ('kdpnimsara@students.nsbm.ac.lk') / C.H.B.Amarathunga ('chbamarathunga@students.nsbm.ac.lk')
 - **Institution**: NSBM Green University
 - **Project**: Explainable-Academic-AI — Final Year Research & System Implementation
 - **License**: Academic & Educational Use Only
