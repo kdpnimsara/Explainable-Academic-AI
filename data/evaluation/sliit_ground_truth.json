@@ -1,0 +1,232 @@
+
+{
+  "dataset_name": "SLIIT Academic Administration Ground Truth",
+  "version": "1.0",
+  "institution_id": "SLIIT",
+  "total_questions": 12,
+  "description": "Source-grounded SLIIT evaluation questions covering semester registration, examination timelines, reference-sheet rules and academic-performance scholarships.",
+  "evaluation_notes": [
+    "Ten questions are answerable from the identified SLIIT indexed sources.",
+    "Two questions test abstention when exact scholarship details are not provided.",
+    "The semester timeline source was published on 10 June 2025 and describes general timelines, not guaranteed dates for a current semester.",
+    "Markdown source snapshots have indexed page metadata [1]. This is not an original PDF page number.",
+    "Lexical fact coverage is a proxy and must not be represented as semantic faithfulness."
+  ],
+  "questions": [
+    {
+      "id": "SLIIT001",
+      "category": "semester_registration",
+      "question": "According to SLIIT's general timeline, when should students complete semester registration for the January-June and July-December semesters?",
+      "answerable": true,
+      "expected_answer": "Semester registration should take place four weeks before semester commencement. For the January-June semester the general period is December or January, while for the July-December semester it is May or June.",
+      "required_facts": [
+        "Semester registration is four weeks before semester commencement",
+        "January-June semester registration is generally in December or January",
+        "July-December semester registration is generally in May or June"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [1],
+          "context": "Semester registration: Four weeks before semester commencement. January-June semester: December / January. July-December semester: May / June."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT002",
+      "category": "semester_registration",
+      "question": "When does late semester registration normally take place, and what does SLIIT state about fees?",
+      "answerable": true,
+      "expected_answer": "Late semester registration normally takes place one week into semester commencement, and penalty fees apply. The general periods shown are January for the January-June semester and June for the July-December semester.",
+      "required_facts": [
+        "Late semester registration is one week into semester commencement",
+        "Penalty fees apply to late semester registration",
+        "January is the listed period for the January-June semester",
+        "June is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [1],
+          "context": "Late semester registration (penalty fees apply): One week into semester commencement. January-June semester: January. July-December semester: June."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT003",
+      "category": "module_registration",
+      "question": "When does elective registration normally take place in the two SLIIT semester cycles?",
+      "answerable": true,
+      "expected_answer": "Elective registration normally takes place two weeks after semester commencement. The general period is February for the January-June semester and July for the July-December semester.",
+      "required_facts": [
+        "Elective registration takes place two weeks after semester commencement",
+        "February is the listed period for the January-June semester",
+        "July is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [1],
+          "context": "Elective registration: Two weeks after semester commencement. January-June semester: February. July-December semester: July."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT004",
+      "category": "module_registration",
+      "question": "What is the latest general timeline stated for module registration after a semester commences?",
+      "answerable": true,
+      "expected_answer": "Module registration should be completed no later than three weeks after semester commencement. The general periods shown are March for the January-June semester and August for the July-December semester.",
+      "required_facts": [
+        "Module registration is due no later than three weeks after semester commencement",
+        "March is the listed period for the January-June semester",
+        "August is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [1],
+          "context": "Module registration: Three weeks after semester commencement at the latest. January-June semester: March. July-December semester: August."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT005",
+      "category": "examinations",
+      "question": "How many weeks after semester commencement are mid examinations generally scheduled, and in which months?",
+      "answerable": true,
+      "expected_answer": "Mid examinations are generally scheduled eight weeks after semester commencement. The listed periods are April for the January-June semester and September for the July-December semester.",
+      "required_facts": [
+        "Mid examinations are scheduled eight weeks after semester commencement",
+        "April is the listed period for the January-June semester",
+        "September is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [1],
+          "context": "Mid examination: Eight weeks after semester commencement. January-June semester: April. July-December semester: September."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT006",
+      "category": "examinations",
+      "question": "When are final examinations generally scheduled in the January-June and July-December semester cycles?",
+      "answerable": true,
+      "expected_answer": "Final examinations are generally scheduled fifteen weeks after semester commencement. The listed period is May or June for the January-June semester and October or November for the July-December semester.",
+      "required_facts": [
+        "Final examinations are scheduled fifteen weeks after semester commencement",
+        "May or June is the listed period for the January-June semester",
+        "October or November is the listed period for the July-December semester"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_General_Semester_Registration_and_Examination_Timelines_2025-06-10.md",
+          "pages": [1],
+          "context": "Final examination: Fifteen weeks after semester commencement. January-June semester: May / June. July-December semester: October / November."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT007",
+      "category": "examination_results",
+      "question": "During which months are provisional results generally released for the two semester cycles?",
+      "answerable": true,
+      "expected_answer": "The general timeline lists July for provisional results of the January-June semester and December for provisional results of the July-December semester.",
+      "required_facts": [
+        "Provisional results for the January-June semester are generally released in July",
+        "Provisional results for the July-December semester are generally released in December"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "General-timelines-for-Semester-Module-registration-and-examination.pdf",
+          "pages": [1],
+          "context": "Provisional results release: January-June semester: July. July-December semester: December."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT008",
+      "category": "examination_rules",
+      "question": "Who decides whether a student may use a self-created reference sheet in a final examination under the May 2025 SLIIT notice?",
+      "answerable": true,
+      "expected_answer": "Following a Senate recommendation, faculties may permit one self-created A4-size reference sheet in final examinations at the discretion of the Lecturer-in-Charge (LIC). It is not an automatic entitlement for every examination.",
+      "required_facts": [
+        "The reference-sheet arrangement follows a Senate recommendation",
+        "Faculties may permit one self-created A4-size reference sheet",
+        "Permission is at the discretion of the Lecturer-in-Charge"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [1],
+          "context": "Following a Senate recommendation, faculties may permit one self-created A4-size reference sheet in final examinations at the discretion of the Lecturer-in-Charge (LIC)."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT009",
+      "category": "examination_rules",
+      "question": "What format and content restrictions does the May 2025 SLIIT notice specify for a permitted examination reference sheet?",
+      "answerable": true,
+      "expected_answer": "The sheet must be one A4 page, handwritten or printed, and may use one or both sides. It must be concise and contain only material taught during the module; sample answers are not allowed. Students must prepare and use their own sheets and must not share them. The module name and candidate index number must appear at the top, and the sheet must be attached to the answer script.",
+      "required_facts": [
+        "The reference sheet is limited to one A4 page",
+        "It may be handwritten or printed and use one or both sides",
+        "It must contain concise material taught during the module only",
+        "Sample answers must not be included",
+        "Students must not share reference sheets",
+        "The module name and candidate index number must appear at the top",
+        "The reference sheet must be attached to the answer script"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "SLIIT_Reference_Sheets_for_Final_Examinations_Notice_2025-05.md",
+          "pages": [1],
+          "context": "The reference sheet is limited to one A4 page, handwritten or printed, and may use one or both sides. It should be concise and contain only material taught during the module. Sample answers must not be included. Students must not share reference sheets during examinations; each student prepares and uses their own sheet. The module name and examination candidate's index number must appear at the top. The reference sheet must be attached to the answer script."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT010",
+      "category": "scholarships",
+      "question": "How does SLIIT's semester-based academic-performance scholarship recognise continuing undergraduate students, and do students need to apply?",
+      "answerable": true,
+      "expected_answer": "Undergraduate students ranking within the top 1% of their academic programme in a semester may receive full or partial tuition fee waivers. Students within the top 2% are also considered for partial scholarships. There is no application process; eligible students are identified through academic results and informed directly by the Academic Affairs Division. The awards are limited and competitive.",
+      "required_facts": [
+        "Undergraduates in the top 1% may receive full or partial tuition fee waivers",
+        "Students within the top 2% are considered for partial scholarships",
+        "There is no application process",
+        "Eligible students are identified through academic results",
+        "Selected students are informed directly by the Academic Affairs Division",
+        "Scholarships are limited and competitive"
+      ],
+      "supporting_contexts": [
+        {
+          "document": "sliit-scholarships-for-semester-based-academic-performance-scholarships_9ea83b6d97.md",
+          "pages": [1],
+          "context": "Undergraduate students who rank within the top 1% of their academic program in a given semester may receive full or partial tuition fee waivers. Those within the top 2% are also considered for partial scholarships. There is no application process; eligible students are identified based on academic results and informed directly by the Academic Affairs Division. The number of scholarships is limited and competitive."
+        }
+      ]
+    },
+    {
+      "id": "SLIIT011",
+      "category": "scholarships",
+      "question": "What exact number of semester-based academic-performance scholarships is available each semester?",
+      "answerable": false,
+      "expected_answer": "The indexed scholarship source does not specify an exact number. Its 'Number available' field is marked 'TBD', and it describes the awards as limited and competitive.",
+      "required_facts": [],
+      "supporting_contexts": []
+    },
+    {
+      "id": "SLIIT012",
+      "category": "scholarships",
+      "question": "What is the confirmed closing date for the SLIIT semester-based academic-performance scholarship?",
+      "answerable": false,
+      "expected_answer": "The indexed scholarship source does not provide a confirmed closing date; the closing-date field is marked 'TBD'.",
+      "required_facts": [],
+      "supporting_contexts": []
+    }
+  ]
+}

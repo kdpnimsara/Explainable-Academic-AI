@@ -1,3 +1,4 @@
+
 # Python cache files
 __pycache__/
 *.py[cod]
@@ -27,3 +28,43 @@ Thumbs.db
 
 # Generated logs
 *.log
+
+# Local PDF source documents (exclude by default)
+data/documents/*.pdf
+data/documents/**/*.pdf
+
+# Include NSBM academic PDF documents
+!data/documents/institutions/nsbm/*.pdf
+!data/documents/institutions/nsbm/**/*.pdf
+
+# Include SLIIT academic PDF documents
+!data/documents/institutions/sliit/*.pdf
+!data/documents/institutions/sliit/**/*.pdf
+
+# Include weather and disaster preparedness PDFs
+!data/documents/safesteps/*.pdf
+!data/documents/safesteps/**/*.pdf
+
+# Local vector database files
+data/vector_store/
+
+# Local review documents and runtime history
+data/review_pending/
+data/history/
+
+# Local backups and generated evaluation reports
+data/backups/
+data/evaluation/nsbm_batch_evaluation_report*.json
+data/evaluation/nsbm_batch_evaluation_report*.csv
+data/evaluation/nsbm_test_bundle.zip
+data/evaluation/rag_quality_judgement_report.before_retry.json
+
+# Generated ingestion cache
+/data/cache/
+
+# Temporary work files and backups
+/scratch/
+*.bak
+*.bak.py
+*.before_*.py
+*.before_*.json
