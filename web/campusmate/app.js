@@ -472,10 +472,36 @@ function evidenceHtml(message) {
   if (!evidence) return "";
 
   const citations = evidence.sources || [];
-  const chunks = evidence.retrieved_chunks || [];
+  const rawChunks = evidence.retrieved_chunks || [];
   const externalSources = evidence.external_sources || [];
   const toolErrors = evidence.tool_errors || [];
   const reasoning = evidence.reasoning || {};
+
+  // Hide exact duplicate passages from the same document, but retain
+  // all page and chunk identifiers and the strongest recorded score.
+  const uniqueChunkMap = new Map();
+  rawChunks.forEach((chunk) => {
+    const documentKey = String(chunk.document || "").replace(/\\/g, "/").toLowerCase();
+    const passageKey = String(chunk.excerpt || "").trim().replace(/\s+/g, " ").toLowerCase();
+    const key = `${documentKey}::${passageKey || chunk.chunk_id || uniqueChunkMap.size}`;
+    const existing = uniqueChunkMap.get(key);
+    if (!existing) {
+      uniqueChunkMap.set(key, {
+        ...chunk,
+        page_numbers: [...new Set(chunk.page_numbers || [])].sort((a, b) => a - b),
+        chunk_ids: [...new Set([...(chunk.chunk_ids || []), chunk.chunk_id].filter(Boolean))],
+      });
+      return;
+    }
+    existing.page_numbers = [...new Set([...(existing.page_numbers || []), ...(chunk.page_numbers || [])])].sort((a, b) => a - b);
+    existing.chunk_ids = [...new Set([...(existing.chunk_ids || []), chunk.chunk_id].filter(Boolean))];
+    if (Number(chunk.hybrid_score) > Number(existing.hybrid_score)) {
+      existing.hybrid_score = chunk.hybrid_score;
+      existing.dense_score = chunk.dense_score;
+      existing.tfidf_score = chunk.tfidf_score;
+    }
+  });
+  const chunks = Array.from(uniqueChunkMap.values());
 
   const totalCitations = citations.length;
   const totalChunks = chunks.length;
@@ -505,6 +531,7 @@ function evidenceHtml(message) {
             <span class="citation-doc" title="${escapeHtml(source.document)}">${escapeHtml(fileName(source.document))}</span>
           </div>
           <p class="citation-meta">Official Document Page(s): <strong>${escapeHtml((source.page_numbers || []).join(", ") || "Unspecified")}</strong></p>
+          <p class="citation-meta">Evidence Chunk ID(s): <strong>${escapeHtml((source.chunk_ids || [source.chunk_id].filter(Boolean)).join(", ") || "Unspecified")}</strong></p>
         </article>
       `
         )
@@ -526,6 +553,7 @@ function evidenceHtml(message) {
           </div>
           ${chunk.heading ? `<p class="chunk-heading">Section: ${escapeHtml(chunk.heading)}</p>` : ""}
           <p class="chunk-excerpt">${escapeHtml(chunk.excerpt || "")}</p>
+          <p class="citation-meta">Chunk ID(s): <strong>${escapeHtml((chunk.chunk_ids || [chunk.chunk_id].filter(Boolean)).join(", ") || "Unspecified")}</strong></p>
           <div class="score-row">
             <span class="score-pill">Hybrid Score: <strong>${formatScore(chunk.hybrid_score)}</strong></span>
             <span class="score-pill">Dense Cosine: <strong>${formatScore(chunk.dense_score)}</strong></span>
@@ -887,18 +915,29 @@ function renderEvaluation(payload) {
   const sliitQ = (sliitItem.quality && sliitItem.quality.metrics) || {};
   const sliitB = (sliitItem.batch && sliitItem.batch.metrics) || {};
 
-  // Compute overall KPI averages across evaluated questions
-  const totalEvaluated = (nsbmB.total_questions || 60) + (sliitB.total_questions || 12);
-  const avgGroundedness = (
-    ((nsbmQ.groundedness_mean_1_to_5_judged_only || 4.533) * 60 +
-      (sliitQ.groundedness_mean_1_to_5_judged_only || 4.75) * 12) /
-    72
-  ).toFixed(2);
-  const avgAnswerRel = (
-    ((nsbmQ.answer_relevance_mean_1_to_5_judged_only || 4.767) * 60 +
-      (sliitQ.answer_relevance_mean_1_to_5_judged_only || 4.917) * 12) /
-    72
-  ).toFixed(2);
+  // Aggregate only metrics present in the current report files. Missing data
+  // is shown as unavailable rather than replaced with optimistic demo values.
+  const meanAvailable = (values) => {
+    const valid = values.filter((value) => typeof value === "number" && Number.isFinite(value));
+    return valid.length ? valid.reduce((sum, value) => sum + value, 0) / valid.length : null;
+  };
+  const totalEvaluated = (nsbmB.total_questions ?? 0) + (sliitB.total_questions ?? 0);
+  const avgGroundedness = meanAvailable([
+    nsbmQ.groundedness_mean_1_to_5_judged_only,
+    sliitQ.groundedness_mean_1_to_5_judged_only,
+  ]);
+  const avgAnswerRel = meanAvailable([
+    nsbmQ.answer_relevance_mean_1_to_5_judged_only,
+    sliitQ.answer_relevance_mean_1_to_5_judged_only,
+  ]);
+  const avgContextRel = meanAvailable([
+    nsbmQ.context_relevance_mean_1_to_5_answerable_only,
+    sliitQ.context_relevance_mean_1_to_5_answerable_only,
+  ]);
+  const avgAccuracy = meanAvailable([
+    nsbmB.answerability_accuracy,
+    sliitB.answerability_accuracy,
+  ]);
 
   // Executive KPI cards
   const kpiSection = `
@@ -906,7 +945,7 @@ function renderEvaluation(payload) {
       <div class="kpi-card">
         <span class="kpi-title">Groundedness (Faithfulness)</span>
         <div class="kpi-value-row">
-          <span class="kpi-value">${avgGroundedness}</span>
+          <span class="kpi-value">${formatValue(avgGroundedness)}</span>
           <span class="kpi-scale">/ 5.0</span>
         </div>
         <span class="kpi-subtext">LLM-as-a-Judge Hallucination Test</span>
@@ -915,7 +954,7 @@ function renderEvaluation(payload) {
       <div class="kpi-card">
         <span class="kpi-title">Answer Relevance</span>
         <div class="kpi-value-row">
-          <span class="kpi-value">${avgAnswerRel}</span>
+          <span class="kpi-value">${formatValue(avgAnswerRel)}</span>
           <span class="kpi-scale">/ 5.0</span>
         </div>
         <span class="kpi-subtext">Query Intent Alignment Mean</span>
@@ -924,18 +963,18 @@ function renderEvaluation(payload) {
       <div class="kpi-card">
         <span class="kpi-title">Context Relevance</span>
         <div class="kpi-value-row">
-          <span class="kpi-value">5.0</span>
+          <span class="kpi-value">${formatValue(avgContextRel)}</span>
           <span class="kpi-scale">/ 5.0</span>
         </div>
-        <span class="kpi-subtext">100% Gold Document Recall</span>
+        <span class="kpi-subtext">LLM-as-a-judge metric, when available</span>
       </div>
 
       <div class="kpi-card">
         <span class="kpi-title">Answerability Accuracy</span>
         <div class="kpi-value-row">
-          <span class="kpi-value">100.0%</span>
+          <span class="kpi-value">${formatPercentage(avgAccuracy)}</span>
         </div>
-        <span class="kpi-subtext">${totalEvaluated} Total Evaluated Questions</span>
+        <span class="kpi-subtext">${totalEvaluated || "Not available"} Total Evaluated Questions</span>
       </div>
     </div>
   `;
@@ -960,57 +999,57 @@ function renderEvaluation(payload) {
           <tbody>
             <tr>
               <td>Total Evaluated Questions</td>
-              <td>${formatValue(nsbmB.total_questions || 60)}</td>
-              <td>${formatValue(sliitB.total_questions || 12)}</td>
-              <td><span class="score-pill">72 Total Ground-Truth Items</span></td>
+              <td>${formatValue(nsbmB.total_questions)}</td>
+              <td>${formatValue(sliitB.total_questions)}</td>
+              <td><span class="score-pill">Current report counts</span></td>
             </tr>
             <tr>
               <td>Answerable / Unanswerable</td>
-              <td>${formatValue(nsbmB.answerable_questions || 51)} / ${formatValue(nsbmB.unanswerable_questions || 9)}</td>
-              <td>${formatValue(sliitB.answerable_questions || 10)} / ${formatValue(sliitB.unanswerable_questions || 2)}</td>
-              <td><span class="score-pill">Complete Class Balance</span></td>
+              <td>${formatValue(nsbmB.answerable_questions)} / ${formatValue(nsbmB.unanswerable_questions)}</td>
+              <td>${formatValue(sliitB.answerable_questions)} / ${formatValue(sliitB.unanswerable_questions)}</td>
+              <td><span class="score-pill">Ground-truth label counts</span></td>
             </tr>
             <tr>
               <td>Answerability Accuracy</td>
-              <td>${formatPercentage(nsbmB.answerability_accuracy ?? 1.0)}</td>
-              <td>${formatPercentage(sliitB.answerability_accuracy ?? 1.0)}</td>
-              <td><strong style="color: var(--success);">100% Correct Classification</strong></td>
+              <td>${formatPercentage(nsbmB.answerability_accuracy)}</td>
+              <td>${formatPercentage(sliitB.answerability_accuracy)}</td>
+              <td><strong style="color: var(--success);">From current evaluation</strong></td>
             </tr>
             <tr>
-              <td>Context Hit Rate @ 5</td>
-              <td>${formatPercentage(nsbmB.context_hit_rate_at_5 ?? 0.9608)}</td>
-              <td>${formatPercentage(sliitB.context_hit_rate_at_5 ?? 1.0)}</td>
-              <td><strong style="color: var(--success);">&gt; 96% Retrieval Hit Rate</strong></td>
+              <td>Context Hit Rate @ 30</td>
+              <td>${formatPercentage(nsbmB.context_hit_rate_at_30)}</td>
+              <td>${formatPercentage(sliitB.context_hit_rate_at_30)}</td>
+              <td><strong style="color: var(--success);">From current evaluation</strong></td>
             </tr>
             <tr>
               <td>Supporting Fact Coverage Proxy</td>
-              <td>${formatPercentage(nsbmB.supporting_fact_coverage_proxy ?? 0.8571)}</td>
-              <td>${formatPercentage(sliitB.supporting_fact_coverage_proxy ?? 1.0)}</td>
-              <td><strong style="color: var(--accent-light);">High Lexical Fact Coverage</strong></td>
+              <td>${formatPercentage(nsbmB.supporting_fact_coverage_proxy)}</td>
+              <td>${formatPercentage(sliitB.supporting_fact_coverage_proxy)}</td>
+              <td><strong style="color: var(--accent-light);">Lexical proxy only</strong></td>
             </tr>
             <tr>
               <td>Unsupported Rejection Rate</td>
-              <td>${formatPercentage(nsbmB.unsupported_rejection_rate ?? 1.0)}</td>
-              <td>${formatPercentage(sliitB.unsupported_rejection_rate ?? 1.0)}</td>
-              <td><strong style="color: var(--success);">Zero Hallucinations on Unanswerable</strong></td>
+              <td>${formatPercentage(nsbmB.unsupported_rejection_rate)}</td>
+              <td>${formatPercentage(sliitB.unsupported_rejection_rate)}</td>
+              <td><strong style="color: var(--success);">From current evaluation</strong></td>
             </tr>
             <tr>
               <td>LLM Judge: Context Relevance</td>
-              <td>${formatValue(nsbmQ.context_relevance_mean_1_to_5_answerable_only ?? 5.0)} / 5.0</td>
-              <td>${formatValue(sliitQ.context_relevance_mean_1_to_5_answerable_only ?? 5.0)} / 5.0</td>
-              <td><strong style="color: var(--success);">5.0 / 5.0 Gold Precision</strong></td>
+              <td>${formatValue(nsbmQ.context_relevance_mean_1_to_5_answerable_only)} / 5.0</td>
+              <td>${formatValue(sliitQ.context_relevance_mean_1_to_5_answerable_only)} / 5.0</td>
+              <td><strong style="color: var(--success);">Judge report only</strong></td>
             </tr>
             <tr>
               <td>LLM Judge: Groundedness</td>
-              <td>${formatValue(nsbmQ.groundedness_mean_1_to_5_judged_only ?? 4.533)} / 5.0</td>
-              <td>${formatValue(sliitQ.groundedness_mean_1_to_5_judged_only ?? 4.75)} / 5.0</td>
-              <td><strong style="color: var(--accent-light);">&gt; 4.5 / 5.0 Groundedness</strong></td>
+              <td>${formatValue(nsbmQ.groundedness_mean_1_to_5_judged_only)} / 5.0</td>
+              <td>${formatValue(sliitQ.groundedness_mean_1_to_5_judged_only)} / 5.0</td>
+              <td><strong style="color: var(--accent-light);">Judge report only</strong></td>
             </tr>
             <tr>
               <td>LLM Judge: Answer Relevance</td>
-              <td>${formatValue(nsbmQ.answer_relevance_mean_1_to_5_judged_only ?? 4.767)} / 5.0</td>
-              <td>${formatValue(sliitQ.answer_relevance_mean_1_to_5_judged_only ?? 4.917)} / 5.0</td>
-              <td><strong style="color: var(--success);">&gt; 4.7 / 5.0 Relevance</strong></td>
+              <td>${formatValue(nsbmQ.answer_relevance_mean_1_to_5_judged_only)} / 5.0</td>
+              <td>${formatValue(sliitQ.answer_relevance_mean_1_to_5_judged_only)} / 5.0</td>
+              <td><strong style="color: var(--success);">Judge report only</strong></td>
             </tr>
           </tbody>
         </table>
@@ -1028,25 +1067,25 @@ function renderEvaluation(payload) {
       const batch = (item.batch && item.batch.metrics) || {};
       const metadata = item.metadata || {};
 
-      const contextRel = quality.context_relevance_mean_1_to_5_answerable_only ?? 5.0;
-      const groundedness = quality.groundedness_mean_1_to_5_judged_only ?? (campus === "NSBM" ? 4.533 : 4.75);
-      const answerRel = quality.answer_relevance_mean_1_to_5_judged_only ?? (campus === "NSBM" ? 4.767 : 4.917);
+      const contextRel = quality.context_relevance_mean_1_to_5_answerable_only ?? null;
+      const groundedness = quality.groundedness_mean_1_to_5_judged_only ?? null;
+      const answerRel = quality.answer_relevance_mean_1_to_5_judged_only ?? null;
 
-      const totalQuestions = batch.total_questions ?? (campus === "NSBM" ? 60 : 12);
-      const answerable = batch.answerable_questions ?? (campus === "NSBM" ? 51 : 10);
-      const unanswerable = batch.unanswerable_questions ?? (campus === "NSBM" ? 9 : 2);
-      const accuracy = batch.answerability_accuracy ?? 1.0;
-      const contextHit = batch.context_hit_rate_at_5 ?? (campus === "NSBM" ? 0.9608 : 1.0);
-      const contextPrecision = batch.context_precision_at_5 ?? (campus === "NSBM" ? 0.3843 : 0.3);
-      const factCoverage = batch.supporting_fact_coverage_proxy ?? (campus === "NSBM" ? 0.8571 : 1.0);
-      const rejectionRate = batch.unsupported_rejection_rate ?? 1.0;
+      const totalQuestions = batch.total_questions ?? null;
+      const answerable = batch.answerable_questions ?? null;
+      const unanswerable = batch.unanswerable_questions ?? null;
+      const accuracy = batch.answerability_accuracy ?? null;
+      const contextHit = batch.context_hit_rate_at_30 ?? null;
+      const contextPrecision = batch.context_precision_at_30 ?? null;
+      const factCoverage = batch.supporting_fact_coverage_proxy ?? null;
+      const rejectionRate = batch.unsupported_rejection_rate ?? null;
 
       return `
         <article class="eval-card">
           <div class="eval-card-header">
             <div class="eval-card-title-group">
               <h3>${campus === "NSBM" ? "NSBM Green University — Comprehensive Benchmark" : "SLIIT — Academic Administration Benchmark"}</h3>
-              <span class="eval-source-label">Source: rag_quality_judgement_report.json &amp; ${campus.toLowerCase()}_batch_evaluation_report.json</span>
+              <span class="eval-source-label">Source: rag_quality_judgement_report.json &amp; ${campus.toLowerCase()}_final_report.json</span>
             </div>
             <span class="eval-badge">${campus} Evaluation</span>
           </div>
@@ -1060,7 +1099,7 @@ function renderEvaluation(payload) {
                 <span class="metric-scale">/ 5.0</span>
               </div>
               <div class="metric-bar">
-                <div class="metric-bar-fill" style="width: ${(contextRel / 5) * 100}%"></div>
+                <div class="metric-bar-fill" style="width: ${typeof contextRel === "number" ? Math.max(0, Math.min(100, (contextRel / 5) * 100)) : 0}%"></div>
               </div>
             </div>
 
@@ -1071,7 +1110,7 @@ function renderEvaluation(payload) {
                 <span class="metric-scale">/ 5.0</span>
               </div>
               <div class="metric-bar">
-                <div class="metric-bar-fill" style="width: ${(groundedness / 5) * 100}%"></div>
+                <div class="metric-bar-fill" style="width: ${typeof groundedness === "number" ? Math.max(0, Math.min(100, (groundedness / 5) * 100)) : 0}%"></div>
               </div>
             </div>
 
@@ -1082,7 +1121,7 @@ function renderEvaluation(payload) {
                 <span class="metric-scale">/ 5.0</span>
               </div>
               <div class="metric-bar">
-                <div class="metric-bar-fill" style="width: ${(answerRel / 5) * 100}%"></div>
+                <div class="metric-bar-fill" style="width: ${typeof answerRel === "number" ? Math.max(0, Math.min(100, (answerRel / 5) * 100)) : 0}%"></div>
               </div>
             </div>
           </div>
@@ -1106,11 +1145,11 @@ function renderEvaluation(payload) {
               <span class="stat-pill-val">${formatPercentage(accuracy)}</span>
             </div>
             <div class="stat-pill">
-              <span class="stat-pill-label">Context Hit Rate @ 5</span>
+              <span class="stat-pill-label">Context Hit Rate @ 30</span>
               <span class="stat-pill-val">${formatPercentage(contextHit)}</span>
             </div>
             <div class="stat-pill">
-              <span class="stat-pill-label">Context Precision @ 5</span>
+              <span class="stat-pill-label">Context Precision @ 30</span>
               <span class="stat-pill-val">${formatPercentage(contextPrecision)}</span>
             </div>
             <div class="stat-pill">

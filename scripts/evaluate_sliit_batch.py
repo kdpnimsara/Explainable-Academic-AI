@@ -27,6 +27,7 @@ if str(ROOT / "scripts") not in sys.path:
 
 from src.embeddings.embedder import MultilingualE5Embedder
 from src.generation.evidence_validator import EvidenceValidator
+from src.retrieval.context_matching import count_relevant_chunks, retrieved_context_matches
 from src.retrieval.hybrid_retriever import HybridRetriever
 from src.storage.vector_store import ChromaVectorStore
 
@@ -60,44 +61,8 @@ ABSTENTION_MARKERS = (
 )
 
 
-def source_basename(value: Any) -> str:
-    """Normalise Windows/POSIX absolute source paths to a filename."""
-    return str(value or "").replace("\\", "/").rstrip("/").rsplit("/", 1)[-1].casefold()
-
-
-def load_records(store):
-    raw = store._collection.get(include=["documents", "metadatas"])
-    records = []
-    for chunk_id, document, metadata in zip(
-        raw["ids"], raw["documents"], raw["metadatas"]
-    ):
-        if document is None or metadata is None:
-            continue
-        records.append(
-            store._create_record(
-                chunk_id=chunk_id,
-                text=document,
-                metadata=metadata,
-            )
-        )
-    return records, raw
-
-
 def context_matches(retrieved, expected_contexts):
-    matched_count = 0
-    for expected in expected_contexts:
-        expected_name = source_basename(expected.get("document"))
-        expected_pages = {int(p) for p in expected.get("pages", [])}
-        found = False
-        for item in retrieved:
-            record = item.record
-            actual_name = source_basename(record.source)
-            actual_pages = {int(p) for p in (record.page_numbers or ())}
-            if actual_name == expected_name and expected_pages.intersection(actual_pages):
-                found = True
-                break
-        matched_count += int(found)
-    return matched_count, len(expected_contexts)
+    return retrieved_context_matches(retrieved, expected_contexts)
 
 
 def token_set(text: str) -> set[str]:
@@ -214,6 +179,19 @@ def run_generation(questions, results):
             print(f"ANSWER ERROR | {question['id']} | {type(exc).__name__}: {exc}")
 
 
+def load_records(store):
+    """Load all Chroma records and convert them to vector-store records."""
+    raw = store._collection.get(include=["documents", "metadatas"])
+    ids = raw.get("ids") or []
+    documents = raw.get("documents") or []
+    metadatas = raw.get("metadatas") or []
+    if not (len(ids) == len(documents) == len(metadatas)):
+        raise RuntimeError("Chroma returned inconsistent record data.")
+    records = [
+        store._create_record(chunk_id=chunk_id, text=document, metadata=metadata)
+        for chunk_id, document, metadata in zip(ids, documents, metadatas)
+    ]
+    return records, raw
 def evaluate(args):
     if not DATASET_PATH.is_file():
         raise FileNotFoundError(
@@ -321,16 +299,8 @@ def evaluate(args):
             answerable_count += 1
             context_hits += int(bool(context_hit))
             answerable_chunks_total += len(retrieved)
-            relevant_chunks_total += sum(
-                1 for candidate in retrieved
-                if any(
-                    source_basename(candidate.record.source) == source_basename(ctx["document"])
-                    and bool(
-                        {int(p) for p in (candidate.record.page_numbers or ())}
-                        & {int(p) for p in ctx.get("pages", [])}
-                    )
-                    for ctx in item.get("supporting_contexts", [])
-                )
+            relevant_chunks_total += count_relevant_chunks(
+                retrieved, item.get("supporting_contexts", [])
             )
             evidence_text = " ".join(candidate.record.text for candidate in retrieved)
             cov, covered, count = fact_coverage(
@@ -404,6 +374,7 @@ def evaluate(args):
         f"context_precision_at_{args.top_k}": round(safe_divide(relevant_chunks_total, answerable_chunks_total), 4),
         "supporting_fact_coverage_proxy": round(safe_divide(fact_covered_total, fact_total), 4),
         "answer_generation": "PENDING" if args.generate_answers else "NOT_RUN",
+        "context_matching_note": "Gold context matching uses exact source/page first, then a conservative lexical content-equivalence fallback for renamed PDF/Markdown mirrors.",
         "faithfulness_note": "Supporting-fact coverage is a lexical proxy, not a semantic or LLM-judge faithfulness score.",
     }
 
@@ -501,7 +472,8 @@ def evaluate(args):
         print(f"{key}: {value}")
     print("JSON report:", REPORT_JSON)
     print("CSV report:", REPORT_CSV)
-    print("\nNote: retrieval metrics evaluate retrieval/answerability. Generated-answer coverage is only a lexical proxy.")
+    print("\nNote: context matching uses exact source/page or a conservative lexical content-equivalence fallback.")
+    print("Note: retrieval metrics evaluate retrieval/answerability. Generated-answer coverage is only a lexical proxy.")
 
 
 def main():

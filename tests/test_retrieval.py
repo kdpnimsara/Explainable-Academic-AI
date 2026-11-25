@@ -360,3 +360,44 @@ def test_institution_retrieval_rejects_non_string_id(sample_records):
             "academic regulations",
             institution_id=123,
         )
+
+def test_retrieval_limits_repeated_chunks_per_document(sample_records):
+    metadata = make_metadata("same_doc", "institution", "NSBM")
+    same_document = [
+        make_record(f"repeat_{index}", f"Repeated but distinct passage {index} about registration rules.", "same.pdf", metadata)
+        for index in range(4)
+    ]
+    other_metadata = make_metadata("other_doc", "institution", "NSBM")
+    other_document = make_record(
+        "other_doc_chunk",
+        "Specific scholarship eligibility and award information.",
+        "scholarship.pdf",
+        other_metadata,
+    )
+    retriever = HybridRetriever(
+        FakeEmbedder(),
+        FakeVectorStore(same_document + [other_document]),
+        same_document + [other_document],
+        max_chunks_per_document=2,
+    )
+    results = retriever.retrieve("scholarship eligibility award", top_k=5, institution_id="NSBM")
+    source_counts = {}
+    for item in results:
+        key = item.record.document_metadata.document_id
+        source_counts[key] = source_counts.get(key, 0) + 1
+    assert len(results) == 3
+    assert source_counts["same_doc"] == 2
+    assert "other_doc" in source_counts
+
+
+def test_retrieval_removes_identical_passages_within_same_document():
+    metadata = make_metadata("same_doc", "institution", "NSBM")
+    records = [
+        make_record("dup1", "The same official registration rule appears here.", "same.pdf", metadata),
+        make_record("dup2", "  The same official registration rule appears here.  ", "same.pdf", metadata),
+        make_record("unique", "A distinct exam eligibility policy passage.", "same.pdf", metadata),
+    ]
+    retriever = HybridRetriever(FakeEmbedder(), FakeVectorStore(records), records)
+    results = retriever.retrieve("registration rule", top_k=5, institution_id="NSBM")
+    texts = [" ".join(item.record.text.split()).casefold() for item in results]
+    assert texts.count("the same official registration rule appears here.") <= 1

@@ -27,8 +27,8 @@ MAX_BODY_BYTES = 1_000_000
 
 QUALITY_REPORT = "rag_quality_judgement_report.json"
 BATCH_REPORTS = {
-    "NSBM": "nsbm_batch_evaluation_report.json",
-    "SLIIT": "sliit_batch_evaluation_report.json",
+    "NSBM": "nsbm_final_report.json",
+    "SLIIT": "sliit_final_report.json",
 }
 
 QUALITY_FIELDS = (
@@ -45,8 +45,8 @@ BATCH_COUNT_FIELDS = (
     "answerable_questions",
     "unanswerable_questions",
     "answerability_accuracy",
-    "context_hit_rate_at_5",
-    "context_precision_at_5",
+    "context_hit_rate_at_30",
+    "context_precision_at_30",
     "supporting_fact_coverage_proxy",
     "true_positives",
     "true_negatives",
@@ -218,6 +218,7 @@ def serialize_agent_response(response: Any, institution_id: str) -> dict[str, An
             {
                 "citation_id": source.citation_id,
                 "chunk_id": source.chunk_id,
+                "chunk_ids": list(source.chunk_ids or (source.chunk_id,)),
                 "document": source.document,
                 "page_numbers": list(source.page_numbers),
             }

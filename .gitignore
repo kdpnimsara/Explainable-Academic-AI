@@ -1,4 +1,3 @@
-
 # Python cache files
 __pycache__/
 *.py[cod]
@@ -29,7 +28,7 @@ Thumbs.db
 # Generated logs
 *.log
 
-# Local PDF source documents (exclude by default)
+# Local PDF source documents
 data/documents/*.pdf
 data/documents/**/*.pdf
 
@@ -45,8 +44,9 @@ data/documents/**/*.pdf
 !data/documents/safesteps/*.pdf
 !data/documents/safesteps/**/*.pdf
 
-# Local vector database files
+# Local vector databases
 data/vector_store/
+data/chroma_db/
 
 # Local review documents and runtime history
 data/review_pending/
@@ -54,8 +54,10 @@ data/history/
 
 # Local backups and generated evaluation reports
 data/backups/
-data/evaluation/nsbm_batch_evaluation_report*.json
-data/evaluation/nsbm_batch_evaluation_report*.csv
+data/evaluation/*report*.json
+data/evaluation/*report*.csv
+data/evaluation/*sample*.json
+data/evaluation/*sample*.csv
 data/evaluation/nsbm_test_bundle.zip
 data/evaluation/rag_quality_judgement_report.before_retry.json
 
@@ -68,3 +70,12 @@ data/evaluation/rag_quality_judgement_report.before_retry.json
 *.bak.py
 *.before_*.py
 *.before_*.json
+/backups/
+/repair_patch/
+/viva_patch/
+/APPLY_CAMPUSMATE_FINAL_REPAIR.cmd
+/APPLY_VIVA_PATCH.cmd
+/README_PATCH.txt
+/fix_nsbm_retrieval.ps1
+/fix_thesis.py
+/py

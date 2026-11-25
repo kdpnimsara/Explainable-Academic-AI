@@ -410,6 +410,7 @@ class WeatherAwareRAGAgent(RAGAgent):
                 {
                     "citation_id": source.citation_id,
                     "chunk_id": source.chunk_id,
+                    "chunk_ids": list(source.chunk_ids or (source.chunk_id,)),
                     "document": source.document,
                     "page_numbers": list(source.page_numbers),
                 }

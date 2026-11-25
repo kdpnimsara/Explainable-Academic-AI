@@ -345,6 +345,13 @@ def apply_ingestion(prepared) -> None:
     if found_documents != expected_documents:
         raise RuntimeError("Stored SLIIT document inventory does not match the manifest.")
 
+    # Remove stale SLIIT chunks from earlier manifests/chunking settings only
+    # after every current manifest chunk and document has been verified.
+    stale_sliit_ids = sorted(sliit_before_ids - new_ids)
+    if stale_sliit_ids:
+        print("Removing stale SLIIT chunks:", len(stale_sliit_ids))
+        store.delete(stale_sliit_ids)
+
     final = store._collection.get(include=["metadatas"])
     final_other_ids: set[str] = set()
     final_sliit_ids: set[str] = set()
@@ -359,8 +366,8 @@ def apply_ingestion(prepared) -> None:
 
     if final_other_ids != other_ids:
         raise RuntimeError("Other-institution records changed; inspect the vector backup.")
-    if not new_ids.issubset(final_sliit_ids):
-        raise RuntimeError("Final SLIIT chunk verification failed.")
+    if final_sliit_ids != new_ids:
+        raise RuntimeError("Final SLIIT chunk inventory differs from the current manifest.")
     if store.count() < before:
         raise RuntimeError("Vector record count unexpectedly decreased.")
 

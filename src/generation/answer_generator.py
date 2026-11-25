@@ -22,12 +22,13 @@ class TextGenerationModel(Protocol):
 
 @dataclass(frozen=True, slots=True)
 class SourceReference:
-    """Reference to academic document evidence."""
+    """Reference to one academic document, potentially covering many chunks."""
 
     citation_id: str
     chunk_id: str
     document: str
     page_numbers: tuple[int, ...]
+    chunk_ids: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,6 +111,41 @@ class AnswerGenerator:
     )
 
     @staticmethod
+    def _source_map_by_chunk_id(document_sources):
+        """Map every contributing chunk to its document-level citation."""
+        source_map = {}
+        for source in document_sources:
+            chunk_ids = source.chunk_ids or (source.chunk_id,)
+            for chunk_id in chunk_ids:
+                source_map[chunk_id] = source
+        return source_map
+
+    @staticmethod
+    def _normalise_document_identity(document):
+        """Normalize path separators/case without collapsing distinct folders."""
+        value = str(document or "").strip().replace("\\", "/")
+        while "//" in value:
+            value = value.replace("//", "/")
+        return value.casefold()
+
+    @staticmethod
+    def _sanitize_academic_citations(answer, document_sources):
+        """Remove citation IDs that were not supplied to the language model."""
+        valid_ids = {source.citation_id for source in document_sources}
+        pattern = re.compile(r"\[(S\d+(?:\s*,\s*S\d+)*)\]")
+
+        def replace_group(match):
+            ids = re.findall(r"S\d+", match.group(1))
+            kept = [f"[{item}]" for item in ids if f"[{item}]" in valid_ids]
+            if not kept:
+                return ""
+            if len(kept) == 1:
+                return kept[0]
+            return "[" + ", ".join(item[1:-1] for item in kept) + "]"
+
+        return pattern.sub(replace_group, answer)
+
+    @staticmethod
     def _ensure_first_class_completeness(
         question,
         answer,
@@ -125,10 +161,7 @@ class AnswerGenerator:
         ):
             return answer
 
-        sources = {
-            source.chunk_id: source
-            for source in document_sources
-        }
+        sources = AnswerGenerator._source_map_by_chunk_id(document_sources)
 
         missing = []
         answer_lower = answer.casefold()
@@ -218,10 +251,7 @@ class AnswerGenerator:
         if "option 2" not in lowered_question:
             return answer
 
-        sources = {
-            source.chunk_id: source
-            for source in document_sources
-        }
+        sources = AnswerGenerator._source_map_by_chunk_id(document_sources)
 
         missing = []
         answer_lower = answer.casefold()
@@ -419,7 +449,9 @@ class AnswerGenerator:
         document_sources = []
         external_sources = []
 
-        # Academic document evidence.
+        # Academic evidence is grouped by full document identity, not by chunk.
+        # Exact repeated passages from the same document are included only once.
+        grouped_documents = {}
         for chunk in retrieved_chunks:
             if not isinstance(chunk, RetrievedChunk):
                 raise TypeError(
@@ -428,34 +460,66 @@ class AnswerGenerator:
 
             record = chunk.record
             text = record.text.strip()
-
             if not text:
                 continue
 
-            citation_id = f"[S{len(document_sources) + 1}]"
+            document_key = self._normalise_document_identity(record.source)
+            if not document_key:
+                document_key = f"chunk:{record.chunk_id}"
 
+            group = grouped_documents.setdefault(
+                document_key,
+                {
+                    "citation_id": f"[S{len(grouped_documents) + 1}]",
+                    "document": record.source,
+                    "chunk_ids": [],
+                    "page_numbers": set(),
+                    "passages": {},
+                },
+            )
+
+            if record.chunk_id not in group["chunk_ids"]:
+                group["chunk_ids"].append(record.chunk_id)
+            group["page_numbers"].update(record.page_numbers or ())
+
+            # Whitespace-only differences do not create duplicate evidence blocks.
+            passage_key = " ".join(text.split()).casefold()
+            passage = group["passages"].setdefault(
+                passage_key,
+                {"text": text, "page_numbers": set()},
+            )
+            passage["page_numbers"].update(record.page_numbers or ())
+
+        for group in grouped_documents.values():
             source = SourceReference(
-                citation_id=citation_id,
-                chunk_id=record.chunk_id,
-                document=record.source,
-                page_numbers=record.page_numbers,
+                citation_id=group["citation_id"],
+                chunk_id=group["chunk_ids"][0],
+                document=group["document"],
+                page_numbers=tuple(sorted(group["page_numbers"])),
+                chunk_ids=tuple(group["chunk_ids"]),
             )
+            document_sources.append(source)
 
-            page_text = (
-                ", ".join(str(page) for page in record.page_numbers)
-                if record.page_numbers
-                else "Unknown"
-            )
+            passage_blocks = []
+            for passage in group["passages"].values():
+                page_text = (
+                    ", ".join(
+                        str(page)
+                        for page in sorted(passage["page_numbers"])
+                    )
+                    if passage["page_numbers"]
+                    else "Unknown"
+                )
+                passage_blocks.append(
+                    f"Pages: {page_text}\nEvidence: {passage['text']}"
+                )
 
             evidence_blocks.append(
-                f"{citation_id}\n"
+                f"{source.citation_id}\n"
                 f"Evidence Type: Academic Document\n"
-                f"Document: {record.source}\n"
-                f"Pages: {page_text}\n"
-                f"Evidence: {text}"
+                f"Document: {source.document}\n"
+                + "\n\n".join(passage_blocks)
             )
-
-            document_sources.append(source)
 
         # External weather evidence.
         for item in weather_evidence:
@@ -625,6 +689,10 @@ ANSWER:
             answer,
             retrieved_chunks,
             document_sources,
+        )
+
+        answer = self._sanitize_academic_citations(
+            answer, document_sources
         )
 
         # Deterministic protection for institutional decisions.
